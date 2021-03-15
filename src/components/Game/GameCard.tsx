@@ -16,7 +16,7 @@ const GameCard = (props: Props) => {
 			</CardActionArea>
 			<CardActions className={classes.cardActions}>
 				<Typography noWrap variant="button" className={classes.title}>
-					{props.name}
+					{props.name} [{props.id}]
 				</Typography>
 			</CardActions>
 		</Card>
