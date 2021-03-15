@@ -9,6 +9,7 @@ import NestedRoutes from "../components/NestedRoutes";
 import NotFound from "../components/NotFound";
 import Protected from "../components/Protected";
 import PrivateRoute from "./PrivateRoute";
+import GameInfo from "../components/GameInfo/GameInfo";
 
 const Router = () => {
 	return (
@@ -38,6 +39,14 @@ const Router = () => {
 					</Switch>
 				</BasicLayout>
 			</Route>
+
+			<GlobalLayout>
+				<Route
+					path="/game/:id"
+					render={(routeProps) =>
+						<GameInfo match={routeProps.match} />}
+				/>
+			</GlobalLayout>
 
 			<GlobalLayout>
 				<Route component={NotFound} />
