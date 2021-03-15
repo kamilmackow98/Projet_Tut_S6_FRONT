@@ -21,6 +21,7 @@ export const layoutConfig = makeStyles((theme) => ({
 	title: {
 		flexGrow: 1,
 		textDecoration: "none",
+		outline: "none",
 	},
 	drawerPaper: {
 		position: "relative",

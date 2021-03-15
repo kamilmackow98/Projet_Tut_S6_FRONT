@@ -31,11 +31,11 @@ export const mainListItems = (
 export const secondaryListItems = (
 	<div>
 		<ListSubheader>Recommended for you</ListSubheader>
-		<ListItem component={Link} to="/non-existing-route" button>
+		<ListItem component={Link} to="/recommended" button>
 			<ListItemIcon>
 				<Stars />
 			</ListItemIcon>
-			<ListItemText primary="404" />
+			<ListItemText primary="Games" />
 		</ListItem>
 	</div>
 );
