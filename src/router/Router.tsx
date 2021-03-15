@@ -14,7 +14,7 @@ import GameInfo from "../components/GameInfo/GameInfo";
 const Router = () => {
 	return (
 		<Switch>
-			<Route exact path={["/", "/protected", "/nested", "/nested/another-nested"]}>
+			<Route exact path={["/", "/protected", "/nested", "/nested/another-nested", "/game/:id"]}>
 				<GlobalLayout>
 					<Switch>
 						<Route exact path="/" render={() => <Main />} />
@@ -28,6 +28,11 @@ const Router = () => {
 								</>
 							)}
 						/>
+						<Route
+							path="/game/:id"
+							render={(routeProps) =>
+								<GameInfo match={routeProps.match} />}
+						/>
 					</Switch>
 				</GlobalLayout>
 			</Route>
@@ -39,14 +44,6 @@ const Router = () => {
 					</Switch>
 				</BasicLayout>
 			</Route>
-
-			<GlobalLayout>
-				<Route
-					path="/game/:id"
-					render={(routeProps) =>
-						<GameInfo match={routeProps.match} />}
-				/>
-			</GlobalLayout>
 
 			<GlobalLayout>
 				<Route component={NotFound} />
