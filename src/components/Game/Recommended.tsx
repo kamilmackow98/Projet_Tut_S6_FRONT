@@ -11,7 +11,7 @@ const Recommended = () => {
 	useEffect(() => {
 		if (favorites.length > 0) {
 			favorites.forEach((favorite) => {
-				fetch(`/game/${favorite}`)
+				fetch(`/api/game/${favorite}`)
 					.then((res) => res.json())
 					.then((data: CompleteGameInfo) => {
 						if (data.id) {
