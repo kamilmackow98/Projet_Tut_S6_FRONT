@@ -9,7 +9,6 @@ const GameCard = (props: Props) => {
 	const classes = useStyles();
 
 	return (
-		// 	{React.Children.toArray(props.steamspy_tags.map((tag) => <div>{tag}</div>))}
 		<Card elevation={5} className={classes.root}>
 			<CardActionArea>
 				<CardMedia className={classes.media} image={props.header_image} title={props.name} />

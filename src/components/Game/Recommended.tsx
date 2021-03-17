@@ -1,38 +1,20 @@
 import React, { useState, useEffect } from "react";
-import GameCard from "./GameCard";
-import { CompleteGameInfo } from "../../types";
+import { sortByOccurrences } from "utils/ObjectUtils";
 import { Container, Grid } from "@material-ui/core";
+import { countOccurrences, getRandomFromArray } from "utils/ArrayUtils";
+import { CompleteGameInfo } from "types";
+import Loader from "components/Layout/Loader";
+import GameCard from "./GameCard";
 
-let categories: string[] = [];
-let genres: string[] = [];
+const TOP_TAGS_LENGTH = 5;
 let tags: string[] = [];
 
 function cleanArrays() {
-	categories = [];
-	genres = [];
 	tags = [];
 }
 
-function countOccurrences(array: string[]) {
-	return array.reduce(function (acc: any, curr) {
-		acc[curr] ? acc[curr]++ : (acc[curr] = 1);
-
-		return acc;
-	}, {});
-}
-
-function sortByOccurrences(obj: any) {
-	const keysSorted = Object.keys(obj)
-		.sort(function (a, b) {
-			return obj[a] - obj[b];
-		})
-		.reverse();
-
-	return keysSorted;
-}
-
 const Recommended = () => {
-	// Here we're gonna get user's favorites games by id, and then search related 10 recommended games
+	// Here we're gonna get user's favorites games by id, and then search 10 related / recommended games
 	const [favorites] = useState<number[]>([
 		501500,
 		822110,
@@ -59,7 +41,8 @@ const Recommended = () => {
 		340840,
 		807000,
 	]);
-	const [recommended, setRecommended] = useState<CompleteGameInfo[]>([]);
+	const [favoritesData, setFavoritesData] = useState<CompleteGameInfo[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (favorites.length > 0) {
@@ -71,37 +54,33 @@ const Recommended = () => {
 				)
 			)
 				.then((data) => {
-					setRecommended(data);
+					data = data.filter((item) => item); // Get rid of null / undefined items
+					setFavoritesData(data);
 				})
 				.catch((e) => console.error(e));
 		}
 	}, [favorites]);
 
 	useEffect(() => {
-		if (recommended.length > 0) {
-			recommended.forEach((entry) => {
-				// Check if there's no undefined values
-				if (entry.id) {
-					categories = categories.concat(entry.categories.map((cat) => cat));
-					genres = genres.concat(entry.genres.map((genre) => genre));
-					tags = tags.concat(entry.steamspy_tags.map((tag) => tag));
-				}
+		if (favoritesData.length > 0) {
+			favoritesData.forEach((entry) => {
+				tags = tags.concat(entry.steamspy_tags.map((tag) => tag));
 			});
 
-			// Genres
-			console.log("Genres", sortByOccurrences(countOccurrences(genres)));
-			
-			// Categories
-			console.log("Categories", sortByOccurrences(countOccurrences(categories)));
-			
-			// Tags
-			console.log("Tags", sortByOccurrences(countOccurrences(tags)));
+			// TODO : Here look for 10+ games based on random tags and set recommended
+			const topTags = sortByOccurrences(countOccurrences(tags)).slice(0, TOP_TAGS_LENGTH);
+			const randomTag = getRandomFromArray(topTags);
+			console.log(randomTag);
+
+			setTimeout(() => {
+				setLoading(false);
+			}, 1000);
 		}
 
 		return () => {
 			cleanArrays();
 		};
-	}, [recommended]);
+	}, [favoritesData]);
 
 	useEffect(() => {
 		return () => {
@@ -109,20 +88,18 @@ const Recommended = () => {
 		};
 	}, []);
 
-	if (!(recommended.length > 0)) return <div>Loading...</div>; // TODO : loading component
+	if (loading) return <Loader />;
 
 	return (
-		<React.Fragment>
-			<Container fixed disableGutters>
-				<Grid container spacing={3} justify={"center"}>
-					{recommended.map((card) => (
-						<Grid item key={card.id} xs={12} sm={10} md={6} lg={4}>
-							<GameCard {...card} />
-						</Grid>
-					))}
-				</Grid>
-			</Container>
-		</React.Fragment>
+		<Container fixed disableGutters>
+			<Grid container spacing={3} justify={"center"}>
+				{favoritesData.map((card) => (
+					<Grid item key={card.id} xs={12} sm={10} md={6} lg={4}>
+						<GameCard {...card} />
+					</Grid>
+				))}
+			</Grid>
+		</Container>
 	);
 };
 
