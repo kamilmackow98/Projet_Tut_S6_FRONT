@@ -1,25 +1,20 @@
-import React, {Component} from "react"
+import React, { useState, useEffect } from "react"
 
 
-class GameInfo extends Component<{ match: any }, { loading: boolean, gameData: any }> {
-    constructor(props: any) {
-        super(props)
-        this.state = {
-            loading: false,
-            gameData: {},
-        }
-    }
+function GameInfo(props: any) {
 
-    componentDidMount() {
-        this.setState({loading: true})
-        const id = this.props.match.params.id
+    const [loading, setLoading] = useState(false)
+    const [gameData, setGameData] = useState(({} as any))
+
+    useEffect(() => {
+        setLoading(true)
+        const id = props.match.params.id
         fetch(`/api/game/${id}`)
             .then(response => response.json())
             .then(data => {
-                this.setState({
-                    loading: false,
-                    gameData: data,
-                    /*gameData:
+                setLoading(false)
+                setGameData(data)
+                /*gameData:
                     {
                         "id": "380",
                         "name": "Half-Life 2: Episode One",
@@ -109,17 +104,16 @@ class GameInfo extends Component<{ match: any }, { loading: boolean, gameData: a
                     }*/
 
                 })
-            })
-    }
+    }, [])
 
-    render() {
-        const text = this.state.loading ? "loading..." : this.state.gameData.name
-        return (
-            <div>
-                <p>{text}</p>
-            </div>
-        )
-    }
+    const text = loading ? "loading..." : gameData.name
+
+    return (
+        <div>
+            <p>{text}</p>
+        </div>
+    )
+
 }
 
 export default GameInfo
