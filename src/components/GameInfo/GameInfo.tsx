@@ -3,15 +3,19 @@ import React, { useState, useEffect } from "react"
 
 function GameInfo(props: any) {
 
+    // "loading" state to know when the data is ready or not
     const [loading, setLoading] = useState(false)
     const [gameData, setGameData] = useState(({} as any))
 
+    // fetches the gameData with the API when the component mounts
     useEffect(() => {
         setLoading(true)
+        // retrieves the game id in the URL
         const id = props.match.params.id
         fetch(`/api/game/${id}`)
             .then(response => response.json())
             .then(data => {
+                // stores the gameData into the state
                 setLoading(false)
                 setGameData(data)
                 /*gameData:
@@ -106,6 +110,7 @@ function GameInfo(props: any) {
                 })
     }, [])
 
+    // if the gameData is not available: show "loading..." else show the data
     const text = loading ? "loading..." : gameData.name
 
     return (
