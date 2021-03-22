@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from "react"
+import React, {useState, useEffect, Component} from "react"
+import {Grid, Paper, List, Divider, Chip} from '@material-ui/core';
+import Carousel from 'react-material-ui-carousel'
 
 
 function GameInfo(props: any) {
 
-    // "loading" state to know when the data is ready or not
-    const [loading, setLoading] = useState(false)
-    const [gameData, setGameData] = useState(({} as any))
+    // "isLoading" state to know if the data is ready or not
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [gameData, setGameData] = useState<any>({})
 
     // fetches the gameData with the API when the component mounts
     useEffect(() => {
-        setLoading(true)
-        // retrieves the game id in the URL
+        setIsLoading(true)
+        // retrieves the game id from the URL
         const id = props.match.params.id
         fetch(`/api/game/${id}`)
             .then(response => response.json())
             .then(data => {
                 // stores the gameData into the state
-                setLoading(false)
                 setGameData(data)
+                setIsLoading(false)
                 /*gameData:
                     {
                         "id": "380",
@@ -108,17 +110,109 @@ function GameInfo(props: any) {
                     }*/
 
                 })
-    }, [])
+    }, [props.match.params.id])
 
     // if the gameData is not available: show "loading..." else show the data
-    const text = loading ? "loading..." : gameData.name
+    if (isLoading) {
+        return (
+            <div>
+                <p>loading...</p>
+            </div>
+        )
+    }
+    else {
+        // reformatting of the date
+        const options: any = { year: 'numeric', month: 'short', day: 'numeric'};
+        let releaseDate = (new Date(gameData.release_date)).toLocaleDateString('fr-FR', options)
 
+        // array of platform elements
+        let platforms: JSX.Element[] = [];
+        for (let i = 0; i < gameData.platforms.length; i++) {
+            platforms.push(
+                <Grid item>
+                    <Chip color="primary" label={gameData.platforms[i]} />
+                </Grid>
+            )
+        }
+
+        // array of tag elements
+        let tags: JSX.Element[] = [];
+        for (let i = 0; i < gameData.steamspy_tags.length; i++) {
+            tags.push(
+                <Grid item>
+                    <Chip label={gameData.steamspy_tags[i]} />
+                </Grid>
+            )
+        }
+
+        // array of carousel items (screenshots)
+        const carouselItems: JSX.Element[] = []
+        for(let i = 0; i < gameData.screenshots.length; i++) {
+            carouselItems.push(
+                <CarouselItem
+                    key={i}
+                    id={i + 1}
+                    src={gameData.screenshots[i].path_thumbnail}
+                />
+            )
+        }
+
+        return (
+            <div>
+                {/* HEADING */}
+                <Grid container>
+                    <Grid item xs={12} md={3}>
+                        <img src={gameData.header_image} style={{width: '95%'}} alt={"header_image"}/>
+                    </Grid>
+                    <Grid item container direction="column" xs={12} md={7} spacing={0}>
+                        <Grid item>
+                            <h1>{gameData.name}</h1>
+                        </Grid>
+                        <Grid item container spacing={1} style={{marginBottom: "15px"}} >
+                            {platforms}
+                        </Grid>
+                    </Grid>
+                </Grid>
+                {/* END HEADING */}
+
+                {/* SECTION 1 */}
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={6}>
+                        <Carousel>
+                            {carouselItems}
+                        </Carousel>
+                    </Grid>
+                    <Grid item container direction="column" xs={12} md={5}>
+                        <Grid item>
+                            <p>{gameData.detailed_description}</p>
+                            <Divider />
+                            <p>Release date: {releaseDate}</p>
+                            <Divider />
+                            <p>Developer: {gameData.developer}</p>
+                            <Divider />
+                            <p>Publisher: {gameData.publisher}</p>
+                        </Grid>
+                        <Divider />
+                        <Grid item container spacing={1} style={{marginTop: "12px"}}>
+                            {tags}
+                        </Grid>
+                    </Grid>
+                </Grid>
+                {/* END SECTION 1 */}
+
+            </div>
+        )
+    }
+
+}
+
+function CarouselItem(props: any)
+{
     return (
         <div>
-            <p>{text}</p>
+            <img src={props.src} alt={"Screenshot n°" + props.id} style={{width: '100%'}}/>
         </div>
     )
-
 }
 
 export default GameInfo
