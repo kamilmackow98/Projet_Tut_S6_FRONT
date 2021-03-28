@@ -1,35 +1,39 @@
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { BodyTableData } from "types";
 import GameCard from "./Game/GameCard";
 import Loader from "./Layout/Loader/Loader";
 import Table from "./Layout/Table/Table";
 
 const TestComponents: React.FC = () => {
-	const dummyData: BodyTableData[] = [
+	// TODO : In production change "any" type to the correct response data (CompleteGameInfo by default)
+	const dummyData: any[] = [
 		{
 			id: 10,
 			name: "Counter-strike",
-			releaseDate: "01-01-2011",
-			score: 90,
+			release_date: new Date(),
+			positive_ratings: 255,
+			negative_ratings: 40,
 		},
 		{
 			id: 20,
 			name: "Counter-strike2",
-			releaseDate: "01-01-2012",
-			score: 89,
+			release_date: new Date(),
+			positive_ratings: 225,
+			negative_ratings: 40,
 		},
 		{
 			id: 30,
 			name: "Counter-strike3",
-			releaseDate: "01-01-2013",
-			score: 88,
+			release_date: new Date(),
+			positive_ratings: 155,
+			negative_ratings: 70,
 		},
 		{
 			id: 40,
 			name: "Counter-strike4",
-			releaseDate: "01-01-2014",
-			score: 87,
+			release_date: new Date(),
+			positive_ratings: 355,
+			negative_ratings: 10,
 		},
 	];
 

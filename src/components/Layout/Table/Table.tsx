@@ -13,11 +13,11 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import CustomTableHead from "./CustomTableHead";
-import { BodyTableData, HeadTableData, Order } from "types";
+import { CompleteGameInfo, HeadTableData, Order } from "types";
 import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
-	data: BodyTableData[];
+	data: CompleteGameInfo[];
 }
 
 const CustomTable: React.FC<Props> = ({ data }) => {
@@ -32,6 +32,13 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 		const isAsc = orderBy === property && order === "asc";
 		setOrder(isAsc ? "desc" : "asc");
 		setOrderBy(property);
+	};
+
+	const score = (positive_ratings: number, negative_ratings: number) => {
+		return (
+			(positive_ratings / (positive_ratings + negative_ratings)) *
+			100
+		).toFixed(1);
 	};
 
 	return (
@@ -58,8 +65,14 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 										</Link>
 									</Typography>
 								</TableCell>
-								<TableCell>{game.releaseDate}</TableCell>
-								<TableCell>{game.score}</TableCell>
+								<TableCell>
+									{game.release_date.toLocaleDateString("fr-FR", {
+										timeZone: "America/New_York",
+									})}
+								</TableCell>
+								<TableCell>
+									{score(game.positive_ratings, game.negative_ratings)} %
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
