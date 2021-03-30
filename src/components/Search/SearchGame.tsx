@@ -1,7 +1,8 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Game } from "types";
+import { debounce } from "lodash";
 
 const SearchGame = () => {
 
@@ -41,9 +42,7 @@ const SearchGame = () => {
 		.catch((e) => console.error(e));
 	}, [gameNamePagination])
 	
-	const handleChange = (value: string) => {
-		setInputGameNameSearch(value)
-	}
+	const handleChange = debounce(function(value: string) { setInputGameNameSearch(value) }, 500);
 
 	return (
 		<Autocomplete
