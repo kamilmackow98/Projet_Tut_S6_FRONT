@@ -1,10 +1,14 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Game } from "types";
 import { debounce } from "lodash";
 
-const SearchGame = () => {
+interface Props {
+	onChangeName: Function
+}
+
+const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 
 	const [gameNames, setGameNames] = useState<Game[]>([]);
 	const [inputGameNameSearch, setInputGameNameSearch] = useState("");
@@ -40,9 +44,12 @@ const SearchGame = () => {
 			setGameNames(extendedGames);
 		})
 		.catch((e) => console.error(e));
-	}, [gameNamePagination])
+	}, [gameNamePagination]);
 	
-	const handleChange = debounce(function(value: string) { setInputGameNameSearch(value) }, 500);
+	const handleChange = debounce(function(value: string) { 
+		setInputGameNameSearch(value);
+		onChangeName(value);
+	}, 500);
 
 	return (
 		<Autocomplete
@@ -58,6 +65,7 @@ const SearchGame = () => {
 			freeSolo
 			id="combo-box-game-name"
 			options={gameNames}
+			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { if (newValue) onChangeName((newValue as Game).name) }}
 			getOptionLabel={(option: Game) => option.name}
 			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Game's name" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
@@ -65,4 +73,4 @@ const SearchGame = () => {
 	);
 };
 
-export default SearchGame;
+export default AutocompleteGameName;

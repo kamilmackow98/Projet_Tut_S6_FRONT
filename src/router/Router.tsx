@@ -10,7 +10,7 @@ import NotFound from "../components/NotFound";
 import Protected from "../components/Protected";
 import TestComponents from "../components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
-import SearchGame from "components/Search/SearchGame";
+import Search from "components/Search/Search";
 
 const Router = () => {
 	return (
@@ -29,7 +29,7 @@ const Router = () => {
 				<GlobalLayout>
 					<Switch>
 						<Route exact path="/" render={() => <Main />} />
-						<Route exact path="/search" render={() => <SearchGame />} />
+						<Route exact path="/search" render={() => <Search />} />
 						<PrivateRoute path="/protected" render={() => <Protected />} />
 						<Route
 							path="/nested"
