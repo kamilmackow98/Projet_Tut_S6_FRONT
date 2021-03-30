@@ -13,11 +13,11 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import CustomTableHead from "./CustomTableHead";
-import { CompleteGameInfo, HeadTableData, Order } from "types";
+import { Game, HeadTableData, Order } from "types";
 import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
-	data: CompleteGameInfo[];
+	data: Game[];
 }
 
 const CustomTable: React.FC<Props> = ({ data }) => {
@@ -52,7 +52,7 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 						order={order}
 					/>
 					<TableBody>
-						{data.map((game) => (
+						{data.map((game: Game) => (
 							<TableRow hover key={game.id}>
 								<TableCell>
 									<Typography component="div">

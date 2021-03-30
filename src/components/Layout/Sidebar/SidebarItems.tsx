@@ -6,6 +6,7 @@ import {
 	VideogameAsset,
 	Stars,
 	Layers,
+	Search
 } from "@material-ui/icons";
 
 export const mainListItems = (
@@ -13,6 +14,11 @@ export const mainListItems = (
 		<SidebarLink text="Home" to="/">
 			<Gamepad />
 		</SidebarLink>
+
+		<SidebarLink text="Search" to="/search">
+			<Search />
+		</SidebarLink>
+
 
 		<SidebarLink text="Protected" to="/protected">
 			<SportsEsports />
