@@ -5,15 +5,15 @@ import { Tag } from "types";
 import { debounce } from "lodash";
 
 interface Props {
-	onChangeName: Function
+	onChangeTags: Function
 }
 
-const AutocompleteTagName: React.FC<Props> = ({ onChangeName }) => {
+const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 
 	const [tagNames, setTagNames] = useState<Tag[]>([]);
-	const [inputTagNameSearch, setInputTagNameSearch] = useState("");
-	const [tagNamePagination, setTagNamePagination] = useState(0);
-
+    const [inputTagNameSearch, setInputTagNameSearch] = useState("");
+    const [tagNamePagination, setTagNamePagination] = useState(0);
+   
 	useEffect(() => {
 		fetch(`/api/tags`)
 		.then((res) => res.json())
@@ -47,8 +47,7 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeName }) => {
 	}, [tagNamePagination]);
 	
 	const handleChange = debounce(function(value: string) { 
-		setInputTagNameSearch(value);
-		onChangeName(value);
+        setInputTagNameSearch(value);
 	}, 500);
 
 	return (
@@ -61,11 +60,14 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeName }) => {
 						setTagNamePagination(tagNamePagination + 1);
 					}
 				}
-			}}
+            }}
+            multiple
 			freeSolo
 			id="combo-box-tag-name"
 			options={tagNames}
-			onChange={(event: React.ChangeEvent<{}>, newValue: string | Tag | null) => { if (newValue) onChangeName((newValue as Tag).name) }}
+			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Tag)[]) => { 
+                onChangeTags((newValues as Tag[]).map((tag: Tag) => tag.name)); }
+            }
 			getOptionLabel={(option: Tag) => option.name}
 			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Tag(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
