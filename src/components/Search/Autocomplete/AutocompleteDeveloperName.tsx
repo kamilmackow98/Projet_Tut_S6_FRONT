@@ -68,7 +68,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeName }) => {
 			onChange={(event: React.ChangeEvent<{}>, newValue: string | Developer | null) => { if (newValue) onChangeName((newValue as Developer).name) }}
 			getOptionLabel={(option: Developer) => option.name}
 			style={{ width: 300 }}
-			renderInput={(params) => <TextField {...params} label="Developer's name" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} label="Developer" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };

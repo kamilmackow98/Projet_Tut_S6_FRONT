@@ -50,6 +50,10 @@ export type Developer = {
     name: string;
 }
 
+export type Tag = {
+    name: string;
+}
+
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,
