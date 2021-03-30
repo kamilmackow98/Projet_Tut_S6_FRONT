@@ -46,6 +46,10 @@ export type Publisher = {
     name: string;
 }
 
+export type Developer = {
+    name: string;
+}
+
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,
