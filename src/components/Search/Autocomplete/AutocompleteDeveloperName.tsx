@@ -5,15 +5,15 @@ import { Developer } from "types";
 import { debounce } from "lodash";
 
 interface Props {
-	onChangeName: Function
+	onChangeDevelopers: Function
 }
 
-const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeName }) => {
+const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 
 	const [developerNames, setDeveloperNames] = useState<Developer[]>([]);
-	const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
-	const [developerNamePagination, setDeveloperNamePagination] = useState(0);
-
+    const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
+    const [developerNamePagination, setDeveloperNamePagination] = useState(0);
+   
 	useEffect(() => {
 		fetch(`/api/developers`)
 		.then((res) => res.json())
@@ -47,8 +47,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeName }) => {
 	}, [developerNamePagination]);
 	
 	const handleChange = debounce(function(value: string) { 
-		setInputDeveloperNameSearch(value);
-		onChangeName(value);
+        setInputDeveloperNameSearch(value);
 	}, 500);
 
 	return (
@@ -61,14 +60,17 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeName }) => {
 						setDeveloperNamePagination(developerNamePagination + 1);
 					}
 				}
-			}}
+            }}
+            multiple
 			freeSolo
 			id="combo-box-developer-name"
 			options={developerNames}
-			onChange={(event: React.ChangeEvent<{}>, newValue: string | Developer | null) => { if (newValue) onChangeName((newValue as Developer).name) }}
+			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Developer)[]) => { 
+                onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
+            }
 			getOptionLabel={(option: Developer) => option.name}
 			style={{ width: 300 }}
-			renderInput={(params) => <TextField {...params} label="Developer" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };

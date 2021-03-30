@@ -9,25 +9,24 @@ const Search = () => {
 
     const [gameName, setGameName] = useState("");
     const [publishersName, setPublishersName] = useState<string[]>([]);
-    const [developerName, setDeveloperName] = useState("");
-    const [tagsName, setTagsName] = useState<string[]>();
+    const [developersName, setDevelopersName] = useState<string[]>([]);
+    const [tagsName, setTagsName] = useState<string[]>([]);
 
     const handleGameNameChange = (name: string) => { setGameName(name); }
-    const handlePublisherNameChange = (names: string[]) => { setPublishersName(names); }
-    const handleDeveloperNameChange = (name: string) => { setDeveloperName(name); }
-    const handleTagNamesChange = (names: string[]) => { setTagsName(names); console.log(names); }
+    const handlePublishersNameChange = (names: string[]) => { setPublishersName(names); }
+    const handleDevelopersNameChange = (names: string[]) => { setDevelopersName(names); }
+    const handleTagNamesChange = (names: string[]) => { setTagsName(names); }
 
 	return (
 		<div>
             <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
-            <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublisherNameChange(names)} />
-            <AutocompleteDeveloperName onChangeName={(name: string) => handleDeveloperNameChange(name)} />
+            <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
+            <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
             <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
             <p>{gameName}</p>
             {publishersName?.map((publisher: string) => ( <p>{publisher}</p> ))}
             {tagsName?.map((tag: string) => ( <p>{tag}</p> ))}
-            <p>{developerName}</p>
-            
+            {developersName?.map((developer: string) => ( <p>{developer}</p> ))}
         </div>
 	);
 };
