@@ -1,19 +1,19 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from "react";
-import { debounce } from "lodash";
 import { Publisher } from "types";
+import { debounce } from "lodash";
 
 interface Props {
-	onChangeName: Function
+	onChangePublishers: Function
 }
 
-const AutocompletePublisherName: React.FC<Props> = ({ onChangeName }) => {
+const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 
 	const [publisherNames, setPublisherNames] = useState<Publisher[]>([]);
-	const [inputPublisherNameSearch, setInputPublisherNameSearch] = useState("");
-	const [publisherNamePagination, setPublisherNamePagination] = useState(0);
-
+    const [inputPublisherNameSearch, setInputPublisherNameSearch] = useState("");
+    const [publisherNamePagination, setPublisherNamePagination] = useState(0);
+   
 	useEffect(() => {
 		fetch(`/api/publishers`)
 		.then((res) => res.json())
@@ -47,8 +47,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangeName }) => {
 	}, [publisherNamePagination]);
 	
 	const handleChange = debounce(function(value: string) { 
-		setInputPublisherNameSearch(value);
-		onChangeName(value);
+        setInputPublisherNameSearch(value);
 	}, 500);
 
 	return (
@@ -61,14 +60,17 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangeName }) => {
 						setPublisherNamePagination(publisherNamePagination + 1);
 					}
 				}
-			}}
+            }}
+            multiple
 			freeSolo
 			id="combo-box-publisher-name"
 			options={publisherNames}
-			onChange={(event: React.ChangeEvent<{}>, newValue: string | Publisher | null) => { if (newValue) onChangeName((newValue as Publisher).name) }}
-			getOptionLabel={(option: Publisher) => option.name }
+			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Publisher)[]) => { 
+                onChangePublishers((newValues as Publisher[]).map((publisher: Publisher) => publisher.name)); }
+            }
+			getOptionLabel={(option: Publisher) => option.name}
 			style={{ width: 300 }}
-			renderInput={(params) => <TextField {...params} label="Publisher" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} label="Publisher(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };
