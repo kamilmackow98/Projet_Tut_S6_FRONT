@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Grid } from "@material-ui/core";
+import { TextField, Grid, Button } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
@@ -9,6 +9,7 @@ import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import DateFnsUtils from '@date-io/date-fns';
+import { Game, Filters } from "types";
 import './Search.css';
 
 const Search = () => {
@@ -24,6 +25,8 @@ const Search = () => {
     const [releaseDateBeg, setReleaseDateBeg] = useState<Date>(new Date());
     const [releaseDateEnd, setReleaseDateEnd] = useState<Date>(new Date());
 
+    const [gamesFound, setGamesFound] = useState<Game[]>([]);
+
     const handleGameNameChange = (name: string) => { setGameName(name); }
     const handlePublishersNameChange = (names: string[]) => { setPublishersName(names); }
     const handleDevelopersNameChange = (names: string[]) => { setDevelopersName(names); }
@@ -34,6 +37,34 @@ const Search = () => {
 
     const handleReleaseDateBegChange = (date: Date) => { setReleaseDateBeg(date); }
     const handleReleaseDateEndChange = (date: Date) => { setReleaseDateEnd(date); }
+
+    const handleSearch = () => {
+        const filters: Filters = {
+            name: gameName ? gameName : undefined,
+            release_date: undefined,
+            developer: developersName && developersName.length > 0 ? developersName : undefined,
+            publisher: publishersName && publishersName.length > 0 ? publishersName : undefined,
+            platforms: platformsName && platformsName.length > 0 ? platformsName : undefined,
+            categories: categoriesName && categoriesName.length > 0 ? categoriesName : undefined,
+            genres: genresName && genresName.length > 0 ? genresName : undefined,
+            steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
+            required_age: undefined,
+            positive_rating_percent: undefined
+        }
+        fetch(`/api/games`, {
+            method: "POST",
+            body: JSON.stringify(filters),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => res.json())
+        .then((games: Game[]) => {
+            setGamesFound(games);
+            console.log(games);
+        })
+        .catch((e) => console.error(e));
+    }
 
 	return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -109,7 +140,10 @@ const Search = () => {
                         }}
                     />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} className="button-container">
+                    <Button variant="contained" color="primary" onClick={handleSearch}>Search</Button>
+                </Grid>
+                {/* <Grid item xs={12}>
                     <p>{gameName}</p>
                     {publishersName?.map((publisher: string) => ( <p>{publisher}</p> ))}
                     {tagsName?.map((tag: string) => ( <p>{tag}</p> ))}
@@ -117,7 +151,7 @@ const Search = () => {
                     {categoriesName?.map((category: string) => ( <p>{category}</p> ))}
                     {platformsName?.map((platform: string) => ( <p>{platform}</p> ))}
                     {genresName?.map((genre: string) => ( <p>{genre}</p> ))}
-                </Grid>
+                </Grid> */}
             </Grid>
         </MuiPickersUtilsProvider>
 	);

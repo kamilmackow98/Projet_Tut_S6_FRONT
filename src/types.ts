@@ -69,13 +69,13 @@ export type Genre = {
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,
-    developer: [] | undefined,
-    publisher: [] | undefined,
-    platforms: [] | undefined,
-    categories: [] | undefined,
-    genres: [] | undefined,
-    steamspy_tags: [] | undefined,
-    required_age: [] | undefined,
+    developer: string[] | undefined,
+    publisher: string[] | undefined,
+    platforms: string[] | undefined,
+    categories: string[] | undefined,
+    genres: string[] | undefined,
+    steamspy_tags: string[] | undefined,
+    required_age: number[] | undefined,
     positive_rating_percent: RatingFilter | undefined
 };
 

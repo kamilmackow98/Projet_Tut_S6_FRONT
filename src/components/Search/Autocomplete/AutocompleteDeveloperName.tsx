@@ -63,8 +63,8 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
             }}
             multiple
 			freeSolo
-			id="combo-box-developer-name"
 			options={developerNames}
+			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Developer)[]) => { 
                 onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
             }

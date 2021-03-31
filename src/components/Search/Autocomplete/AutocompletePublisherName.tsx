@@ -65,6 +65,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 			freeSolo
 			id="combo-box-publisher-name"
 			options={publisherNames}
+			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Publisher)[]) => { 
                 onChangePublishers((newValues as Publisher[]).map((publisher: Publisher) => publisher.name)); }
             }

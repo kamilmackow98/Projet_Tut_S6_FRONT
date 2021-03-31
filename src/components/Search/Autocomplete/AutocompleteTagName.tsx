@@ -65,6 +65,7 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 			freeSolo
 			id="combo-box-tag-name"
 			options={tagNames}
+			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Tag)[]) => { 
                 onChangeTags((newValues as Tag[]).map((tag: Tag) => tag.name)); }
             }
