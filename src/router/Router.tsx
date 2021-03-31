@@ -6,10 +6,11 @@ import Main from "components/Main";
 import NestedRoutes from "components/NestedRoutes";
 import NotFound from "components/NotFound";
 import Protected from "components/Protected";
-import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
 import { Route, Switch } from "react-router-dom";
 import React from "react";
+import Recommended from "components/Game/Recommended";
+import TestComponents from "components/TestComponents";
 
 const Router: React.FC = () => {
 	return (
@@ -21,6 +22,7 @@ const Router: React.FC = () => {
 					"/protected",
 					"/nested",
 					"/nested/another-nested",
+					"/recommended",
 					"/components",
 				]}
 			>

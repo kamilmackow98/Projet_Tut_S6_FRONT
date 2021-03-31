@@ -26,7 +26,7 @@ export const secondaryListItems = (
 	<>
 		<ListSubheader>Recommended for you</ListSubheader>
 
-		<SidebarLink text="404" to="/non-existing-route">
+		<SidebarLink text="Games" to="/recommended">
 			<StarsIcon />
 		</SidebarLink>
 
