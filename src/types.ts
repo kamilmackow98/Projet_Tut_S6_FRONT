@@ -1,3 +1,5 @@
+import { ClassNameMap } from "@material-ui/styles";
+
 export interface UserType {
 	authenticated: boolean;
 };

@@ -11,6 +11,7 @@ import SelectGenreName from "./Select/SelectGenreName";
 import DateFnsUtils from '@date-io/date-fns';
 import { Game, Filters, DateFilter, RatingFilter } from "types";
 import './Search.css';
+import CustomTable from "components/Layout/Table/Table";
 
 const Search = () => {
 
@@ -155,6 +156,12 @@ const Search = () => {
                 </Grid>
                 <Grid item xs={12} className="button-container">
                     <Button variant="contained" color="primary" onClick={handleSearch}>Search</Button>
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                    { gamesFound && gamesFound.length > 0 
+                        ? <CustomTable data={gamesFound} />
+                        : <p>Aucun jeu n'a été trouvé.</p>
+                    }
                 </Grid>
             </Grid>
         </MuiPickersUtilsProvider>

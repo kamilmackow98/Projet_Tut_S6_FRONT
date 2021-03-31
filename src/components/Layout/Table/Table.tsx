@@ -6,7 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
-import { CompleteGameInfo, HeadTableData, Order } from "types";
+import { Game, HeadTableData, Order } from "types";
 import { Link as RouterLink } from "react-router-dom";
 import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";
@@ -48,9 +48,7 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 				</Typography>
 			</TableCell>
 			<TableCell>
-				{game.release_date.toLocaleDateString("fr-FR", {
-					timeZone: "America/New_York",
-				})}
+				{game.release_date}
 			</TableCell>
 			<TableCell>
 				{score(game.positive_ratings, game.negative_ratings)} %
