@@ -1,17 +1,17 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import AnotherNestedRoutes from "../components/AnotherNestedRoutes";
-import BasicLayout from "../components/Layout/BasicLayout";
-import GlobalLayout from "../components/Layout/GlobalLayout";
-import Login from "../components/Login/Login";
-import Main from "../components/Main";
-import NestedRoutes from "../components/NestedRoutes";
-import NotFound from "../components/NotFound";
-import Protected from "../components/Protected";
-import TestComponents from "../components/TestComponents";
+import AnotherNestedRoutes from "components/AnotherNestedRoutes";
+import BasicLayout from "components/Layout/BasicLayout";
+import GlobalLayout from "components/Layout/GlobalLayout";
+import Login from "components/Login/Login";
+import Main from "components/Main";
+import NestedRoutes from "components/NestedRoutes";
+import NotFound from "components/NotFound";
+import Protected from "components/Protected";
+import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
+import { Route, Switch } from "react-router-dom";
+import React from "react";
 
-const Router = () => {
+const Router: React.FC = () => {
 	return (
 		<Switch>
 			<Route

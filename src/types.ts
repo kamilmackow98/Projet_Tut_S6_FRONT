@@ -1,5 +1,3 @@
-import { ClassNameMap } from "@material-ui/styles";
-
 export interface UserType {
 	authenticated: boolean;
 }
@@ -8,7 +6,7 @@ type Screenshot = {
 	id: number;
 	path_thumbnail: string;
 	path_full: string;
-}
+};
 
 export interface IncompleteGameInfo {
 	id: number;
@@ -60,13 +58,3 @@ export interface HeadCell {
 }
 
 export type Order = "asc" | "desc";
-
-export interface CustomTableProps {
-	classes: ClassNameMap;
-	onRequestSort: (
-		event: React.MouseEvent<unknown>,
-		property: keyof HeadTableData
-	) => void;
-	order: Order;
-	orderBy: string;
-}

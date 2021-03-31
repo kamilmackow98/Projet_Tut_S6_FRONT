@@ -1,20 +1,23 @@
-import {
-	createStyles,
-	makeStyles,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableRow,
-	Theme,
-	Typography,
-	Link,
-} from "@material-ui/core";
-import React from "react";
-import CustomTableHead from "./CustomTableHead";
+import TableContainer from "@material-ui/core/TableContainer";
+import Typography from "@material-ui/core/Typography";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Table from "@material-ui/core/Table";
+import Link from "@material-ui/core/Link";
 import { CompleteGameInfo, HeadTableData, Order } from "types";
 import { Link as RouterLink } from "react-router-dom";
+import CustomTableHead from "./CustomTableHead";
+import { useStyles } from "./Table.styles";
+import React from "react";
+
+const score = (positive_ratings: number, negative_ratings: number) => {
+	return (
+		(positive_ratings / (positive_ratings + negative_ratings)) *
+		100
+	).toFixed(1);
+};
 
 interface Props {
 	data: CompleteGameInfo[];
@@ -22,8 +25,9 @@ interface Props {
 
 const CustomTable: React.FC<Props> = ({ data }) => {
 	const classes = useStyles();
-	const [order, setOrder] = React.useState<Order>("asc");
+
 	const [orderBy, setOrderBy] = React.useState<keyof HeadTableData>("name");
+	const [order, setOrder] = React.useState<Order>("asc");
 
 	const handleRequestSort = (
 		event: React.MouseEvent<unknown>,
@@ -34,12 +38,25 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 		setOrderBy(property);
 	};
 
-	const score = (positive_ratings: number, negative_ratings: number) => {
-		return (
-			(positive_ratings / (positive_ratings + negative_ratings)) *
-			100
-		).toFixed(1);
-	};
+	const dataMap = data.map((game) => (
+		<TableRow hover key={game.id}>
+			<TableCell>
+				<Typography component="div">
+					<Link color="inherit" component={RouterLink} to={`game/${game.id}`}>
+						{game.name}
+					</Link>
+				</Typography>
+			</TableCell>
+			<TableCell>
+				{game.release_date.toLocaleDateString("fr-FR", {
+					timeZone: "America/New_York",
+				})}
+			</TableCell>
+			<TableCell>
+				{score(game.positive_ratings, game.negative_ratings)} %
+			</TableCell>
+		</TableRow>
+	));
 
 	return (
 		<Paper className={classes.root}>
@@ -51,62 +68,11 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 						orderBy={orderBy}
 						order={order}
 					/>
-					<TableBody>
-						{data.map((game) => (
-							<TableRow hover key={game.id}>
-								<TableCell>
-									<Typography component="div">
-										<Link
-											color="inherit"
-											component={RouterLink}
-											to={`${game.id}`}
-										>
-											{game.name}
-										</Link>
-									</Typography>
-								</TableCell>
-								<TableCell>
-									{game.release_date.toLocaleDateString("fr-FR", {
-										timeZone: "America/New_York",
-									})}
-								</TableCell>
-								<TableCell>
-									{score(game.positive_ratings, game.negative_ratings)} %
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
+					<TableBody>{dataMap}</TableBody>
 				</Table>
 			</TableContainer>
 		</Paper>
 	);
 };
-
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			width: "100%",
-		},
-		paper: {
-			width: "100%",
-			marginBottom: theme.spacing(2),
-		},
-		table: {
-			minWidth: 500,
-			width: "100%",
-		},
-		visuallyHidden: {
-			border: 0,
-			clip: "rect(0 0 0 0)",
-			height: 1,
-			margin: -1,
-			overflow: "hidden",
-			padding: 0,
-			position: "absolute",
-			top: 20,
-			width: 1,
-		},
-	})
-);
 
 export default CustomTable;
