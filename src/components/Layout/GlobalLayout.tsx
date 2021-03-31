@@ -1,30 +1,28 @@
 import React, { MouseEvent, ReactElement } from "react";
-import { AccountCircle, Menu as MenuIcon } from "@material-ui/icons";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import MenuIcon from "@material-ui/icons/Menu";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import { useStyles } from "./Layout.styles";
 import { Link } from "react-router-dom";
-import { layoutConfig } from "./LayoutConfig";
 import Sidebar from "./Sidebar/Sidebar";
-import {
-	AppBar,
-	CssBaseline,
-	IconButton,
-	Toolbar,
-	Typography,
-	Container,
-	Grid,
-	MenuItem,
-	Menu,
-} from "@material-ui/core";
 
 interface Props {
 	children: ReactElement;
 }
 
-const useStyles = layoutConfig;
-
 const GlobalLayout: React.FC<Props> = ({ children }) => {
+	const classes = useStyles();
+
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [open, setOpen] = React.useState(false);
-	const classes = useStyles();
 
 	const toggleDrawer = (open: boolean) => (event: MouseEvent) => {
 		setOpen(open);
@@ -44,38 +42,38 @@ const GlobalLayout: React.FC<Props> = ({ children }) => {
 			<AppBar position="absolute">
 				<Toolbar className={classes.toolbar}>
 					<IconButton
-						edge="start"
-						color="inherit"
-						aria-label="open drawer"
-						onClick={toggleDrawer(true)}
 						className={classes.menuButton}
+						onClick={toggleDrawer(true)}
+						aria-label="open drawer"
+						color="inherit"
+						edge="start"
 					>
 						<MenuIcon />
 					</IconButton>
 					<Typography
-						component={Link}
-						to="/"
-						variant="h6"
-						color="inherit"
-						noWrap
 						className={classes.title}
+						component={Link}
+						color="inherit"
+						variant="h6"
+						noWrap
+						to="/"
 					>
 						Video Games Encyclopedia
 					</Typography>
 					<IconButton onClick={handleClickAccount} color="inherit">
-						<AccountCircle />
+						<AccountCircleIcon />
 					</IconButton>
 					<Menu
-						id="simple-menu"
-						anchorEl={anchorEl}
-						keepMounted
-						open={Boolean(anchorEl)}
 						onClose={handleCloseAnchor}
+						open={Boolean(anchorEl)}
+						anchorEl={anchorEl}
+						id="simple-menu"
+						keepMounted
 					>
 						<MenuItem
+							onClick={handleCloseAnchor}
 							component={Link}
 							to="/my-account"
-							onClick={handleCloseAnchor}
 						>
 							My account
 						</MenuItem>

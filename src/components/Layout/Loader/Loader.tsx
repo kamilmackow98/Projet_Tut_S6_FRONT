@@ -1,7 +1,8 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
+import { useStyles } from "./Loader.styles";
+import styles from "./Loader.module.css";
 import React from "react";
-import "assets/styles/loader.css";
- 
+
 interface Props {
 	fixed?: boolean;
 }
@@ -10,13 +11,13 @@ const Loader: React.FC<Props> = ({ fixed = false }) => {
 	const classes = useStyles();
 	const spans = Array(9).fill("");
 
+	const ringsMap = React.Children.toArray(
+		spans.map(() => <span className={styles.spinner__ring}></span>)
+	);
+
 	return (
 		<div className={fixed ? classes.rootFixed : classes.root}>
-			<div className="spinner">
-				{React.Children.toArray(
-					spans.map(() => <span className="spinner__ring"></span>)
-				)}
-			</div>
+			<div className={styles.spinner}>{ringsMap}</div>
 			<Typography variant="caption" align="center">
 				LOADING
 			</Typography>
@@ -25,19 +26,3 @@ const Loader: React.FC<Props> = ({ fixed = false }) => {
 };
 
 export default Loader;
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexDirection: "column",
-		display: "flex",
-	},
-	rootFixed: {
-		transform: "translate3d(-50%, -50%, 0)",
-		position: "fixed",
-		left: "50%",
-		top: "50%",
-
-		flexDirection: "column",
-		display: "flex",
-	},
-}));

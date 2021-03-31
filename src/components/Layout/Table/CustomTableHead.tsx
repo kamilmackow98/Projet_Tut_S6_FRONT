@@ -1,14 +1,23 @@
-import {
-	TableCell,
-	TableHead,
-	TableRow,
-	TableSortLabel,
-} from "@material-ui/core";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import { ClassNameMap } from "@material-ui/styles";
+import { HeadTableData, Order } from "types";
+import { headerCells } from "./Table.config";
 import React from "react";
-import { CustomTableProps, HeadTableData } from "types";
-import { headerCells } from "./TableConfig";
 
-const CustomTableHead: React.FC<CustomTableProps> = (props) => {
+interface Props {
+	classes: ClassNameMap;
+	onRequestSort: (
+		event: React.MouseEvent<unknown>,
+		property: keyof HeadTableData
+	) => void;
+	order: Order;
+	orderBy: string;
+}
+
+const CustomTableHead: React.FC<Props> = (props) => {
 	const { order, orderBy, onRequestSort } = props;
 
 	const createSortHandler = (property: keyof HeadTableData) => (
@@ -17,24 +26,24 @@ const CustomTableHead: React.FC<CustomTableProps> = (props) => {
 		onRequestSort(event, property);
 	};
 
+	const headerCellsMap = headerCells.map((cell) => (
+		<TableCell
+			sortDirection={orderBy === cell.id ? order : false}
+			key={cell.id}
+		>
+			<TableSortLabel
+				direction={orderBy === cell.id ? order : "asc"}
+				onClick={createSortHandler(cell.id)}
+				active={orderBy === cell.id}
+			>
+				{cell.label}
+			</TableSortLabel>
+		</TableCell>
+	));
+
 	return (
 		<TableHead>
-			<TableRow>
-				{headerCells.map((cell) => (
-					<TableCell
-						key={cell.id}
-						sortDirection={orderBy === cell.id ? order : false}
-					>
-						<TableSortLabel
-							active={orderBy === cell.id}
-							direction={orderBy === cell.id ? order : "asc"}
-							onClick={createSortHandler(cell.id)}
-						>
-							{cell.label}
-						</TableSortLabel>
-					</TableCell>
-				))}
-			</TableRow>
+			<TableRow>{headerCellsMap}</TableRow>
 		</TableHead>
 	);
 };

@@ -1,18 +1,16 @@
-import {
-	ListItem,
-	ListItemIcon,
-	ListItemText,
-	Typography,
-} from "@material-ui/core";
-import React from "react";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import Typography from "@material-ui/core/Typography";
+import ListItem from "@material-ui/core/ListItem";
 import { Link } from "react-router-dom";
+import React from "react";
 
-interface SidebarLinkProps {
+interface Props {
 	text: string;
 	to: string;
 }
 
-const SidebarLink: React.FC<SidebarLinkProps> = ({ text, to, children }) => {
+const SidebarLink: React.FC<Props> = ({ text, to, children }) => {
 	return (
 		<ListItem component={Link} to={to} button>
 			<ListItemIcon>{children}</ListItemIcon>
