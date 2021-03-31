@@ -1,9 +1,9 @@
 import { Select, Chip, MenuItem, makeStyles, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Category } from "types";
+import { Platform } from "types";
 
 interface Props {
-	onChangeCategories: Function
+	onChangePlatforms: Function
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -16,20 +16,20 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
+const AutocompletePlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 
-	const [categoryNames, setCategoryNames] = useState<Category[]>([]);
-	const [categoryNamePagination, setCategoryNamePagination] = useState(0);
-	const [categoryNamesChosen, setCategoryNamesChosen] = useState<Category[]>([]);
+	const [categoryNames, setPlatformNames] = useState<Platform[]>([]);
+	const [categoryNamePagination, setPlatformNamePagination] = useState(0);
+	const [categoryNamesChosen, setPlatformNamesChosen] = useState<Platform[]>([]);
 
 	const classes = useStyles();
    
 	useEffect(() => {
-		fetch(`/api/categories`)
+		fetch(`/api/platforms`)
 		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			console.log(categories);
-			setCategoryNames(categories);
+		.then((platforms: Platform[]) => {
+			console.log(platforms);
+			setPlatformNames(platforms);
 		})
 		.catch((e) => console.error(e));
 
@@ -42,24 +42,24 @@ const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	}, []);
 
 	useEffect(() => {
-		fetch(`/api/categories?page=${categoryNamePagination}`)
+		fetch(`/api/platforms?page=${categoryNamePagination}`)
 		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			const extendedCategories: Category[] = categoryNames.concat(categories);
-			setCategoryNames(extendedCategories);
+		.then((platforms: Platform[]) => {
+			const extendedPlatforms: Platform[] = categoryNames.concat(platforms);
+			setPlatformNames(extendedPlatforms);
 		})
 		.catch((e) => console.error(e));
 	}, [categoryNamePagination]);
 	
 	return (
 		<FormControl variant="outlined">
-        	<InputLabel id="demo-simple-select-outlined-label">Categories</InputLabel>
+        	<InputLabel id="demo-simple-select-outlined-label">Platforms</InputLabel>
 			<Select
 				MenuProps={{	
 						PaperProps: {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
-									setCategoryNamePagination(categoryNamePagination + 1);
+									setPlatformNamePagination(categoryNamePagination + 1);
 									console.log('yooo');
 								}
 							}
@@ -76,8 +76,8 @@ const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 				multiple
 				style={{ width: 300 }}
 				onChange={(event) => { 
-					onChangeCategories(event.target.value); 
-					setCategoryNamesChosen((event.target.value as Category[]));
+					onChangePlatforms(event.target.value);
+					setPlatformNamesChosen((event.target.value as Platform[]));
 				}}
 				renderValue={(selected) => (
 					<div className={classes.chips}>
@@ -87,7 +87,7 @@ const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 					</div>
 				)}
 			>
-				{categoryNames.map((category: Category) => (
+				{categoryNames.map((category: Platform) => (
 					<MenuItem value={category.name}>
 					{category.name}
 					</MenuItem>
@@ -97,4 +97,5 @@ const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	);
 };
 
-export default AutocompleteCategoryName;
+export default AutocompletePlatformName;
+

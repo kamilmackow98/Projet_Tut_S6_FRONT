@@ -58,6 +58,9 @@ export type Category = {
     name: string;
 }
 
+export type Platform = {
+    name: string;
+}
 
 export type Filters = {
     name: string | undefined,
