@@ -7,13 +7,13 @@ import { useStyles } from "./GameCard.styles";
 
 interface Props {
 	name?: string;
-	image: string;
+	header_image: string;
 	disableAnimation?: boolean;
 }
 
 const GameCard: React.FC<Props> = ({
 	name,
-	image,
+	header_image,
 	disableAnimation = false,
 }) => {
 	const classes = useStyles({ disableAnimation });
@@ -21,7 +21,7 @@ const GameCard: React.FC<Props> = ({
 	return (
 		<Card elevation={5} className={classes.root}>
 			<CardActionArea>
-				<CardMedia className={classes.media} image={image} />
+				<CardMedia className={classes.media} image={header_image} />
 			</CardActionArea>
 			{name && (
 				<CardActions className={classes.cardActions}>

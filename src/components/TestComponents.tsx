@@ -48,16 +48,16 @@ const TestComponents: React.FC = () => {
 					<Grid item xs={12} sm={10} md={6} lg={4}>
 						<GameCard
 							name="Counter-Strike"
-							image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
+							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={10} md={6} lg={4}>
-						<GameCard image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg" />
+						<GameCard header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg" />
 					</Grid>
 					<Grid item xs={12} sm={10} md={6} lg={4}>
 						<GameCard
 							disableAnimation
-							image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
+							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
 						/>
 					</Grid>
 				</Grid>
