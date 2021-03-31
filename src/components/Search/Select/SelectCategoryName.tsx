@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
+const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 
 	const [categoryNames, setCategoryNames] = useState<Category[]>([]);
 	const [categoryNamePagination, setCategoryNamePagination] = useState(0);
@@ -97,4 +97,4 @@ const AutocompleteCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	);
 };
 
-export default AutocompleteCategoryName;
+export default SelectCategoryName;

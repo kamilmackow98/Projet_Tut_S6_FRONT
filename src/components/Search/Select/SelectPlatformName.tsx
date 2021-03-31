@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const AutocompletePlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
+const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 
 	const [categoryNames, setPlatformNames] = useState<Platform[]>([]);
 	const [categoryNamePagination, setPlatformNamePagination] = useState(0);
@@ -97,5 +97,5 @@ const AutocompletePlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 	);
 };
 
-export default AutocompletePlatformName;
+export default SelectPlatformName;
 
