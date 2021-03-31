@@ -62,6 +62,10 @@ export type Platform = {
     name: string;
 }
 
+export type Genre = {
+    name: string;
+}
+
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,
