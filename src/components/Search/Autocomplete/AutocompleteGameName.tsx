@@ -67,7 +67,6 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 			options={gameNames}
 			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { if (newValue) onChangeName((newValue as Game).name) }}
 			getOptionLabel={(option: Game) => option.name}
-			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Game's name" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);

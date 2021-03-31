@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField } from "@material-ui/core";
+import { TextField, Grid } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
@@ -9,6 +9,7 @@ import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import DateFnsUtils from '@date-io/date-fns';
+import './Search.css';
 
 const Search = () => {
 
@@ -35,66 +36,90 @@ const Search = () => {
     const handleReleaseDateEndChange = (date: Date) => { setReleaseDateEnd(date); }
 
 	return (
-		<div>
-            <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
-            <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
-            <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
-            <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
-
-            <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
-            <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
-            <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
-
-            <TextField
-                label="Minimum of positive reviews (%)"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-            />
-            <TextField
-                label="Minimum age"
-                type="number"
-                InputLabelProps={{
-                    shrink: true,
-                }}
-                variant="outlined"
-            />
-
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-                margin="normal"
-                inputVariant="outlined"
-                label="Release date from"
-                format="MM/dd/yyyy"
-                value={releaseDateBeg}
-                onChange={(date) => handleReleaseDateBegChange(date as Date)}
-                KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                }}
-            />
-            <KeyboardDatePicker
-                margin="normal"
-                inputVariant="outlined"
-                label="Release date to"
-                format="MM/dd/yyyy"
-                value={releaseDateEnd}
-                onChange={(date) => handleReleaseDateEndChange(date as Date)}
-                KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                }}
-            />
+            <Grid container spacing={3} className="grid-container">
+                <Grid item xs={12} sm={12}>
+                    <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <TextField
+                        className="textfield-input"
+                        label="Minimum of positive reviews (%)"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={10}>
+                    <TextField
+                        className="textfield-input"
+                        label="Minimum age"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        variant="outlined"
+                    />
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <KeyboardDatePicker
+                        className="datepicker-input"
+                        margin="normal"
+                        inputVariant="outlined"
+                        label="Release date from"
+                        format="MM/dd/yyyy"
+                        value={releaseDateBeg}
+                        onChange={(date) => handleReleaseDateBegChange(date as Date)}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={5}>
+                    <KeyboardDatePicker
+                        className="datepicker-input"
+                        margin="normal"
+                        inputVariant="outlined"
+                        label="Release date to"
+                        format="MM/dd/yyyy"
+                        value={releaseDateEnd}
+                        onChange={(date) => handleReleaseDateEndChange(date as Date)}
+                        KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <p>{gameName}</p>
+                    {publishersName?.map((publisher: string) => ( <p>{publisher}</p> ))}
+                    {tagsName?.map((tag: string) => ( <p>{tag}</p> ))}
+                    {developersName?.map((developer: string) => ( <p>{developer}</p> ))}
+                    {categoriesName?.map((category: string) => ( <p>{category}</p> ))}
+                    {platformsName?.map((platform: string) => ( <p>{platform}</p> ))}
+                    {genresName?.map((genre: string) => ( <p>{genre}</p> ))}
+                </Grid>
+            </Grid>
         </MuiPickersUtilsProvider>
-
-            <p>{gameName}</p>
-            {publishersName?.map((publisher: string) => ( <p>{publisher}</p> ))}
-            {tagsName?.map((tag: string) => ( <p>{tag}</p> ))}
-            {developersName?.map((developer: string) => ( <p>{developer}</p> ))}
-            {categoriesName?.map((category: string) => ( <p>{category}</p> ))}
-            {platformsName?.map((platform: string) => ( <p>{platform}</p> ))}
-            {genresName?.map((genre: string) => ( <p>{genre}</p> ))}
-        </div>
 	);
 };
 

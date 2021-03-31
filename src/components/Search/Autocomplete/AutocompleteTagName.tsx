@@ -69,7 +69,6 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
                 onChangeTags((newValues as Tag[]).map((tag: Tag) => tag.name)); }
             }
 			getOptionLabel={(option: Tag) => option.name}
-			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Tag(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);

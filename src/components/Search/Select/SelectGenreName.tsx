@@ -52,7 +52,7 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 	}, [categoryNamePagination]);
 	
 	return (
-		<FormControl variant="outlined">
+		<FormControl variant="outlined" className="select-form">
         	<InputLabel id="demo-simple-select-outlined-label">Genres</InputLabel>
 			<Select
 				MenuProps={{	
@@ -74,7 +74,6 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 				}}
 				value={categoryNamesChosen}
 				multiple
-				style={{ width: 300 }}
 				onChange={(event) => { 
 					onChangeGenres(event.target.value);
 					setGenreNamesChosen((event.target.value as Genre[]));

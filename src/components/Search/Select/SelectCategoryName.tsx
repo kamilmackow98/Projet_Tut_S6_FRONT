@@ -52,7 +52,7 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	}, [categoryNamePagination]);
 	
 	return (
-		<FormControl variant="outlined">
+		<FormControl variant="outlined" className="select-form">
         	<InputLabel id="demo-simple-select-outlined-label">Categories</InputLabel>
 			<Select
 				MenuProps={{	
@@ -74,7 +74,6 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 				}}
 				value={categoryNamesChosen}
 				multiple
-				style={{ width: 300 }}
 				onChange={(event) => { 
 					onChangeCategories(event.target.value); 
 					setCategoryNamesChosen((event.target.value as Category[]));

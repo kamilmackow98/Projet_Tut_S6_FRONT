@@ -52,7 +52,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 	}, [categoryNamePagination]);
 	
 	return (
-		<FormControl variant="outlined">
+		<FormControl variant="outlined" className="select-form">
         	<InputLabel id="demo-simple-select-outlined-label">Platforms</InputLabel>
 			<Select
 				MenuProps={{	
@@ -74,7 +74,6 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 				}}
 				value={categoryNamesChosen}
 				multiple
-				style={{ width: 300 }}
 				onChange={(event) => { 
 					onChangePlatforms(event.target.value);
 					setPlatformNamesChosen((event.target.value as Platform[]));

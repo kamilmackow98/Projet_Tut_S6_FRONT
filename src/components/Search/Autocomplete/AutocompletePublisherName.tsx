@@ -69,7 +69,6 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
                 onChangePublishers((newValues as Publisher[]).map((publisher: Publisher) => publisher.name)); }
             }
 			getOptionLabel={(option: Publisher) => option.name}
-			style={{ width: 300 }}
 			renderInput={(params) => <TextField {...params} label="Publisher(s)"  variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
