@@ -28,18 +28,18 @@ type Webm = {
     max: string
 };
 
-type DateFilter = {
+export type DateFilter = {
     gte?: Date;
     gt?: Date;
     lt?: Date;
     lte?: Date;
 };
 
-type RatingFilter = {
-    gte?: Date;
-    gt?: Date;
-    lt?: Date;
-    lte?: Date;
+export type RatingFilter = {
+    gte?: number;
+    gt?: number;
+    lt?: number;
+    lte?: number;
 };
 
 export type Publisher = {

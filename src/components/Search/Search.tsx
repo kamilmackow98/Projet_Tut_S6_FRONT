@@ -9,7 +9,7 @@ import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import DateFnsUtils from '@date-io/date-fns';
-import { Game, Filters } from "types";
+import { Game, Filters, DateFilter, RatingFilter } from "types";
 import './Search.css';
 
 const Search = () => {
@@ -22,8 +22,10 @@ const Search = () => {
     const [platformsName, setPlatformsName] = useState<string[]>([]);
     const [genresName, setGenresName] = useState<string[]>([]);
 
-    const [releaseDateBeg, setReleaseDateBeg] = useState<Date>(new Date());
-    const [releaseDateEnd, setReleaseDateEnd] = useState<Date>(new Date());
+    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | undefined>(undefined);
+    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | undefined>(undefined);
+    const [requiredAge, setRequiredAge] = useState<number | undefined>(undefined);
+    const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
 
@@ -39,18 +41,28 @@ const Search = () => {
     const handleReleaseDateEndChange = (date: Date) => { setReleaseDateEnd(date); }
 
     const handleSearch = () => {
+        const releaseDateFilter: DateFilter | undefined = releaseDateBeg || releaseDateEnd ? {
+            gte: releaseDateBeg ? releaseDateBeg : undefined,
+            lt: releaseDateEnd ? releaseDateEnd : undefined
+        } : undefined;
+
+        const ratingFilter: RatingFilter | undefined = minimumPositiveReviews ? {
+            gte: minimumPositiveReviews
+        } : undefined;
+
         const filters: Filters = {
             name: gameName ? gameName : undefined,
-            release_date: undefined,
+            release_date: releaseDateFilter,
             developer: developersName && developersName.length > 0 ? developersName : undefined,
             publisher: publishersName && publishersName.length > 0 ? publishersName : undefined,
             platforms: platformsName && platformsName.length > 0 ? platformsName : undefined,
             categories: categoriesName && categoriesName.length > 0 ? categoriesName : undefined,
             genres: genresName && genresName.length > 0 ? genresName : undefined,
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
-            required_age: undefined,
-            positive_rating_percent: undefined
-        }
+            required_age: requiredAge ? [requiredAge] : undefined, // TO DO : allow to select mutliple specific requiredAges
+            positive_rating_percent: ratingFilter
+        };
+
         fetch(`/api/games`, {
             method: "POST",
             body: JSON.stringify(filters),
@@ -61,7 +73,6 @@ const Search = () => {
         .then((res) => res.json())
         .then((games: Game[]) => {
             setGamesFound(games);
-            console.log(games);
         })
         .catch((e) => console.error(e));
     }
@@ -95,6 +106,7 @@ const Search = () => {
                         className="textfield-input"
                         label="Minimum of positive reviews (%)"
                         type="number"
+                        onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -104,8 +116,9 @@ const Search = () => {
                 <Grid item xs={12} sm={10}>
                     <TextField
                         className="textfield-input"
-                        label="Minimum age"
+                        label="Required minimum age"
                         type="number"
+                        onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -117,9 +130,9 @@ const Search = () => {
                         className="datepicker-input"
                         margin="normal"
                         inputVariant="outlined"
+                        value={releaseDateBeg}
                         label="Release date from"
                         format="MM/dd/yyyy"
-                        value={releaseDateBeg}
                         onChange={(date) => handleReleaseDateBegChange(date as Date)}
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
@@ -143,15 +156,6 @@ const Search = () => {
                 <Grid item xs={12} className="button-container">
                     <Button variant="contained" color="primary" onClick={handleSearch}>Search</Button>
                 </Grid>
-                {/* <Grid item xs={12}>
-                    <p>{gameName}</p>
-                    {publishersName?.map((publisher: string) => ( <p>{publisher}</p> ))}
-                    {tagsName?.map((tag: string) => ( <p>{tag}</p> ))}
-                    {developersName?.map((developer: string) => ( <p>{developer}</p> ))}
-                    {categoriesName?.map((category: string) => ( <p>{category}</p> ))}
-                    {platformsName?.map((platform: string) => ( <p>{platform}</p> ))}
-                    {genresName?.map((genre: string) => ( <p>{genre}</p> ))}
-                </Grid> */}
             </Grid>
         </MuiPickersUtilsProvider>
 	);
