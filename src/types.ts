@@ -54,6 +54,11 @@ export type Tag = {
     name: string;
 }
 
+export type Category = {
+    name: string;
+}
+
+
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,

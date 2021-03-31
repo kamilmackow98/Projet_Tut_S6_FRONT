@@ -61,7 +61,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 					}
 				}
             }}
-            multiple
+			multiple
 			freeSolo
 			id="combo-box-publisher-name"
 			options={publisherNames}
@@ -70,7 +70,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
             }
 			getOptionLabel={(option: Publisher) => option.name}
 			style={{ width: 300 }}
-			renderInput={(params) => <TextField {...params} label="Publisher(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} label="Publisher(s)"  variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };
