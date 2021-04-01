@@ -10,7 +10,7 @@ interface Props {
 const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 
 	const [categoryNames, setPlatformNames] = useState<Platform[]>([]);
-	const [categoryNamePagination, setPlatformNamePagination] = useState(0);
+	const [categoryNamePagination, setPlatformNamePagination] = useState(1);
 	const [categoryNamesChosen, setPlatformNamesChosen] = useState<Platform[]>([]);
 
 	const classes = useStyles();

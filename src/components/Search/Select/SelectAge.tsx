@@ -1,26 +1,26 @@
 import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Category } from "types";
+import { Age } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeCategories: Function
+	onChangeAges: Function
 }
 
-const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
+const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 
-	const [categoryNames, setCategoryNames] = useState<Category[]>([]);
-	const [categoryNamePagination, setCategoryNamePagination] = useState(1);
-	const [categoryNamesChosen, setCategoryNamesChosen] = useState<Category[]>([]);
+	const [age, setAge] = useState<Age[]>([]);
+	const [agePagination, setAgePagination] = useState(1);
+	const [ageChosen, setAgeChosen] = useState<Age[]>([]);
 
 	const classes = useStyles();
    
 	useEffect(() => {
-		fetch(`/api/categories`)
+		fetch(`/api/ages`)
 		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			console.log(categories);
-			setCategoryNames(categories);
+		.then((ages: Age[]) => {
+			console.log(ages);
+			setAge(ages);
 		})
 		.catch((e) => console.error(e));
 
@@ -33,24 +33,24 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	}, []);
 
 	useEffect(() => {
-		fetch(`/api/categories?page=${categoryNamePagination}`)
+		fetch(`/api/ages?page=${agePagination}`)
 		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			const extendedCategories: Category[] = categoryNames.concat(categories);
-			setCategoryNames(extendedCategories);
+		.then((ages: Age[]) => {
+			const extendedAges: Age[] = age.concat(ages);
+			setAge(extendedAges);
 		})
 		.catch((e) => console.error(e));
-	}, [categoryNamePagination]);
+	}, [agePagination]);
 	
 	return (
-		<FormControl size="small"  variant="outlined" className={classes.selectForm}>
-        	<InputLabel id="demo-simple-select-outlined-label">Categories</InputLabel>
+		<FormControl size="small" variant="outlined" className={classes.selectForm}>
+        	<InputLabel id="demo-simple-select-outlined-label">Ages</InputLabel>
 			<Select
 				MenuProps={{	
 						PaperProps: {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
-									setCategoryNamePagination(categoryNamePagination + 1);
+									setAgePagination(agePagination + 1);
 									console.log('yooo');
 								}
 							}
@@ -63,11 +63,11 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 						},
 						getContentAnchorEl: null
 				}}
-				value={categoryNamesChosen}
+				value={ageChosen}
 				multiple
 				onChange={(event) => { 
-					onChangeCategories(event.target.value); 
-					setCategoryNamesChosen((event.target.value as Category[]));
+					onChangeAges(event.target.value); 
+					setAgeChosen((event.target.value as Age[]));
 				}}
 				renderValue={(selected) => (
 					<div className={classes.chips}>
@@ -77,9 +77,9 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 					</div>
 				)}
 			>
-				{categoryNames.map((category: Category) => (
-					<MenuItem value={category.name}>
-					{category.name}
+				{age.map((age: Age) => (
+					<MenuItem value={age.age}>
+					{age.age}
 					</MenuItem>
 				))}
 			</Select>
@@ -87,4 +87,4 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	);
 };
 
-export default SelectCategoryName;
+export default SelectAge;

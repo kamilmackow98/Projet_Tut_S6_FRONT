@@ -11,7 +11,7 @@ interface Props {
 const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 
 	const [categoryNames, setGenreNames] = useState<Genre[]>([]);
-	const [categoryNamePagination, setGenreNamePagination] = useState(0);
+	const [categoryNamePagination, setGenreNamePagination] = useState(1);
 	const [categoryNamesChosen, setGenreNamesChosen] = useState<Genre[]>([]);
 
 	const classes = useStyles();

@@ -12,7 +12,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 
 	const [publisherNames, setPublisherNames] = useState<Publisher[]>([]);
     const [inputPublisherNameSearch, setInputPublisherNameSearch] = useState("");
-    const [publisherNamePagination, setPublisherNamePagination] = useState(0);
+    const [publisherNamePagination, setPublisherNamePagination] = useState(1);
    
 	useEffect(() => {
 		fetch(`/api/publishers`)

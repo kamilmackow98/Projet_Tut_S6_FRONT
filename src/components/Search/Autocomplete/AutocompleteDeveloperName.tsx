@@ -12,7 +12,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 
 	const [developerNames, setDeveloperNames] = useState<Developer[]>([]);
     const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
-    const [developerNamePagination, setDeveloperNamePagination] = useState(0);
+    const [developerNamePagination, setDeveloperNamePagination] = useState(1);
    
 	useEffect(() => {
 		fetch(`/api/developers`)

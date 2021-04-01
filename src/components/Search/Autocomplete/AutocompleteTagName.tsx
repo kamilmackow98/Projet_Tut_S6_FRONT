@@ -12,7 +12,7 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 
 	const [tagNames, setTagNames] = useState<Tag[]>([]);
     const [inputTagNameSearch, setInputTagNameSearch] = useState("");
-    const [tagNamePagination, setTagNamePagination] = useState(0);
+    const [tagNamePagination, setTagNamePagination] = useState(1);
    
 	useEffect(() => {
 		fetch(`/api/tags`)

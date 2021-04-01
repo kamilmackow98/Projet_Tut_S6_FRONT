@@ -12,7 +12,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 
 	const [gameNames, setGameNames] = useState<Game[]>([]);
 	const [inputGameNameSearch, setInputGameNameSearch] = useState("");
-	const [gameNamePagination, setGameNamePagination] = useState(0);
+	const [gameNamePagination, setGameNamePagination] = useState(1);
 
 	useEffect(() => {
 		fetch(`/api/games`)

@@ -7,6 +7,7 @@ import AutocompleteTagName from "./Autocomplete/AutocompleteTagName";
 import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
+import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
 import { Game, Filters, DateFilter, GameSearchResult } from "types";
 import { useStyles } from "./Search.styles";
@@ -30,14 +31,15 @@ const Search = () => {
     const [categoriesName, setCategoriesName] = useState<string[]>([]);
     const [platformsName, setPlatformsName] = useState<string[]>([]);
     const [genresName, setGenresName] = useState<string[]>([]);
+    const [requiredAges, setRequiredAges] = useState<number[] | undefined>(undefined);
 
     const [releaseDateBeg, setReleaseDateBeg] = useState<Date | string | undefined>(undefined);
     const [releaseDateEnd, setReleaseDateEnd] = useState<Date | string | undefined>(undefined);
-    const [requiredAge, setRequiredAge] = useState<number | undefined>(undefined);
+    
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
     const [totalNumberOfPages, setTotalNumberOfPages] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(0);
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
 
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
@@ -55,6 +57,7 @@ const Search = () => {
     const handleCategoryNamesChange = (names: string[]) => { setCategoriesName(names); }
     const handlePlatformNamesChange = (names: string[]) => { setPlatformsName(names); }
     const handleGenreNamesChange = (names: string[]) => { setGenresName(names); }
+    const handleAgesChange = (ages: number[]) => { setRequiredAges(ages); }
 
     const handleSearch = () => {
         const releaseDateFilter: DateFilter | undefined = releaseDateBeg || releaseDateEnd ? {
@@ -73,7 +76,7 @@ const Search = () => {
             categories: categoriesName && categoriesName.length > 0 ? categoriesName : undefined,
             genres: genresName && genresName.length > 0 ? genresName : undefined,
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
-            required_age: requiredAge ? [requiredAge] : undefined, // TO DO : allow to select mutliple specific requiredAges
+            required_age: requiredAges ? requiredAges : undefined, // TO DO : allow to select mutliple specific requiredAges
             positive_rating_percent: ratingFilter
         };
 
@@ -214,14 +217,7 @@ const Search = () => {
                                 <Grid item style={{ marginTop: "8px" }}>Full date</Grid>
                             </Grid> 
                             <Grid item xs={12} sm={4}>
-                                <TextField
-                                    size="small" 
-                                    className={`${classes.textfieldInput} ${classes.datepickerInput}`}
-                                    label="Min. age"
-                                    type="number"
-                                    onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
-                                    variant="outlined"
-                                />
+                                <SelectAge onChangeAges={(ages: number[]) => handleAgesChange(ages)} />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField

@@ -59,6 +59,10 @@ export type Genre = {
     name: string;
 }
 
+export type Age = {
+    age: number;
+}
+
 export type GameSearchResult = {
     games: Game[],
     numberOfPages: number,
