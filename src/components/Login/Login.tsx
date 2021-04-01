@@ -9,14 +9,15 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Copyright from "components/Layout/Copyright";
+import { useStyles } from "./Login.styles";
 import { Redirect } from "react-router-dom";
-import Copyright from "../Layout/Copyright";
-import userContext from "../../context/user/UserContext";
+import userContext from "context/user/UserContext";
 
 export default function Login() {
 	const classes = useStyles();
+
 	const { user } = React.useContext(userContext);
 
 	// TODO : FIND BETTER SOLUTION TO REDIRECT ?
@@ -35,29 +36,38 @@ export default function Login() {
 				</Typography>
 				<form className={classes.form} noValidate>
 					<TextField
+						label="Email Address"
+						autoComplete="email"
 						variant="outlined"
 						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
 						name="email"
-						autoComplete="email"
+						id="email"
+						fullWidth
 						autoFocus
+						required
 					/>
 					<TextField
+						autoComplete="current-password"
 						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						name="password"
 						label="Password"
+						margin="normal"
+						name="password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
+						fullWidth
+						required
 					/>
-					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+					<FormControlLabel
+						control={<Checkbox value="remember" color="primary" />}
+						label="Remember me"
+					/>
+					<Button
+						className={classes.submit}
+						variant="contained"
+						color="primary"
+						type="submit"
+						fullWidth
+					>
 						Sign In
 					</Button>
 					<Grid container justify={"center"}>
@@ -75,23 +85,3 @@ export default function Login() {
 		</Container>
 	);
 }
-
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(6),
-		flexDirection: "column",
-		alignItems: "center",
-		display: "flex",
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		marginTop: theme.spacing(1),
-		width: "100%", // Fix IE 11 issue.
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
