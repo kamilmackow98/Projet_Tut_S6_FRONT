@@ -58,9 +58,7 @@ const Search = () => {
             lt: releaseDateEnd ? releaseDateEnd : undefined
         } : undefined;
 
-        const ratingFilter: RatingFilter | undefined = minimumPositiveReviews ? {
-            gte: minimumPositiveReviews
-        } : undefined;
+        const ratingFilter: number | undefined = minimumPositiveReviews ? minimumPositiveReviews : undefined;
 
         const filters: Filters = {
             name: gameName ? gameName : undefined,

@@ -35,13 +35,6 @@ export type DateFilter = {
     lte?: Date | string;
 };
 
-export type RatingFilter = {
-    gte?: number;
-    gt?: number;
-    lt?: number;
-    lte?: number;
-};
-
 export type Publisher = {
     name: string;
 }
@@ -76,7 +69,7 @@ export type Filters = {
     genres: string[] | undefined,
     steamspy_tags: string[] | undefined,
     required_age: number[] | undefined,
-    positive_rating_percent: RatingFilter | undefined
+    positive_rating_percent: number | undefined
 };
 
 export type Game = {
