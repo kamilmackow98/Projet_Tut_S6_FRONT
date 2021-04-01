@@ -208,7 +208,7 @@ const Search = () => {
                 </Accordion>
             </Grid>
             
-            <Grid container justify="center">
+            <Grid container>
                 <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
                     <IconButton onClick={() => {setDisplayAsGrid(false)}}>
                         <MenuIcon color={menuIconBtnColor}/>
@@ -217,7 +217,7 @@ const Search = () => {
                         <AppsIcon color={gridIconBtnColor} onClick={() => {setDisplayAsGrid(true)}} />
                     </IconButton>
                 </Grid>
-                <Grid item xs={12} sm={12} className={classes.gridGamesFoundContainer}>
+                <Grid item xs={11} sm={12} className={classes.gridGamesFoundContainer}>
                     { 
                         gamesFound && gamesFound.length > 0 
                         ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
@@ -225,7 +225,7 @@ const Search = () => {
                     }
                 </Grid>
                 <Grid item xs={12} sm={12} className={classes.paginationContainer}>
-                    <Pagination count={10} siblingCount={1} color="secondary" variant="outlined" />
+                    <Pagination count={10} siblingCount={0} color="secondary" variant="outlined" />
                 </Grid>
             </Grid>
         </Grid>

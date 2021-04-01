@@ -40,7 +40,8 @@ export const useStyles = makeStyles((theme) => ({
         justifyContent: "right"
     },
     gridGamesFoundContainer: {
-        margin: "10px;"
+        margin: "10px",
+        marginLeft: "14px"
     },
     paginationContainer: {
         display: "flex",
