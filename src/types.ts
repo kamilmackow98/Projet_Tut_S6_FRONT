@@ -29,10 +29,10 @@ type Webm = {
 };
 
 export type DateFilter = {
-    gte?: Date;
-    gt?: Date;
-    lt?: Date;
-    lte?: Date;
+    gte?: Date | string;
+    gt?: Date | string;
+    lt?: Date | string;
+    lte?: Date | string;
 };
 
 export type RatingFilter = {

@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Icon } from "@material-ui/core";
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch } from "@material-ui/core";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
 import AutocompletePublisherName from "./Autocomplete/AutocompletePublisherName";
@@ -8,7 +7,7 @@ import AutocompleteTagName from "./Autocomplete/AutocompleteTagName";
 import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
-import DateFnsUtils from '@date-io/date-fns';
+import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
 import { Game, Filters, DateFilter, RatingFilter } from "types";
 import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
@@ -17,6 +16,9 @@ import SearchIcon from '@material-ui/icons/Search';
 import AppsIcon from '@material-ui/icons/Apps';
 import MenuIcon from '@material-ui/icons/Menu';
 import CardsTable from "./CardsTable/CardsTable";
+import { Pagination } from "@material-ui/lab";
+import NoGamesFound from "./NoGamesFound/NoGamesFound";
+import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
 
 const Search = () => {
     const classes = useStyles();
@@ -29,14 +31,15 @@ const Search = () => {
     const [platformsName, setPlatformsName] = useState<string[]>([]);
     const [genresName, setGenresName] = useState<string[]>([]);
 
-    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | undefined>(undefined);
-    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | undefined>(undefined);
+    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | string | undefined>(undefined);
+    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | string | undefined>(undefined);
     const [requiredAge, setRequiredAge] = useState<number | undefined>(undefined);
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
 
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
+    const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -48,9 +51,6 @@ const Search = () => {
     const handleCategoryNamesChange = (names: string[]) => { setCategoriesName(names); }
     const handlePlatformNamesChange = (names: string[]) => { setPlatformsName(names); }
     const handleGenreNamesChange = (names: string[]) => { setGenresName(names); }
-
-    const handleReleaseDateBegChange = (date: Date) => { setReleaseDateBeg(date); }
-    const handleReleaseDateEndChange = (date: Date) => { setReleaseDateEnd(date); }
 
     const handleSearch = () => {
         const releaseDateFilter: DateFilter | undefined = releaseDateBeg || releaseDateEnd ? {
@@ -93,132 +93,124 @@ const Search = () => {
     }
 
 	return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={12}>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon  />}>
-                            <Grid 
-                                item 
-                                xs={10}
-                                sm={10}
-                                onClick={(event) => event.stopPropagation()}
-                                onFocus={(event) => event.stopPropagation()} 
-                            >
-                                <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+        <Grid container spacing={3}>
+            <Grid item xs={12} sm={12}>
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon  />}>
+                        <Grid 
+                            item 
+                            xs={10}
+                            sm={10}
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()} 
+                        >
+                            <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                        </Grid>
+                        <Grid 
+                            item 
+                            className={classes.buttonContainer}
+                            xs={1}
+                            sm={2}
+                            onClick={(event) => event.stopPropagation()}
+                            onFocus={(event) => event.stopPropagation()} 
+                        >
+                            <Button onClick={handleSearch} variant="contained" color="secondary">
+                                <SearchIcon />
+                            </Button>
+                        </Grid>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
                             </Grid>
-                            <Grid 
-                                item 
-                                className={classes.buttonContainer}
-                                xs={1}
-                                sm={2}
-                                onClick={(event) => event.stopPropagation()}
-                                onFocus={(event) => event.stopPropagation()} 
-                            >
-                                <Button onClick={handleSearch} variant="contained" color="secondary">
-                                    <SearchIcon />
-                                </Button>
+                            <Grid item xs={12} sm={6}>
+                                <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
                             </Grid>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
-                                    <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
-                                </Grid>
-                                <Grid item xs={12} sm={12} className={classes.removeBottomSpace}>
-                                    <hr style={{ color: 'lightGrey' }} className={classes.removeBottomSpace} />
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <KeyboardDatePicker
-                                        className={`${classes.removeBottomSpace} ${classes.datepickerInput}`}
-                                        margin="normal"
-                                        size="small" 
-                                        inputVariant="outlined"
-                                        value={releaseDateBeg}
-                                        label="Release date from"
-                                        format="MM/dd/yyyy"
-                                        onChange={(date) => handleReleaseDateBegChange(date as Date)}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <KeyboardDatePicker
-                                        size="small" 
-                                        className={`${classes.removeBottomSpace} ${classes.datepickerInput}`}
-                                        margin="normal"
-                                        inputVariant="outlined"
-                                        label="Release date to"
-                                        format="MM/dd/yyyy"
-                                        value={releaseDateEnd}
-                                        onChange={(date) => handleReleaseDateEndChange(date as Date)}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={4} />
-                                <Grid item xs={12} sm={4}>
-                                    <TextField
-                                        size="small" 
-                                        className={`${classes.textfieldInput} ${classes.datepickerInput}`}
-                                        label="Required minimum age"
-                                        type="number"
-                                        onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
-                                        variant="outlined"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={4}>
-                                    <TextField
-                                        size="small" 
-                                        className={classes.textfieldInput}
-                                        label="Minimum positive reviews"
-                                        type="number"
-                                        onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
-                                        variant="outlined"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={4} />
+                            <Grid item xs={12} sm={6}>
+                                <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
                             </Grid>
-                        </AccordionDetails>
-                    </Accordion>
+                            <Grid item xs={12} sm={6}>
+                                <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
+                            </Grid>
+                            <Grid item xs={12} sm={12} className={classes.removeBottomSpace}>
+                                <hr style={{ color: 'lightGrey' }} className={classes.removeBottomSpace} />
+                            </Grid>
+                            {
+                                !isDateInYear 
+                                ?   <ReleaseDatePickerFull 
+                                        onChangeDateBeg={(date: any) => { setReleaseDateBeg(date as Date)}}
+                                        onChangeDateEnd={(date: any) => {setReleaseDateEnd(date as Date)}}
+                                    /> 
+                                :   <ReleaseYearPicker 
+                                        onChangeDateBeg={(date: any) => { setReleaseDateBeg(date as Date)}}
+                                        onChangeDateEnd={(date: any) => {setReleaseDateEnd(date as Date)}}
+                                    />
+                            }
+                            <Grid item xs={12} sm={4} className={classes.gridSwitchDateContainer}> 
+                                <Grid item style={{ marginTop: "8px" }}>Year</Grid>
+                                <Grid item>
+                                    <Switch
+                                        checked={!isDateInYear} 
+                                        onChange={() => { setDateInYear(!isDateInYear)}}
+                                        value="checked"
+                                    />
+                                </Grid>
+                                <Grid item style={{ marginTop: "8px" }}>Full date</Grid>
+                            </Grid> 
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    size="small" 
+                                    className={`${classes.textfieldInput} ${classes.datepickerInput}`}
+                                    label="Min. age"
+                                    type="number"
+                                    onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    size="small" 
+                                    className={classes.textfieldInput}
+                                    label="Min. positive reviews"
+                                    type="number"
+                                    onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4} />
+                        </Grid>
+                    </AccordionDetails>
+                </Accordion>
+            </Grid>
+            
+            <Grid container justify="center">
+                <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                    <IconButton onClick={() => {setDisplayAsGrid(false)}}>
+                        <MenuIcon color={menuIconBtnColor}/>
+                    </IconButton>
+                    <IconButton>
+                        <AppsIcon color={gridIconBtnColor} onClick={() => {setDisplayAsGrid(true)}} />
+                    </IconButton>
                 </Grid>
-                
-                <Grid container xs={12} sm={12}>
-                    <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
-                        <IconButton onClick={() => {setDisplayAsGrid(false)}}>
-                            <MenuIcon color={menuIconBtnColor}/>
-                        </IconButton>
-                        <IconButton>
-                            <AppsIcon color={gridIconBtnColor} onClick={() => {setDisplayAsGrid(true)}} />
-                        </IconButton>
-                    </Grid>
-                    <Grid item xs={12} sm={12} className={classes.gridGamesFoundContainer}>
-                        { 
-                            gamesFound && gamesFound.length > 0 
-                            ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
-                            : <p>Aucun jeu n'a été trouvé.</p>
-                        }
-                    </Grid>
+                <Grid item xs={12} sm={12} className={classes.gridGamesFoundContainer}>
+                    { 
+                        gamesFound && gamesFound.length > 0 
+                        ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
+                        : <NoGamesFound />
+                    }
+                </Grid>
+                <Grid item xs={12} sm={12} className={classes.paginationContainer}>
+                    <Pagination count={10} siblingCount={1} color="secondary" variant="outlined" />
                 </Grid>
             </Grid>
-        </MuiPickersUtilsProvider>
+        </Grid>
 	);
 };
 

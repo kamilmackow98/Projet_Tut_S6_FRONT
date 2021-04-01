@@ -41,5 +41,25 @@ export const useStyles = makeStyles((theme) => ({
     },
     gridGamesFoundContainer: {
         margin: "10px;"
+    },
+    paginationContainer: {
+        display: "flex",
+        alignItems: "center",
+        alignContent: "center",
+        justifyContent: "center",
+        marginTop: "20px",
+        marginBottom: "20px"
+    },
+    noGamesFoundImage: {
+        width: "250px"
+    },
+    noGamesFoundContainer: {
+        display: "flex",
+        justifyContent: "center"
+    },
+    gridSwitchDateContainer: {
+        display: "flex",
+        flexDirection: "row",
+        marginTop: "15px"
     }
 }));
