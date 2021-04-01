@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from "react";
-import { Game } from "types";
+import { Game, GameSearchResult } from "types";
 import { debounce } from "lodash";
 
 interface Props {
@@ -29,10 +29,10 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 		setGameNames([]);
 		fetch(`/api/games?name=${inputGameNameSearch}`)
 		.then((res) => res.json())
-		.then((games: Game[]) => {
-			console.log(games);
-			setGameNames(games);
-		})
+		.then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGameNames(resJson.games);
+        })
 		.catch((e) => console.error(e));
 	}, [inputGameNameSearch]);
 

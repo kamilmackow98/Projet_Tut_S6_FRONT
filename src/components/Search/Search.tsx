@@ -8,7 +8,7 @@ import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter } from "types";
+import { Game, Filters, DateFilter, GameSearchResult } from "types";
 import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -36,11 +36,15 @@ const Search = () => {
     const [requiredAge, setRequiredAge] = useState<number | undefined>(undefined);
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
+    const [totalNumberOfPages, setTotalNumberOfPages] = useState<number>(1);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
 
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
+    const [filters, setFilters] = useState<Filters | {}>({});
+    
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
 
@@ -60,7 +64,7 @@ const Search = () => {
 
         const ratingFilter: number | undefined = minimumPositiveReviews ? minimumPositiveReviews : undefined;
 
-        const filters: Filters = {
+        const newFilters: Filters = {
             name: gameName ? gameName : undefined,
             release_date: releaseDateFilter,
             developer: developersName && developersName.length > 0 ? developersName : undefined,
@@ -73,7 +77,30 @@ const Search = () => {
             positive_rating_percent: ratingFilter
         };
 
+        setFilters(newFilters);
+
         fetch(`/api/games`, {
+            method: "POST",
+            body: JSON.stringify(newFilters),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => res.json())
+        .then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(resJson.games);
+            setTotalNumberOfPages(resJson.numberOfPages);
+            setCurrentPage(resJson.currentPage);
+        })
+        .catch((e) => { 
+            console.error(e); 
+            setGamesFound([]);
+        });
+    }
+
+    const handlePaginationClick = (page: number) => {
+        fetch(`/api/games?page=${page}`, {
             method: "POST",
             body: JSON.stringify(filters),
             headers: {
@@ -81,9 +108,11 @@ const Search = () => {
             }
         })
         .then((res) => res.json())
-        .then((games: Game[]) => {
-            games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(games);
+        .then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(resJson.games);
+            setTotalNumberOfPages(resJson.numberOfPages);
+            setCurrentPage(resJson.currentPage);
         })
         .catch((e) => { 
             console.error(e); 
@@ -100,9 +129,11 @@ const Search = () => {
             }
         })
         .then((res) => res.json())
-        .then((games: Game[]) => {
-            games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(games);
+        .then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(resJson.games);
+            setTotalNumberOfPages(resJson.numberOfPages);
+            setCurrentPage(resJson.currentPage);
         })
         .catch((e) => { 
             console.error(e); 
@@ -225,7 +256,13 @@ const Search = () => {
                     }
                 </Grid>
                 <Grid item xs={12} sm={12} className={classes.paginationContainer}>
-                    <Pagination count={10} siblingCount={0} color="secondary" variant="outlined" />
+                    <Pagination 
+                        count={totalNumberOfPages} 
+                        siblingCount={0} 
+                        color="secondary" 
+                        variant="outlined" 
+                        onChange={(event, value) => { handlePaginationClick(value) }}
+                    />
                 </Grid>
             </Grid>
         </Grid>

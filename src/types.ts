@@ -59,6 +59,12 @@ export type Genre = {
     name: string;
 }
 
+export type GameSearchResult = {
+    games: Game[],
+    numberOfPages: number,
+    currentPage: number
+}
+
 export type Filters = {
     name: string | undefined,
     release_date: DateFilter | undefined,
