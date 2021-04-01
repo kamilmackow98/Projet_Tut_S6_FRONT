@@ -47,15 +47,20 @@ const TestComponents: React.FC = () => {
 				<Grid container spacing={1}>
 					<Grid item xs={12} sm={10} md={6} lg={4}>
 						<GameCard
+							id={10}
 							name="Counter-Strike"
 							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
 						/>
 					</Grid>
 					<Grid item xs={12} sm={10} md={6} lg={4}>
-						<GameCard header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg" />
+						<GameCard
+							id={20}
+							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
+						/>
 					</Grid>
 					<Grid item xs={12} sm={10} md={6} lg={4}>
 						<GameCard
+							id={30}
 							disableAnimation
 							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
 						/>

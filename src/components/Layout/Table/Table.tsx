@@ -6,7 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
-import { CompleteGameInfo, HeadTableData, Order } from "types";
+import { CompleteGameInfo } from "types";
 import { Link as RouterLink } from "react-router-dom";
 import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";
@@ -25,18 +25,6 @@ interface Props {
 
 const CustomTable: React.FC<Props> = ({ data }) => {
 	const classes = useStyles();
-
-	const [orderBy, setOrderBy] = React.useState<keyof HeadTableData>("name");
-	const [order, setOrder] = React.useState<Order>("asc");
-
-	const handleRequestSort = (
-		event: React.MouseEvent<unknown>,
-		property: keyof HeadTableData
-	) => {
-		const isAsc = orderBy === property && order === "asc";
-		setOrder(isAsc ? "desc" : "asc");
-		setOrderBy(property);
-	};
 
 	const dataMap = data.map((game) => (
 		<TableRow hover key={game.id}>
@@ -62,12 +50,7 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 		<Paper className={classes.root}>
 			<TableContainer>
 				<Table className={classes.table}>
-					<CustomTableHead
-						onRequestSort={handleRequestSort}
-						classes={classes}
-						orderBy={orderBy}
-						order={order}
-					/>
+					<CustomTableHead classes={classes} />
 					<TableBody>{dataMap}</TableBody>
 				</Table>
 			</TableContainer>
