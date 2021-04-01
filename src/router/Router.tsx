@@ -18,7 +18,6 @@ const Router: React.FC = () => {
 				exact
 				path={[
 					"/",
-					"/search",
 					"/protected",
 					"/nested",
 					"/nested/another-nested",
@@ -27,8 +26,7 @@ const Router: React.FC = () => {
 			>
 				<GlobalLayout>
 					<Switch>
-						<Route exact path="/" render={() => <Main />} />
-						<Route exact path="/search" render={() => <Search />} />
+						<Route exact path="/" render={() => <Search />} />
 						<PrivateRoute path="/protected" render={() => <Protected />} />
 						<Route
 							path="/nested"

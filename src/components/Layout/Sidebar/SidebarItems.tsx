@@ -5,25 +5,12 @@ import LayersIcon from "@material-ui/icons/Layers";
 import StarsIcon from "@material-ui/icons/Stars";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import SidebarLink from "./SidebarLink";
-import {
-	Gamepad,
-	SportsEsports,
-	VideogameAsset,
-	Stars,
-	Layers,
-	Search
-} from "@material-ui/icons";
 
 export const mainListItems = (
 	<>
 		<SidebarLink text="Home" to="/">
 			<GamepadIcon />
 		</SidebarLink>
-
-		<SidebarLink text="Search" to="/search">
-			<Search />
-		</SidebarLink>
-
 
 		<SidebarLink text="Protected" to="/protected">
 			<SportsEsportsIcon />

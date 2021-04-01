@@ -223,7 +223,7 @@ const Search = () => {
                                 <TextField
                                     size="small" 
                                     className={classes.textfieldInput}
-                                    label="Min. positive reviews"
+                                    label="Min. positive reviews (%)"
                                     type="number"
                                     onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                                     variant="outlined"
