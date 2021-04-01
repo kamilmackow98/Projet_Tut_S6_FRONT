@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch } from "@material-ui/core";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
@@ -90,6 +90,25 @@ const Search = () => {
             setGamesFound([]);
         });
     }
+
+    useEffect(() => {
+        fetch(`/api/games`, {
+            method: "POST",
+            body: JSON.stringify({}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => res.json())
+        .then((games: Game[]) => {
+            games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(games);
+        })
+        .catch((e) => { 
+            console.error(e); 
+            setGamesFound([]);
+        });
+    }, []);
 
 	return (
         <Grid container spacing={3}>
