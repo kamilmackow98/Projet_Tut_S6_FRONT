@@ -15,9 +15,9 @@ function BasicInfo(props: any) {
                 <Divider/>
                 <p><strong>Release date: </strong>{releaseDate}</p>
                 <Divider/>
-                <p><strong>Developer: </strong>{props.developer}</p>
+                <p><strong>Developer: </strong>{props.developer.join(", ")}</p>
                 <Divider/>
-                <p><strong>Publisher: </strong>{props.publisher}</p>
+                <p><strong>Publisher: </strong>{props.publisher.join(", ")}</p>
             </Grid>
             <Divider/>
             <br/>

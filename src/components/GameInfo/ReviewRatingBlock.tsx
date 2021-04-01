@@ -13,17 +13,17 @@ function ReviewRatingBlock(props: any) {
     let ratingStyle = {}
     if (ratingPercent < 70 && ratingPercent > 39) {
         ratingStyle = {
-            color: "#b9a074"
+            color: "#b9a074" // beige
         }
     }
     else if (ratingPercent < 40 ) {
         ratingStyle = {
-            color: "#a34c25"
+            color: "#a34c25" // red
         }
     }
     else {
         ratingStyle = {
-            color: "#66c0f4"
+            color: "#66c0f4" // lightblue
         }
     }
 

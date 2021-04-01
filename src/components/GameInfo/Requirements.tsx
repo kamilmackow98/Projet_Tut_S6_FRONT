@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Paper, Tab, Tabs, Typography} from "@material-ui/core";
+import {Box, Divider, Paper, Tab, Tabs, Typography} from "@material-ui/core";
 
 function Requirements(props: any) {
 
@@ -11,6 +11,8 @@ function Requirements(props: any) {
     return (
         <Paper variant="outlined" style={{marginTop: "10px"}} >
             <Box p={1}>
+                <Typography variant="h6">System requirements</Typography>
+                <Divider style={{marginTop: "10px"}} />
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -72,8 +74,8 @@ function a11yProps(index: number) {
     };
 }
 
-function replaceAll(string: string) {
-    let str = string.replace(/\\t/g,"");
+function replaceAll(htmlString: string) {
+    let str = htmlString.replace(/\\t/g,"");
     str = str.replace(/\\n/g,"");
     str = str.replace(/\\r/g,"");
 
