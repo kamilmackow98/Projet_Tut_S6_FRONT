@@ -18,6 +18,7 @@ const CardsTable: React.FC<Props> = ({
                     games.map((game: Game) => (
                         <Grid item xs={12} sm={4}>
                             <GameCard 
+                                id={game.id}
                                 header_image={game.header_image} 
                                 name={game.name} 
                             />
