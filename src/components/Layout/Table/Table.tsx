@@ -26,6 +26,10 @@ interface Props {
 const CustomTable: React.FC<Props> = ({ data }) => {
 	const classes = useStyles();
 
+	data.forEach((obj) => {
+		obj.release_date = new Date(obj.release_date);
+	}, data);
+
 	const dataMap = data.map((game) => (
 		<TableRow hover key={game.id}>
 			<TableCell>

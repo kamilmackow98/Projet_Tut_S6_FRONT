@@ -13,6 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import { useStyles } from "./Layout.styles";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar/Sidebar";
+import Footer from "./Footer";
 
 interface Props {
 	children: ReactElement;
@@ -91,6 +92,7 @@ const GlobalLayout: React.FC<Props> = ({ children }) => {
 						{children}
 					</Grid>
 				</Container>
+				<Footer classes={classes} />
 			</main>
 		</>
 	);

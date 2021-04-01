@@ -64,4 +64,7 @@ export const useStyles = makeStyles<Theme, StyleProps>((theme) => ({
 	title: {
 		padding: theme.spacing(1),
 	},
+	link: {
+		color: "inherit",
+	},
 }));
