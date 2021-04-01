@@ -82,6 +82,7 @@ const Search = () => {
         })
         .then((res) => res.json())
         .then((games: Game[]) => {
+            games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
             setGamesFound(games);
         })
         .catch((e) => { 

@@ -48,10 +48,12 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 				</Typography>
 			</TableCell>
 			<TableCell>
-				{game.release_date}
+				{game.release_date.toLocaleDateString("fr-FR", {
+					timeZone: "America/New_York",
+				})}
 			</TableCell>
 			<TableCell>
-				{score(Number(game.positive_ratings), Number(game.negative_ratings))} %
+				{score(game.positive_ratings, game.negative_ratings)} %
 			</TableCell>
 		</TableRow>
 	));
