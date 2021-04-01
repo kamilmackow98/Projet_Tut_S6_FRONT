@@ -197,12 +197,12 @@ const Search = () => {
                             {
                                 !isDateInYear 
                                 ?   <ReleaseDatePickerFull 
-                                        onChangeDateBeg={(date: any) => { setReleaseDateBeg(date as Date)}}
-                                        onChangeDateEnd={(date: any) => {setReleaseDateEnd(date as Date)}}
+                                        onChangeDateBeg={(date: Date) => { setReleaseDateBeg(date)}}
+                                        onChangeDateEnd={(date: Date) => {setReleaseDateEnd(date)}}
                                     /> 
                                 :   <ReleaseYearPicker 
-                                        onChangeDateBeg={(date: any) => { setReleaseDateBeg(date as Date)}}
-                                        onChangeDateEnd={(date: any) => {setReleaseDateEnd(date as Date)}}
+                                        onChangeDateBeg={(year: string) => { setReleaseDateBeg(year)}}
+                                        onChangeDateEnd={(year: string) => { setReleaseDateEnd(year)}}
                                     />
                             }
                             <Grid item xs={12} sm={4} className={classes.gridSwitchDateContainer}> 

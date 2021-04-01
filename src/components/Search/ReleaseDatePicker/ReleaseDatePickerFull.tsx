@@ -15,8 +15,8 @@ const ReleaseDatePickerFull: React.FC<Props> = ({
 }) => {
     const classes = useStyles();
 
-    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | undefined>(undefined);
-    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | undefined>(undefined);
+    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | null>(null);
+    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | null>(null);
     
     const handleReleaseDateBegChange = (date: Date) => { onChangeDateBeg(date); setReleaseDateBeg(date); }
     const handleReleaseDateEndChange = (date: Date) => { onChangeDateEnd(date); setReleaseDateEnd(date); }

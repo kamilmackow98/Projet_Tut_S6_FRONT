@@ -14,11 +14,11 @@ const ReleaseYearPicker: React.FC<Props> = ({
     onChangeDateBeg,
     onChangeDateEnd
 }) => {
-    const [releaseDateBeg, setReleaseDateBeg] = useState<Date | undefined>(undefined);
-    const [releaseDateEnd, setReleaseDateEnd] = useState<Date | undefined>(undefined);
+    const [releaseDateBeg, setReleaseDateBeg] = useState<string | null>(null);
+    const [releaseDateEnd, setReleaseDateEnd] = useState<string | null>(null);
     
-    const handleReleaseDateBegChange = (date: Date) => { onChangeDateBeg(date); setReleaseDateBeg(date); }
-    const handleReleaseDateEndChange = (date: Date) => { onChangeDateEnd(date); setReleaseDateEnd(date); }
+    const handleReleaseDateBegChange = (date: string) => { onChangeDateBeg(date); setReleaseDateBeg(date); }
+    const handleReleaseDateEndChange = (date: string) => { onChangeDateEnd(date); setReleaseDateEnd(date); }
     
     const classes = useStyles();
 
@@ -33,7 +33,7 @@ const ReleaseYearPicker: React.FC<Props> = ({
                 margin="normal"
                 inputVariant="outlined"
                 value={releaseDateBeg}
-                onChange={(date) => { handleReleaseDateBegChange(date as Date)}} // TO DO: ATTENTION ! CONVERTIR EN STRING
+                onChange={(date) => { handleReleaseDateBegChange(String(new Date(date as Date).getFullYear()))}} 
                 animateYearScrolling
             />
         </Grid>
@@ -46,7 +46,7 @@ const ReleaseYearPicker: React.FC<Props> = ({
                 size="small" 
                 inputVariant="outlined"
                 value={releaseDateEnd} 
-                onChange={(date) => { handleReleaseDateEndChange(date as Date)}} // TO DO: ATTENTION ! CONVERTIR EN STRING
+                onChange={(date) => { handleReleaseDateEndChange(String(new Date(date as Date).getFullYear())) }}
                 animateYearScrolling
             />
         </Grid>
