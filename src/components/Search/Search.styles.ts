@@ -31,5 +31,15 @@ export const useStyles = makeStyles((theme) => ({
     },
     chip: {
         margin: 2,
+    },
+    gridButtonContainer: {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "right",
+        alignContent: "right",
+        justifyContent: "right"
+    },
+    gridGamesFoundContainer: {
+        margin: "10px;"
     }
 }));

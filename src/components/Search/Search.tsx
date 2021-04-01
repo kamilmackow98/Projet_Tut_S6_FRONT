@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton } from "@material-ui/core";
+import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Icon } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
@@ -14,6 +14,9 @@ import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
+import AppsIcon from '@material-ui/icons/Apps';
+import MenuIcon from '@material-ui/icons/Menu';
+import CardsTable from "./CardsTable/CardsTable";
 
 const Search = () => {
     const classes = useStyles();
@@ -32,6 +35,11 @@ const Search = () => {
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
+
+    const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
+
+    const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
+    const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
 
     const handleGameNameChange = (name: string) => { setGameName(name); }
     const handlePublishersNameChange = (names: string[]) => { setPublishersName(names); }
@@ -192,11 +200,22 @@ const Search = () => {
                     </Accordion>
                 </Grid>
                 
-                <Grid item xs={12} sm={12}>
-                    { gamesFound && gamesFound.length > 0 
-                        ? <CustomTable data={gamesFound} />
-                        : <p>Aucun jeu n'a été trouvé.</p>
-                    }
+                <Grid container xs={12} sm={12}>
+                    <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                        <IconButton onClick={() => {setDisplayAsGrid(false)}}>
+                            <MenuIcon color={menuIconBtnColor}/>
+                        </IconButton>
+                        <IconButton>
+                            <AppsIcon color={gridIconBtnColor} onClick={() => {setDisplayAsGrid(true)}} />
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={12} sm={12} className={classes.gridGamesFoundContainer}>
+                        { 
+                            gamesFound && gamesFound.length > 0 
+                            ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
+                            : <p>Aucun jeu n'a été trouvé.</p>
+                        }
+                    </Grid>
                 </Grid>
             </Grid>
         </MuiPickersUtilsProvider>
