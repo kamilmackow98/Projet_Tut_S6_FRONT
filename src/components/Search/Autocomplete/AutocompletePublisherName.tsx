@@ -52,6 +52,7 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 
 	return (
 		<Autocomplete
+			size="small" 
 			ListboxProps={{
 				style: { maxHeight: 200, overflow: 'auto' },
 				onScroll: (event: React.SyntheticEvent) => {

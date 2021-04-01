@@ -1,20 +1,12 @@
-import { Select, Chip, MenuItem, makeStyles, FormControl, InputLabel } from "@material-ui/core";
+import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Genre } from "types";
+import { useStyles } from "../Search.styles";
 
 interface Props {
 	onChangeGenres: Function
 }
 
-const useStyles = makeStyles((theme) => ({
-	chips: {
-	  display: 'flex',
-	  flexWrap: 'wrap',
-	},
-	chip: {
-	  margin: 2,
-	}
-}));
 
 const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 
@@ -52,7 +44,7 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 	}, [categoryNamePagination]);
 	
 	return (
-		<FormControl variant="outlined" className="select-form">
+		<FormControl size="small"  variant="outlined" className={classes.selectForm}>
         	<InputLabel id="demo-simple-select-outlined-label">Genres</InputLabel>
 			<Select
 				MenuProps={{	

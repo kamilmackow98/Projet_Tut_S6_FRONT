@@ -51,7 +51,7 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 				{game.release_date}
 			</TableCell>
 			<TableCell>
-				{score(game.positive_ratings, game.negative_ratings)} %
+				{score(Number(game.positive_ratings), Number(game.negative_ratings))} %
 			</TableCell>
 		</TableRow>
 	));

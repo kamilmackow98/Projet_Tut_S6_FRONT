@@ -52,6 +52,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 
 	return (
 		<Autocomplete
+			size="small" 
 			ListboxProps={{
 				style: { maxHeight: 200, overflow: 'auto' },
 				onScroll: (event: React.SyntheticEvent) => {

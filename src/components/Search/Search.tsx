@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Grid, Button } from "@material-ui/core";
+import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton } from "@material-ui/core";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
@@ -10,10 +10,13 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import DateFnsUtils from '@date-io/date-fns';
 import { Game, Filters, DateFilter, RatingFilter } from "types";
-import './Search.css';
+import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import SearchIcon from '@material-ui/icons/Search';
 
 const Search = () => {
+    const classes = useStyles();
 
     const [gameName, setGameName] = useState("");
     const [publishersName, setPublishersName] = useState<string[]>([]);
@@ -75,88 +78,120 @@ const Search = () => {
         .then((games: Game[]) => {
             setGamesFound(games);
         })
-        .catch((e) => console.error(e));
+        .catch((e) => { 
+            console.error(e); 
+            setGamesFound([]);
+        });
     }
 
 	return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid container spacing={3} className="grid-container">
+            <Grid container spacing={3}>
                 <Grid item xs={12} sm={12}>
-                    <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon  />}>
+                            <Grid 
+                                item 
+                                xs={10}
+                                sm={10}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                            </Grid>
+                            <Grid 
+                                item 
+                                className={classes.buttonContainer}
+                                xs={1}
+                                sm={2}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <Button onClick={handleSearch} variant="contained" color="secondary">
+                                    <SearchIcon />
+                                </Button>
+                            </Grid>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
+                                </Grid>
+                                <Grid item xs={12} sm={12} className={classes.removeBottomSpace}>
+                                    <hr style={{ color: 'lightGrey' }} className={classes.removeBottomSpace} />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <KeyboardDatePicker
+                                        className={`${classes.removeBottomSpace} ${classes.datepickerInput}`}
+                                        margin="normal"
+                                        size="small" 
+                                        inputVariant="outlined"
+                                        value={releaseDateBeg}
+                                        label="Release date from"
+                                        format="MM/dd/yyyy"
+                                        onChange={(date) => handleReleaseDateBegChange(date as Date)}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <KeyboardDatePicker
+                                        size="small" 
+                                        className={`${classes.removeBottomSpace} ${classes.datepickerInput}`}
+                                        margin="normal"
+                                        inputVariant="outlined"
+                                        label="Release date to"
+                                        format="MM/dd/yyyy"
+                                        value={releaseDateEnd}
+                                        onChange={(date) => handleReleaseDateEndChange(date as Date)}
+                                        KeyboardButtonProps={{
+                                            'aria-label': 'change date',
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4} />
+                                <Grid item xs={12} sm={4}>
+                                    <TextField
+                                        size="small" 
+                                        className={`${classes.textfieldInput} ${classes.datepickerInput}`}
+                                        label="Required minimum age"
+                                        type="number"
+                                        onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <TextField
+                                        size="small" 
+                                        className={classes.textfieldInput}
+                                        label="Minimum positive reviews"
+                                        type="number"
+                                        onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4} />
+                            </Grid>
+                        </AccordionDetails>
+                    </Accordion>
                 </Grid>
-                <Grid item xs={12} sm={10}>
-                    <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <TextField
-                        className="textfield-input"
-                        label="Minimum of positive reviews (%)"
-                        type="number"
-                        onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={10}>
-                    <TextField
-                        className="textfield-input"
-                        label="Required minimum age"
-                        type="number"
-                        onChange={(event) => { setRequiredAge(Number(event.target.value)) }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                        variant="outlined"
-                    />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <KeyboardDatePicker
-                        className="datepicker-input"
-                        margin="normal"
-                        inputVariant="outlined"
-                        value={releaseDateBeg}
-                        label="Release date from"
-                        format="MM/dd/yyyy"
-                        onChange={(date) => handleReleaseDateBegChange(date as Date)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} sm={5}>
-                    <KeyboardDatePicker
-                        className="datepicker-input"
-                        margin="normal"
-                        inputVariant="outlined"
-                        label="Release date to"
-                        format="MM/dd/yyyy"
-                        value={releaseDateEnd}
-                        onChange={(date) => handleReleaseDateEndChange(date as Date)}
-                        KeyboardButtonProps={{
-                            'aria-label': 'change date',
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} className="button-container">
-                    <Button variant="contained" color="primary" onClick={handleSearch}>Search</Button>
-                </Grid>
+                
                 <Grid item xs={12} sm={12}>
                     { gamesFound && gamesFound.length > 0 
                         ? <CustomTable data={gamesFound} />

@@ -53,6 +53,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 
 	return (
 		<Autocomplete
+			size="small" 
 			ListboxProps={{
 				style: { maxHeight: 200, overflow: 'auto' },
 				onScroll: (event: React.SyntheticEvent) => {

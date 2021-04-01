@@ -15,6 +15,9 @@ const App = () => {
 			primary: {
 				main: "#3A79FF",
 			},
+			secondary: {
+				main: "#4bc57c"
+			}
 		},
 	});
 

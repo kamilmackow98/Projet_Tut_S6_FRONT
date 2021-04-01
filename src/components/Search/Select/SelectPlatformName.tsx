@@ -1,20 +1,11 @@
-import { Select, Chip, MenuItem, makeStyles, FormControl, InputLabel } from "@material-ui/core";
+import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Platform } from "types";
+import { useStyles } from "../Search.styles";
 
 interface Props {
 	onChangePlatforms: Function
 }
-
-const useStyles = makeStyles((theme) => ({
-	chips: {
-	  display: 'flex',
-	  flexWrap: 'wrap',
-	},
-	chip: {
-	  margin: 2,
-	}
-}));
 
 const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 
@@ -52,7 +43,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 	}, [categoryNamePagination]);
 	
 	return (
-		<FormControl variant="outlined" className="select-form">
+		<FormControl size="small" variant="outlined" className={classes.selectForm}>
         	<InputLabel id="demo-simple-select-outlined-label">Platforms</InputLabel>
 			<Select
 				MenuProps={{	
