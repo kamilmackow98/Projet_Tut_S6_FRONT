@@ -8,7 +8,7 @@ import SelectPlaftormName from "./Select/SelectPlatformName";
 import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, RatingFilter } from "types";
+import { Game, Filters, DateFilter } from "types";
 import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
