@@ -39,7 +39,7 @@ const Search = () => {
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
     const [totalNumberOfPages, setTotalNumberOfPages] = useState<number>(1);
-    const [currentPage, setCurrentPage] = useState<number>(0);
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
 
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
@@ -76,7 +76,7 @@ const Search = () => {
             categories: categoriesName && categoriesName.length > 0 ? categoriesName : undefined,
             genres: genresName && genresName.length > 0 ? genresName : undefined,
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
-            required_age: requiredAges ? requiredAges : undefined, // TO DO : allow to select mutliple specific requiredAges
+            required_age: requiredAges ? requiredAges : undefined,
             positive_rating_percent: ratingFilter
         };
 
@@ -94,7 +94,7 @@ const Search = () => {
             resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
             setGamesFound(resJson.games);
             setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(resJson.currentPage);
+            setCurrentPage(Number(resJson.currentPage));
         })
         .catch((e) => { 
             console.error(e); 
@@ -115,7 +115,7 @@ const Search = () => {
             resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
             setGamesFound(resJson.games);
             setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(resJson.currentPage);
+            setCurrentPage(Number(resJson.currentPage));
         })
         .catch((e) => { 
             console.error(e); 
@@ -136,7 +136,7 @@ const Search = () => {
             resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
             setGamesFound(resJson.games);
             setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(resJson.currentPage);
+            setCurrentPage(Number(resJson.currentPage));
         })
         .catch((e) => { 
             console.error(e); 
@@ -223,7 +223,7 @@ const Search = () => {
                                 <TextField
                                     size="small" 
                                     className={classes.textfieldInput}
-                                    label="Min. positive reviews (%)"
+                                    label="Min. (+) reviews (%)"
                                     type="number"
                                     onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                                     variant="outlined"
@@ -254,6 +254,7 @@ const Search = () => {
                 <Grid item xs={12} sm={12} className={classes.paginationContainer}>
                     <Pagination 
                         count={totalNumberOfPages} 
+                        page={currentPage}
                         siblingCount={0} 
                         color="secondary" 
                         variant="outlined" 
