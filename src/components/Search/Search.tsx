@@ -9,7 +9,7 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, GameSearchResult, SortByFilter } from "types";
+import { Game, Filters, DateFilter, GameSearchResult, SortFilter } from "types";
 import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
 import SortBy from "components/Layout/SortBy/SortBy";
@@ -21,7 +21,6 @@ import CardsTable from "./CardsTable/CardsTable";
 import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
-import { filter } from "lodash";
 
 const Search = () => {
     const classes = useStyles();
@@ -48,7 +47,7 @@ const Search = () => {
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
     const [filters, setFilters] = useState<Filters>(undefined);
-    const [sortByFilter, setSortByFilter] = useState<SortByFilter>({ sortBy: 'release_date', isASC: true });
+    const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: true });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -106,7 +105,7 @@ const Search = () => {
         });
     };
 
-    const handleFilter = (newSortByFilter: SortByFilter) => {
+    const handleFilter = (newSortByFilter: SortFilter) => {
     
         const newFilters = { ...filters, sort: newSortByFilter };
         setFilters(newFilters);
@@ -267,7 +266,7 @@ const Search = () => {
             
             <Grid container justify="center">
                 <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
-                    <SortBy onFilterChange={(sortByFilter: SortByFilter) => handleFilter(sortByFilter)} />
+                    <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
                     <IconButton onClick={() => {setDisplayAsGrid(false)}}>
                         <MenuIcon color={menuIconBtnColor}/>
                     </IconButton>

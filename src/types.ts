@@ -4,7 +4,7 @@ export interface UserType {
 	authenticated: boolean;
 };
 
-export type SortByFilter = {
+export type SortFilter = {
     isASC: boolean,
     sortBy: string
 }
@@ -85,7 +85,7 @@ export type Filters = {
     steamspy_tags?: string[] | undefined,
     required_age?: number[] | undefined,
     positive_rating_percent?: number | undefined,
-    sort?: SortByFilter | undefined
+    sort?: SortFilter | undefined
 } | undefined;
 
 export type Game = {
