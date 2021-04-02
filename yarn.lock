@@ -9207,6 +9207,13 @@ react-app-polyfill@^2.0.0:
     regenerator-runtime "^0.13.7"
     whatwg-fetch "^3.4.1"
 
+react-clamp-lines@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-clamp-lines/-/react-clamp-lines-3.0.2.tgz#01c9767ab0ec2c7e0a5e57ab26d7ffd11e81ffe5"
+  integrity sha512-fd0TYziR3yhPZk57aIg1iddQLhBCBwVqDCXc+FO9SARc114ISwJPZMUqL0A2zHu1qpW1oChS8GKSWAyr04WAXA==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-dev-utils@^11.0.3:
   version "11.0.3"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.3.tgz#b61ed499c7d74f447d4faddcc547e5e671e97c08"

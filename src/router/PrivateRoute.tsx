@@ -1,5 +1,5 @@
-import { Redirect, Route } from "react-router-dom";
 import userContext from "../context/user/UserContext";
+import { Redirect, Route } from "react-router-dom";
 import React, { ComponentType } from "react";
 
 interface Props {

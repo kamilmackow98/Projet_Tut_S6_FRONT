@@ -1,10 +1,13 @@
-import { Box, Container, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
 import { GameSearchResult, Game } from "types";
-import GameCard from "./Game/GameCard";
-import GameListItem from "./GameList/GameListItem";
+import GameCard from "./Game/Card/GameCard";
+import GameList from "./Game/List/GameList";
 import Loader from "./Layout/Loader/Loader";
 import Table from "./Layout/Table/Table";
+import React from "react";
 
 const TestComponents: React.FC = () => {
 	const [games, setGames] = React.useState<Game[]>([]);
@@ -26,13 +29,7 @@ const TestComponents: React.FC = () => {
 					List view for game list
 				</Typography>
 
-				<Grid container spacing={2}>
-					{games.map((item) => (
-						<Grid key={item.id} item xs={12}>
-							<GameListItem {...item} />
-						</Grid>
-					))}
-				</Grid>
+				<GameList data={games} spacing={2} />
 			</Box>
 
 			<Box pb={5}>
