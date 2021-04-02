@@ -6,8 +6,8 @@ import Box from "@material-ui/core/Box";
 import { Link as RouterLink } from "react-router-dom";
 import { useStyles } from "./GameListItem.styles";
 import { gameScore } from "utils/GameUtils";
-import { CompleteGameInfo } from "types";
 import React from "react";
+import { Game } from "types";
 
 import WindowsLogo from "assets/images/windows-logo.svg";
 import LinuxLogo from "assets/images/linux-logo.svg";

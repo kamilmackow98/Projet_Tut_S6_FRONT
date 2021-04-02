@@ -6,7 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
-import { CompleteGameInfo } from "types";
+import { Game } from "types";
 import { Link as RouterLink } from "react-router-dom";
 import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";
@@ -14,7 +14,7 @@ import React from "react";
 import { gameScore } from "utils/GameUtils";
 
 interface Props {
-	data: CompleteGameInfo[];
+	data: Game[];
 }
 
 const CustomTable: React.FC<Props> = ({ data }) => {
