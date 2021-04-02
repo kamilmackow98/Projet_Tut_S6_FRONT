@@ -6,6 +6,8 @@ import BasicInfo from "./BasicInfo";
 import PegiRating from "./PegiRating";
 import ReviewRatingBlock from "./ReviewRatingBlock";
 import Requirements from "./Requirements";
+import RelatedGames from "./RelatedGames";
+import Loader from "../Layout/Loader/Loader";
 
 function GameInfo(props: any) {
 
@@ -24,18 +26,71 @@ function GameInfo(props: any) {
                 // stores the gameData into the state
                 setGameData(data)
                 setIsLoading(false)
-                })
+                document.title = data.name + " | Video Games Encyclopedia"
+            })
     }, [props.match.params.id])
 
-    // if the gameData is not available: show "loading..." else show the data
+    // if the gameData is not available: show "LOADING" + animation else show the data
     if (isLoading) {
         return (
-            <div>
-                <p>loading...</p>
-            </div>
+            <Loader fixed={true}/>
         )
     }
     else {
+
+        const dummyData: any = [
+            {
+                "id": "10",
+                "name": "Counter-strike",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg?t=1528733245"
+            },
+            {
+                "id": "380",
+                "name": "Half-Life 2: Episode One",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/380/header.jpg?t=1530046506"
+            },
+            {
+                "id": "8870",
+                "name": "BioShock Infinite",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/8870/header.jpg?t=1545232935"
+            },
+            {
+                "id": "10",
+                "name": "Counter-strike",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg?t=1528733245"
+            },
+            {
+                "id": "380",
+                "name": "Half-Life 2: Episode One",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/380/header.jpg?t=1530046506"
+            },
+            {
+                "id": "8870",
+                "name": "BioShock Infinite",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/8870/header.jpg?t=1545232935"
+            },
+            {
+                "id": "10",
+                "name": "Counter-strike",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg?t=1528733245"
+            },
+            {
+                "id": "380",
+                "name": "Half-Life 2: Episode One",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/380/header.jpg?t=1530046506"
+            },
+            {
+                "id": "8870",
+                "name": "BioShock Infinite",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/8870/header.jpg?t=1545232935"
+            },
+            {
+                "id": "10",
+                "name": "Counter-strike",
+                "header_image":"https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg?t=1528733245"
+            }
+        ]
+
 
         return (
             <div>
@@ -59,14 +114,15 @@ function GameInfo(props: any) {
                         tags = {gameData.steamspy_tags}
                     />
                 </Grid>
+                {/* TODO: remplacer les <br/> par du css */}
                 <br/>
                 <Divider style={{width:"92%"}} />
                 <br/>
 
                 {/* SECTION 2 */}
                 <Grid container spacing={3} direction="row-reverse">
-                    {/* sidebar (right) */}
                     <Grid item md={1}> {/* Offset for alignement */} </Grid>
+                    {/* sidebar (right) */}
                     <Grid item container direction="column" md={4} spacing={2}>
                         <ReviewRatingBlock
                             positiveRatings = {gameData.positive_ratings}
@@ -78,13 +134,16 @@ function GameInfo(props: any) {
                     </Grid>
 
                     {/* main content (left) */}
-                    <Grid item md={7}>
+                    <Grid item md={7} xs={12}>
                         <div dangerouslySetInnerHTML={{__html:gameData.detailed_description}}/>
                         <Requirements
                             pcRequirements = {gameData.pc_requirements}
                             macRequirements = {gameData.mac_requirements}
                             linuxRequirements = {gameData.linux_requirements}
                         />
+                        {/* TODO: remplacer les <br/> par du css */}
+                        <br/>
+                        <RelatedGames games={dummyData} />
                     </Grid>
                 </Grid>
             </div>
