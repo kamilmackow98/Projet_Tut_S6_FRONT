@@ -13,23 +13,18 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 	const [agePagination, setAgePagination] = useState(1);
 	const [ageChosen, setAgeChosen] = useState<Age[]>([]);
 
+	const ageRef = React.useRef(age);
 	const classes = useStyles();
-   
-	useEffect(() => {
-		fetch(`/api/ages`)
-		.then((res) => res.json())
-		.then((ages: Age[]) => {
-			console.log(ages);
-			setAge(ages);
-		})
-		.catch((e) => console.error(e));
-	}, []);
 
+	useEffect(() => {
+		ageRef.current = age;
+	});
+   
 	useEffect(() => {
 		fetch(`/api/ages?page=${agePagination}`)
 		.then((res) => res.json())
 		.then((ages: Age[]) => {
-			const extendedAges: Age[] = age.concat(ages);
+			const extendedAges: Age[] = ageRef.current.concat(ages);
 			setAge(extendedAges);
 		})
 		.catch((e) => console.error(e));
@@ -44,7 +39,6 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
 									setAgePagination(agePagination + 1);
-									console.log('yooo');
 								}
 							}
 						},

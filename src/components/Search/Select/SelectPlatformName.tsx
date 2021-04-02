@@ -13,23 +13,18 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 	const [platformNamePagination, setPlatformNamePagination] = useState(1);
 	const [platformNamesChosen, setPlatformNamesChosen] = useState<Platform[]>([]);
 
+	const platformNamesRef = React.useRef(platformNames);
 	const classes = useStyles();
-   
-	useEffect(() => {
-		fetch(`/api/platforms`)
-		.then((res) => res.json())
-		.then((platforms: Platform[]) => {
-			console.log(platforms);
-			setPlatformNames(platforms);
-		})
-		.catch((e) => console.error(e));
-	}, []);
 
+	useEffect(() => {
+		platformNamesRef.current = platformNames;
+	});
+   
 	useEffect(() => {
 		fetch(`/api/platforms?page=${platformNamePagination}`)
 		.then((res) => res.json())
 		.then((platforms: Platform[]) => {
-			const extendedPlatforms: Platform[] = platformNames.concat(platforms);
+			const extendedPlatforms: Platform[] = platformNamesRef.current.concat(platforms);
 			setPlatformNames(extendedPlatforms);
 		})
 		.catch((e) => console.error(e));

@@ -14,23 +14,18 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 	const [genreNamePagination, setGenreNamePagination] = useState(1);
 	const [genreNamesChosen, setGenreNamesChosen] = useState<Genre[]>([]);
 
+	const genreNamesRef = React.useRef(genreNames);
 	const classes = useStyles();
-   
+
 	useEffect(() => {
-		fetch(`/api/genres`)
-		.then((res) => res.json())
-		.then((genres: Genre[]) => {
-			console.log(genres);
-			setGenreNames(genres);
-		})
-		.catch((e) => console.error(e));
-	}, []);
+		genreNamesRef.current = genreNames;
+	});
 
 	useEffect(() => {
 		fetch(`/api/genres?page=${genreNamePagination}`)
 		.then((res) => res.json())
 		.then((genres: Genre[]) => {
-			const extendedGenres: Genre[] = genreNames.concat(genres);
+			const extendedGenres: Genre[] = genreNamesRef.current.concat(genres);
 			setGenreNames(extendedGenres);
 		})
 		.catch((e) => console.error(e));

@@ -13,23 +13,18 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	const [categoryNamePagination, setCategoryNamePagination] = useState(1);
 	const [categoryNamesChosen, setCategoryNamesChosen] = useState<Category[]>([]);
 
+	const categoryNamesRef = React.useRef(categoryNames);
 	const classes = useStyles();
-   
-	useEffect(() => {
-		fetch(`/api/categories`)
-		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			console.log(categories);
-			setCategoryNames(categories);
-		})
-		.catch((e) => console.error(e));
-	}, []);
 
+	useEffect(() => {
+		categoryNamesRef.current = categoryNames;
+	});
+   
 	useEffect(() => {
 		fetch(`/api/categories?page=${categoryNamePagination}`)
 		.then((res) => res.json())
 		.then((categories: Category[]) => {
-			const extendedCategories: Category[] = categoryNames.concat(categories);
+			const extendedCategories: Category[] = categoryNamesRef.current.concat(categories);
 			setCategoryNames(extendedCategories);
 		})
 		.catch((e) => console.error(e));
@@ -44,7 +39,6 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
 									setCategoryNamePagination(categoryNamePagination + 1);
-									console.log('yooo');
 								}
 							}
 						},
