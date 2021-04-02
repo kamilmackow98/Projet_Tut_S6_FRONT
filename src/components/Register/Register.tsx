@@ -9,14 +9,12 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Redirect } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import Copyright from "../Layout/Copyright";
 import userContext from "../../context/user/UserContext";
 
 import { Alert, AlertTitle } from '@material-ui/lab';
-import axios from 'axios';
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 
 export default function Register() {
 	const classes = useStyles();
@@ -36,23 +34,23 @@ export default function Register() {
 
 	const CallAPi = () => {
 
-		axios.post('http://localhost:5000/api/user/create', null, {
-			params: {
-				lastname: lastnameValue,
-				firstname: firstnameValue,
-				email: emailValue,
-				password: passValue,
-				confirm_password: confirmPassValue
-			}
-		}).then((response) => {
+		// axios.post('http://localhost:5000/api/user/create', null, {
+		// 	params: {
+		// 		lastname: lastnameValue,
+		// 		firstname: firstnameValue,
+		// 		email: emailValue,
+		// 		password: passValue,
+		// 		confirm_password: confirmPassValue
+		// 	}
+		// }).then((response) => {
 
-			console.log(response);
-			if (response.data == "Email already used !") {
-				setErrorValue(response.data);
-			} else {
-				history.push("/");
-			}
-		}).catch((e) => console.error(e));
+		// 	console.log(response);
+		// 	if (response.data == "Email already used !") {
+		// 		setErrorValue(response.data);
+		// 	} else {
+		// 		history.push("/");
+		// 	}
+		// }).catch((e) => console.error(e));
 
 	}
 
@@ -79,23 +77,23 @@ export default function Register() {
 		}
 		else {
 			// CallAPi();
-			axios.post('http://localhost:5000/api/user/create', null, {
-				params: {
-					lastname: lastnameValue,
-					firstname: firstnameValue,
-					email: emailValue,
-					password: passValue,
-					confirm_password: confirmPassValue
-				}
-			}).then((response) => {
+			// axios.post('http://localhost:5000/api/user/create', null, {
+			// 	params: {
+			// 		lastname: lastnameValue,
+			// 		firstname: firstnameValue,
+			// 		email: emailValue,
+			// 		password: passValue,
+			// 		confirm_password: confirmPassValue
+			// 	}
+			// }).then((response) => {
 
-				console.log(response);
-				if (response.data == "Email already used !") {
-					setErrorValue(response.data);
-				} else {
-					// history.push("/login");
-				}
-			}).catch((e) => console.error(e));
+			// 	console.log(response);
+			// 	if (response.data == "Email already used !") {
+			// 		setErrorValue(response.data);
+			// 	} else {
+			// 		// history.push("/login");
+			// 	}
+			// }).catch((e) => console.error(e));
 		}
 	}
 	return (

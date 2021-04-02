@@ -11,13 +11,11 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import Copyright from "../Layout/Copyright";
 import userContext from "../../context/user/UserContext";
 import { Alert, AlertTitle } from '@material-ui/lab';
-import axios from 'axios';
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
 
 const Login = () => {
 	const classes = useStyles();
@@ -34,21 +32,21 @@ const Login = () => {
 	
 	const handleLogin = () => {
 
-		axios.post('http://localhost:5000/api/user/login', null, {
-			params: {
-				email: emailValue,
-				password: passValue
-			}
-		}).then((response) => {
-			if (response.data.token !== undefined) {
-				let data = response.data;
-				user!.authenticated = true;
-				user!.token = data.token;
-				history.push("/");
-			} else {
-				setErrorValue("Invalid credentials");
-			}
-		}).catch((e) => console.error(e));
+		// axios.post('http://localhost:5000/api/user/login', null, {
+		// 	params: {
+		// 		email: emailValue,
+		// 		password: passValue
+		// 	}
+		// }).then((response) => {
+		// 	if (response.data.token !== undefined) {
+		// 		let data = response.data;
+		// 		user!.authenticated = true;
+		// 		user!.token = data.token;
+		// 		history.push("/");
+		// 	} else {
+		// 		setErrorValue("Invalid credentials");
+		// 	}
+		// }).catch((e) => console.error(e));
 	}
 
 	return (
