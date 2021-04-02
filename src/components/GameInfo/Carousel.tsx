@@ -2,6 +2,8 @@ import {Grid} from "@material-ui/core";
 import ReactCarousel from "react-material-ui-carousel";
 import React from "react";
 
+// TODO: replace "react-material-ui-carousel" with "react-elastic-carousel" and remove useless dependencies
+
 function Carousel(props: any) {
 
     // array of carousel items (screenshots)
