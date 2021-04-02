@@ -1,6 +1,10 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
-export const useStyles = makeStyles((theme: Theme) =>
+interface StyleProps {
+	header_image: string;
+}
+
+export const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
 	createStyles({
 		root: {
 			// padding: theme.spacing(2),
@@ -11,12 +15,13 @@ export const useStyles = makeStyles((theme: Theme) =>
 				// marginBottom: theme.spacing(2)
 			}
 		},
-		img: {
+		img: (props) => ({
 			// borderTopLeftRadius: 4,
 			// borderTopRightRadius: 4,
+			background: `url(${props.header_image})`,
 			objectPosition: "center",
 			maxWidth: "100%",
-		},
+		}),
 		paper: {
 			// display: "flex",
 		},
