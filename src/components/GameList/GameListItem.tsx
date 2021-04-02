@@ -1,9 +1,9 @@
-import { Box, Container, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
-import { CompleteGameInfo } from "types";
+import { Game } from "types";
 import { useStyles } from "./GameListItem.styles";
 
-const GameListItem: React.FC<CompleteGameInfo> = (props) => {
+const GameListItem: React.FC<Game> = (props) => {
 	const classes = useStyles();
 
 	const { name, header_image, short_description, release_date } = props;

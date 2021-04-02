@@ -1,20 +1,20 @@
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { CompleteGameInfo } from "types";
+import { GameSearchResult, Game } from "types";
 import GameCard from "./Game/GameCard";
 import GameListItem from "./GameList/GameListItem";
 import Loader from "./Layout/Loader/Loader";
 import Table from "./Layout/Table/Table";
 
 const TestComponents: React.FC = () => {
-	const [games, setGames] = React.useState<CompleteGameInfo[]>([]);
+	const [games, setGames] = React.useState<Game[]>([]);
 
 	React.useEffect(() => {
 		fetch("/api/games", { method: "POST" })
 			.then((res) => res.json())
-			.then((data) => {
-				data = data.slice(1);
-				setGames(data);
+			.then((resJson: GameSearchResult) => {
+				const games: Game[] = resJson.games.slice(1);
+				setGames(games);
 			})
 			.catch((e) => console.error(e));
 	}, []);
