@@ -8,7 +8,7 @@ interface Props {
 
 const SortBy: React.FC<Props> = ({ onFilterChange }) => {
     
-    const [filterBy, setFilterBy] = useState<[]>([]);
+    const [filterBy, setFilterBy] = useState<string | undefined>(undefined);
     const [isASC, setIsASC] = useState<boolean>(true);
 
     const handleFilterChange = (filter: string) => {
@@ -36,7 +36,6 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
                     <InputLabel id="demo-simple-select-outlined-label">Sort By</InputLabel>
                     <Select
                         label="Sort By"
-                        value={filterBy}
                         MenuProps={{	
                                 style: { maxHeight: 300 },
                                 id: "id-menu",
@@ -49,7 +48,10 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
                         variant="outlined"
                         input={<OutlinedInput />}
                         onChange={(event) => { 
-                            if (event) handleFilterChange(event?.target.value as string);
+                            if (event) { 
+                                handleFilterChange(event?.target.value as string); 
+                                setFilterBy(event?.target.value as string);
+                            }
                         }}
                     >
                         {filters.map((filter) => (
