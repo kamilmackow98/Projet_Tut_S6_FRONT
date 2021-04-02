@@ -75,17 +75,18 @@ export type GameSearchResult = {
 }
 
 export type Filters = {
-    name: string | undefined,
-    release_date: DateFilter | undefined,
-    developer: string[] | undefined,
-    publisher: string[] | undefined,
-    platforms: string[] | undefined,
-    categories: string[] | undefined,
-    genres: string[] | undefined,
-    steamspy_tags: string[] | undefined,
-    required_age: number[] | undefined,
-    positive_rating_percent: number | undefined
-};
+    name?: string | undefined,
+    release_date?: DateFilter | undefined,
+    developer?: string[] | undefined,
+    publisher?: string[] | undefined,
+    platforms?: string[] | undefined,
+    categories?: string[] | undefined,
+    genres?: string[] | undefined,
+    steamspy_tags?: string[] | undefined,
+    required_age?: number[] | undefined,
+    positive_rating_percent?: number | undefined,
+    sort?: SortByFilter | undefined
+} | undefined;
 
 export type Game = {
     id: number,

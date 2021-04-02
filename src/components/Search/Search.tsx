@@ -21,6 +21,7 @@ import CardsTable from "./CardsTable/CardsTable";
 import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
+import { filter } from "lodash";
 
 const Search = () => {
     const classes = useStyles();
@@ -46,7 +47,8 @@ const Search = () => {
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
-    const [filters, setFilters] = useState<Filters | {}>({});
+    const [filters, setFilters] = useState<Filters>(undefined);
+    const [sortByFilter, setSortByFilter] = useState<SortByFilter>({ sortBy: 'release_date', isASC: true });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -78,7 +80,8 @@ const Search = () => {
             genres: genresName && genresName.length > 0 ? genresName : undefined,
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
             required_age: requiredAges ? requiredAges : undefined,
-            positive_rating_percent: ratingFilter
+            positive_rating_percent: ratingFilter,
+            sort: sortByFilter? sortByFilter : undefined
         };
 
         setFilters(newFilters);
@@ -103,9 +106,11 @@ const Search = () => {
         });
     };
 
-    const handleFilter = (sortByFilter: SortByFilter) => {
+    const handleFilter = (newSortByFilter: SortByFilter) => {
     
-        const newFilters = { ...filters, sortBy: sortByFilter }
+        const newFilters = { ...filters, sort: newSortByFilter };
+        setFilters(newFilters);
+        setSortByFilter(newSortByFilter);
 
         fetch(`/api/games`, {
             method: "POST",

@@ -1,5 +1,5 @@
 import { Select, MenuItem, Grid, FormControl, InputLabel, Switch, ListItemText, OutlinedInput, FormControlLabel } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useStyles } from "./SortBy.styles";
 
 interface Props {
@@ -36,6 +36,7 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
                     <InputLabel id="demo-simple-select-outlined-label">Sort By</InputLabel>
                     <Select
                         label="Sort By"
+                        defaultValue={filters[0].value}
                         MenuProps={{	
                                 style: { maxHeight: 300 },
                                 id: "id-menu",
