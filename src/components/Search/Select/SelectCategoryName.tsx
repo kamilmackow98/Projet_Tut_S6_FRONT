@@ -65,8 +65,8 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 				)}
 			>
 				{categoryNames.map((category: Category) => (
-					<MenuItem value={category.name}>
-					{category.name}
+					<MenuItem value={category.name} key={category.name}>
+						{category.name}
 					</MenuItem>
 				))}
 			</Select>

@@ -65,7 +65,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 				)}
 			>
 				{platformNames.map((platform: Platform) => (
-					<MenuItem value={platform.name}>
+					<MenuItem value={platform.name} key={platform.name}>
 					{platform.name}
 					</MenuItem>
 				))}

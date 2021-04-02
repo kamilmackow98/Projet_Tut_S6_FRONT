@@ -66,8 +66,8 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 				)}
 			>
 				{genreNames.map((genre: Genre) => (
-					<MenuItem value={genre.name}>
-					{genre.name}
+					<MenuItem value={genre.name} key={genre.name}>
+						{genre.name}
 					</MenuItem>
 				))}
 			</Select>

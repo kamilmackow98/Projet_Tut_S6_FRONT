@@ -3,7 +3,6 @@ import GameCard from "components/Game/GameCard";
 import React from "react";
 import { Game } from "types";
 
-
 interface Props {
 	games: Game[]
 }
@@ -16,7 +15,7 @@ const CardsTable: React.FC<Props> = ({
         <Grid container spacing={3} justify="center">
                 {
                     games.map((game: Game) => (
-                        <Grid item xs={12} sm={4}>
+                        <Grid key={game.id} item xs={12} sm={4}>
                             <GameCard 
                                 id={game.id}
                                 header_image={game.header_image} 

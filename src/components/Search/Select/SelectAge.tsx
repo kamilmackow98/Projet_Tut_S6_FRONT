@@ -65,8 +65,8 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 				)}
 			>
 				{age.map((age: Age) => (
-					<MenuItem value={age.age}>
-					{age.age}
+					<MenuItem value={age.age} key={age.age}>
+						{age.age}
 					</MenuItem>
 				))}
 			</Select>

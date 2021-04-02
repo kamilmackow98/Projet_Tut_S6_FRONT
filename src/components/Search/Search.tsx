@@ -240,8 +240,8 @@ const Search = () => {
                     <IconButton onClick={() => {setDisplayAsGrid(false)}}>
                         <MenuIcon color={menuIconBtnColor}/>
                     </IconButton>
-                    <IconButton>
-                        <AppsIcon color={gridIconBtnColor} onClick={() => {setDisplayAsGrid(true)}} />
+                    <IconButton onClick={() => {setDisplayAsGrid(true)}}>
+                        <AppsIcon color={gridIconBtnColor} />
                     </IconButton>
                 </Grid>
                 <Grid item xs={11} sm={12} className={classes.gridGamesFoundContainer}>
