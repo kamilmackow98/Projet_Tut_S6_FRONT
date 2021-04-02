@@ -1,6 +1,7 @@
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import userContext from "context/user/UserContext";
+import Router from "router/Router";
 import React from "react";
-import userContext from "./context/user/UserContext";
-import Router from "./router/Router";
 
 const userConfig = {
 	authenticated: true,
@@ -9,9 +10,22 @@ const userConfig = {
 const App = () => {
 	const [user, setUser] = React.useState(userConfig);
 
+	const theme = createMuiTheme({
+		palette: {
+			primary: {
+				main: "#3A79FF",
+			},
+			secondary: {
+				main: "#4bc57c"
+			}
+		},
+	});
+
 	return (
 		<userContext.Provider value={{ user, setUser }}>
-			<Router />
+			<MuiThemeProvider theme={theme}>
+				<Router />
+			</MuiThemeProvider>
 		</userContext.Provider>
 	);
 };
