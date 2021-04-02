@@ -50,6 +50,7 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 						},
 						getContentAnchorEl: null
 				}}
+				label="Categories"
 				value={categoryNamesChosen}
 				multiple
 				onChange={(event) => { 

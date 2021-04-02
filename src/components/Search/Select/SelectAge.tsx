@@ -50,6 +50,7 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 						},
 						getContentAnchorEl: null
 				}}
+				label="Ages"
 				value={ageChosen}
 				multiple
 				onChange={(event) => { 

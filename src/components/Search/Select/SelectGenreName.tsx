@@ -51,6 +51,7 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 						},
 						getContentAnchorEl: null
 				}}
+				label="Genres"
 				value={genreNamesChosen}
 				multiple
 				onChange={(event) => { 

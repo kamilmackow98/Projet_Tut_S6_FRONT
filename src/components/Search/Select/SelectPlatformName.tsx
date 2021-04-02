@@ -50,6 +50,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 						},
 						getContentAnchorEl: null
 				}}
+				label="Platforms"
 				value={platformNamesChosen}
 				multiple
 				onChange={(event) => { 
