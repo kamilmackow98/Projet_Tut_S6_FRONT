@@ -106,7 +106,6 @@ const Search = () => {
     };
 
     const handleFilter = (newSortByFilter: SortFilter) => {
-    
         const newFilters = { ...filters, sort: newSortByFilter };
         setFilters(newFilters);
         setSortByFilter(newSortByFilter);

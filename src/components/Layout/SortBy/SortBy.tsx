@@ -31,11 +31,10 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
 
 	return (
         <Grid container className={classes.sortByContainer}>
-            <Grid item xs={6} sm={2}>
+            <Grid item xs={6} sm={3}>
                 <FormControl size="small" variant="outlined" className={classes.sortBySelect}>
                     <InputLabel id="demo-simple-select-outlined-label">Sort By</InputLabel>
                     <Select
-                        label="Sort By"
                         defaultValue={filters[0].value}
                         MenuProps={{	
                                 style: { maxHeight: 300 },
@@ -47,7 +46,7 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
                                 getContentAnchorEl: null
                         }}
                         variant="outlined"
-                        input={<OutlinedInput />}
+                        input={<OutlinedInput label="Sort By" />}
                         onChange={(event) => { 
                             if (event) { 
                                 handleFilterChange(event?.target.value as string); 
