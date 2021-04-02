@@ -8,6 +8,7 @@ import Main from "../components/Main";
 import NestedRoutes from "../components/NestedRoutes";
 import NotFound from "../components/NotFound";
 import Protected from "../components/Protected";
+import Register from "../components/Register/Register";
 import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
@@ -35,6 +36,14 @@ const Router = () => {
 				<BasicLayout>
 					<Switch>
 						<Route path="/login" render={() => <Login />} />
+					</Switch>
+				</BasicLayout>
+			</Route>
+
+			<Route path={["/register"]}>
+				<BasicLayout>
+					<Switch>
+						<Route path="/register" render={() => <Register />} />
 					</Switch>
 				</BasicLayout>
 			</Route>

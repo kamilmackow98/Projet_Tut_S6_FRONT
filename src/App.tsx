@@ -3,7 +3,8 @@ import userContext from "./context/user/UserContext";
 import Router from "./router/Router";
 
 const userConfig = {
-	authenticated: true,
+	authenticated: false,
+	token: ''
 };
 
 const App = () => {

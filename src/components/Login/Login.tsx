@@ -14,14 +14,41 @@ import Container from "@material-ui/core/Container";
 import { Redirect } from "react-router-dom";
 import Copyright from "../Layout/Copyright";
 import userContext from "../../context/user/UserContext";
+import { Alert, AlertTitle } from '@material-ui/lab';
+import axios from 'axios';
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-export default function Login() {
+const Login = () => {
 	const classes = useStyles();
 	const { user } = React.useContext(userContext);
+	const [emailValue, setEmailValue] = useState('');
+	const [passValue, setPassValue] = useState('');
+	let [error, setErrorValue] = useState('');
+	let history = useHistory();
 
 	// TODO : FIND BETTER SOLUTION TO REDIRECT ?
 	if (user!.authenticated) {
 		return <Redirect to="/" />;
+	}
+	
+	const handleLogin = () => {
+
+		axios.post('http://localhost:5000/api/user/login', null, {
+			params: {
+				email: emailValue,
+				password: passValue
+			}
+		}).then((response) => {
+			if (response.data.token !== undefined) {
+				let data = response.data;
+				user!.authenticated = true;
+				user!.token = data.token;
+				history.push("/");
+			} else {
+				setErrorValue("Invalid credentials");
+			}
+		}).catch((e) => console.error(e));
 	}
 
 	return (
@@ -33,7 +60,12 @@ export default function Login() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<form className={classes.form} noValidate>
+				{error.length > 0 &&
+					<Alert severity="error">
+						<AlertTitle>Error - {error}</AlertTitle>
+					</Alert>
+				}
+				<form onSubmit={handleLogin} className={classes.form} noValidate>
 					<TextField
 						variant="outlined"
 						margin="normal"
@@ -44,6 +76,8 @@ export default function Login() {
 						name="email"
 						autoComplete="email"
 						autoFocus
+						value={emailValue}
+						onChange={(e) => setEmailValue(e.target.value)}
 					/>
 					<TextField
 						variant="outlined"
@@ -55,14 +89,16 @@ export default function Login() {
 						type="password"
 						id="password"
 						autoComplete="current-password"
+						value={passValue}
+						onChange={(e) => setPassValue(e.target.value)}
 					/>
 					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+					<Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleLogin}>
 						Sign In
 					</Button>
 					<Grid container justify={"center"}>
 						<Grid item>
-							<Link href="#" variant="body2">
+							<Link href="/register" variant="body2">
 								{"Don't have an account? Sign Up"}
 							</Link>
 						</Grid>
@@ -95,3 +131,5 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(3, 0, 2),
 	},
 }));
+
+export default Login;
