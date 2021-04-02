@@ -47,7 +47,7 @@ const Search = () => {
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
     const [filters, setFilters] = useState<Filters>(undefined);
-    const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: true });
+    const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';

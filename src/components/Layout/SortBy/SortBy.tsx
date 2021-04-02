@@ -8,8 +8,8 @@ interface Props {
 
 const SortBy: React.FC<Props> = ({ onFilterChange }) => {
     
-    const [filterBy, setFilterBy] = useState<string | undefined>(undefined);
-    const [isASC, setIsASC] = useState<boolean>(true);
+    const [filterBy, setFilterBy] = useState<string | undefined>("release_date");
+    const [isASC, setIsASC] = useState<boolean>(false);
 
     const handleFilterChange = (filter: string) => {
         onFilterChange({ sortBy: filter, isASC: isASC });
@@ -66,12 +66,12 @@ const SortBy: React.FC<Props> = ({ onFilterChange }) => {
             <FormControlLabel
                 className={classes.sortBySwitch}
                 control={
-                <Switch
-                    checked={isASC}
-                    onChange={() => { setIsASC(!isASC); handleSwitchChange(!isASC); }}
-                    name="checkedB"
-                    color="secondary"
-                />
+                    <Switch
+                        checked={isASC}
+                        onChange={() => { setIsASC(!isASC); handleSwitchChange(!isASC); }}
+                        name="checkedB"
+                        color="secondary"
+                    />
                 }
                 label="ASC"
             />
