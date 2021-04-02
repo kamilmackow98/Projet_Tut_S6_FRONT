@@ -9,15 +9,12 @@ import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Copyright from "../Layout/Copyright";
+import { makeStyles } from "@material-ui/core/styles";
 import userContext from "../../context/user/UserContext";
 import { Alert, AlertTitle } from '@material-ui/lab';
-import { useState } from "react";
+import React, { useState } from "react";
 
 const Login = () => {
 	const classes = useStyles();
@@ -26,7 +23,6 @@ const Login = () => {
 	const [emailValue, setEmailValue] = useState('');
 	const [passValue, setPassValue] = useState('');
 	let [error, setErrorValue] = useState('');
-	let history = useHistory();
 
 	// TODO : FIND BETTER SOLUTION TO REDIRECT ?
 	if (user!.authenticated) {
@@ -87,7 +83,6 @@ const Login = () => {
 						name="password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
 						value={passValue}
 						onChange={(e) => setPassValue(e.target.value)}
 					/>
