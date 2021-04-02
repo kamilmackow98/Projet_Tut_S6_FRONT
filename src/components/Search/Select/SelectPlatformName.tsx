@@ -9,9 +9,9 @@ interface Props {
 
 const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 
-	const [categoryNames, setPlatformNames] = useState<Platform[]>([]);
-	const [categoryNamePagination, setPlatformNamePagination] = useState(1);
-	const [categoryNamesChosen, setPlatformNamesChosen] = useState<Platform[]>([]);
+	const [platformNames, setPlatformNames] = useState<Platform[]>([]);
+	const [platformNamePagination, setPlatformNamePagination] = useState(1);
+	const [platformNamesChosen, setPlatformNamesChosen] = useState<Platform[]>([]);
 
 	const classes = useStyles();
    
@@ -23,24 +23,17 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 			setPlatformNames(platforms);
 		})
 		.catch((e) => console.error(e));
-
-		const menu = document.getElementById('select-multiple-native');
-		console.log(menu);
-		menu?.addEventListener('scroll', (event) => {
-			console.log(event);
-			console.log('AYO');
-		});
 	}, []);
 
 	useEffect(() => {
-		fetch(`/api/platforms?page=${categoryNamePagination}`)
+		fetch(`/api/platforms?page=${platformNamePagination}`)
 		.then((res) => res.json())
 		.then((platforms: Platform[]) => {
-			const extendedPlatforms: Platform[] = categoryNames.concat(platforms);
+			const extendedPlatforms: Platform[] = platformNames.concat(platforms);
 			setPlatformNames(extendedPlatforms);
 		})
 		.catch((e) => console.error(e));
-	}, [categoryNamePagination]);
+	}, [platformNamePagination]);
 	
 	return (
 		<FormControl size="small" variant="outlined" className={classes.selectForm}>
@@ -50,8 +43,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 						PaperProps: {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
-									setPlatformNamePagination(categoryNamePagination + 1);
-									console.log('yooo');
+									setPlatformNamePagination(platformNamePagination + 1);
 								}
 							}
 						},
@@ -63,7 +55,7 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 						},
 						getContentAnchorEl: null
 				}}
-				value={categoryNamesChosen}
+				value={platformNamesChosen}
 				multiple
 				onChange={(event) => { 
 					onChangePlatforms(event.target.value);
@@ -77,9 +69,9 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 					</div>
 				)}
 			>
-				{categoryNames.map((category: Platform) => (
-					<MenuItem value={category.name}>
-					{category.name}
+				{platformNames.map((platform: Platform) => (
+					<MenuItem value={platform.name}>
+					{platform.name}
 					</MenuItem>
 				))}
 			</Select>

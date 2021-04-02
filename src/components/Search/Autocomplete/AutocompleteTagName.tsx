@@ -12,38 +12,53 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 
 	const [tagNames, setTagNames] = useState<Tag[]>([]);
     const [inputTagNameSearch, setInputTagNameSearch] = useState("");
-    const [tagNamePagination, setTagNamePagination] = useState(1);
+	const [tagNamePagination, setTagNamePagination] = useState(1);
+	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
+
+	const tagNamesRef = React.useRef(tagNames);
+	const inputTagNameSearchRef = React.useRef(inputTagNameSearch);
+	const firstLaunchRef = React.useRef(firstLaunch);
    
 	useEffect(() => {
 		fetch(`/api/tags`)
 		.then((res) => res.json())
 		.then((tags: Tag[]) => {
-			console.log(tags);
 			setTagNames(tags);
 		})
 		.catch((e) => console.error(e));
+
+		setFirstLaunch(false);
 	}, []);
 
 	useEffect(() => {
-		setTagNamePagination(0);
-		setTagNames([]);
-		fetch(`/api/tags?name=${inputTagNameSearch}`)
-		.then((res) => res.json())
-		.then((tags: Tag[]) => {
-			console.log(tags);
-			setTagNames(tags);
-		})
-		.catch((e) => console.error(e));
+		tagNamesRef.current = tagNames;
+		inputTagNameSearchRef.current = inputTagNameSearch;
+		firstLaunchRef.current = firstLaunch;
+	});
+
+	useEffect(() => {
+		if (!firstLaunchRef.current) {
+			setTagNamePagination(1);
+			setTagNames([]);
+			fetch(`/api/tags?name=${inputTagNameSearch}`)
+			.then((res) => res.json())
+			.then((tags: Tag[]) => {
+				setTagNames(tags);
+			})
+			.catch((e) => console.error(e));
+		}
 	}, [inputTagNameSearch]);
 
 	useEffect(() => {
-		fetch(`/api/tags?name=${inputTagNameSearch}&page=${tagNamePagination}`)
-		.then((res) => res.json())
-		.then((tags: Tag[]) => {
-			const extendedTags: Tag[] = tagNames.concat(tags);
-			setTagNames(extendedTags);
-		})
-		.catch((e) => console.error(e));
+		if (!firstLaunchRef.current && tagNamePagination !== 1) {
+			fetch(`/api/tags?name=${inputTagNameSearchRef.current}&page=${tagNamePagination}`)
+			.then((res) => res.json())
+			.then((tags: Tag[]) => {
+				const extendedTags: Tag[] = tagNamesRef.current.concat(tags);
+				setTagNames(extendedTags);
+			})
+			.catch((e) => console.error(e));
+		}
 	}, [tagNamePagination]);
 	
 	const handleChange = debounce(function(value: string) { 
@@ -58,6 +73,7 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 				onScroll: (event: React.SyntheticEvent) => {
 					const listboxNode = event.currentTarget;
 					if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+						console.log(tagNamePagination);
 						setTagNamePagination(tagNamePagination + 1);
 					}
 				}

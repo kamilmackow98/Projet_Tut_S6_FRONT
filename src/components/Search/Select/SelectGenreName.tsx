@@ -10,9 +10,9 @@ interface Props {
 
 const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 
-	const [categoryNames, setGenreNames] = useState<Genre[]>([]);
-	const [categoryNamePagination, setGenreNamePagination] = useState(1);
-	const [categoryNamesChosen, setGenreNamesChosen] = useState<Genre[]>([]);
+	const [genreNames, setGenreNames] = useState<Genre[]>([]);
+	const [genreNamePagination, setGenreNamePagination] = useState(1);
+	const [genreNamesChosen, setGenreNamesChosen] = useState<Genre[]>([]);
 
 	const classes = useStyles();
    
@@ -24,24 +24,17 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 			setGenreNames(genres);
 		})
 		.catch((e) => console.error(e));
-
-		const menu = document.getElementById('select-multiple-native');
-		console.log(menu);
-		menu?.addEventListener('scroll', (event) => {
-			console.log(event);
-			console.log('AYO');
-		});
 	}, []);
 
 	useEffect(() => {
-		fetch(`/api/genres?page=${categoryNamePagination}`)
+		fetch(`/api/genres?page=${genreNamePagination}`)
 		.then((res) => res.json())
 		.then((genres: Genre[]) => {
-			const extendedGenres: Genre[] = categoryNames.concat(genres);
+			const extendedGenres: Genre[] = genreNames.concat(genres);
 			setGenreNames(extendedGenres);
 		})
 		.catch((e) => console.error(e));
-	}, [categoryNamePagination]);
+	}, [genreNamePagination]);
 	
 	return (
 		<FormControl size="small"  variant="outlined" className={classes.selectForm}>
@@ -51,8 +44,7 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 						PaperProps: {
 							onScroll: (event: any) => {
 								if ((event.target.scrollTop + event.target.clientHeight) === event.target.scrollHeight) {
-									setGenreNamePagination(categoryNamePagination + 1);
-									console.log('yooo');
+									setGenreNamePagination(genreNamePagination + 1);
 								}
 							}
 						},
@@ -64,7 +56,7 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 						},
 						getContentAnchorEl: null
 				}}
-				value={categoryNamesChosen}
+				value={genreNamesChosen}
 				multiple
 				onChange={(event) => { 
 					onChangeGenres(event.target.value);
@@ -78,9 +70,9 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 					</div>
 				)}
 			>
-				{categoryNames.map((category: Genre) => (
-					<MenuItem value={category.name}>
-					{category.name}
+				{genreNames.map((genre: Genre) => (
+					<MenuItem value={genre.name}>
+					{genre.name}
 					</MenuItem>
 				))}
 			</Select>

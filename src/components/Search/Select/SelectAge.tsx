@@ -23,13 +23,6 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 			setAge(ages);
 		})
 		.catch((e) => console.error(e));
-
-		const menu = document.getElementById('select-multiple-native');
-		console.log(menu);
-		menu?.addEventListener('scroll', (event) => {
-			console.log(event);
-			console.log('AYO');
-		});
 	}, []);
 
 	useEffect(() => {

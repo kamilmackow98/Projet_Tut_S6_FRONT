@@ -23,13 +23,6 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 			setCategoryNames(categories);
 		})
 		.catch((e) => console.error(e));
-
-		const menu = document.getElementById('select-multiple-native');
-		console.log(menu);
-		menu?.addEventListener('scroll', (event) => {
-			console.log(event);
-			console.log('AYO');
-		});
 	}, []);
 
 	useEffect(() => {

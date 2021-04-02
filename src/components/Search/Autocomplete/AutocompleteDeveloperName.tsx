@@ -12,38 +12,53 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 
 	const [developerNames, setDeveloperNames] = useState<Developer[]>([]);
     const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
-    const [developerNamePagination, setDeveloperNamePagination] = useState(1);
+	const [developerNamePagination, setDeveloperNamePagination] = useState(1);
+	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
+
+	const developerNamesRef = React.useRef(developerNames);
+	const inputDeveloperNameSearchRef = React.useRef(inputDeveloperNameSearch);
+	const firstLaunchRef = React.useRef(firstLaunch);
    
 	useEffect(() => {
 		fetch(`/api/developers`)
 		.then((res) => res.json())
 		.then((developers: Developer[]) => {
-			console.log(developers);
 			setDeveloperNames(developers);
 		})
 		.catch((e) => console.error(e));
+
+		setFirstLaunch(false);
 	}, []);
 
 	useEffect(() => {
-		setDeveloperNamePagination(0);
-		setDeveloperNames([]);
-		fetch(`/api/developers?name=${inputDeveloperNameSearch}`)
-		.then((res) => res.json())
-		.then((developers: Developer[]) => {
-			console.log(developers);
-			setDeveloperNames(developers);
-		})
-		.catch((e) => console.error(e));
+		developerNamesRef.current = developerNames;
+		inputDeveloperNameSearchRef.current = inputDeveloperNameSearch;
+		firstLaunchRef.current = firstLaunch;
+	});
+
+	useEffect(() => {
+		if (!firstLaunchRef.current) {
+			setDeveloperNamePagination(1);
+			setDeveloperNames([]);
+			fetch(`/api/developers?name=${inputDeveloperNameSearch}`)
+			.then((res) => res.json())
+			.then((developers: Developer[]) => {
+				setDeveloperNames(developers);
+			})
+			.catch((e) => console.error(e));
+		}
 	}, [inputDeveloperNameSearch]);
 
 	useEffect(() => {
-		fetch(`/api/developers?name=${inputDeveloperNameSearch}&page=${developerNamePagination}`)
-		.then((res) => res.json())
-		.then((developers: Developer[]) => {
-			const extendedDevelopers: Developer[] = developerNames.concat(developers);
-			setDeveloperNames(extendedDevelopers);
-		})
-		.catch((e) => console.error(e));
+		if (!firstLaunchRef.current && developerNamePagination !== 1) {
+			fetch(`/api/developers?name=${inputDeveloperNameSearchRef.current}&page=${developerNamePagination}`)
+			.then((res) => res.json())
+			.then((developers: Developer[]) => {
+				const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
+				setDeveloperNames(extendedDevelopers);
+			})
+			.catch((e) => console.error(e));
+		}
 	}, [developerNamePagination]);
 	
 	const handleChange = debounce(function(value: string) { 
@@ -58,12 +73,14 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 				onScroll: (event: React.SyntheticEvent) => {
 					const listboxNode = event.currentTarget;
 					if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+						console.log(developerNamePagination);
 						setDeveloperNamePagination(developerNamePagination + 1);
 					}
 				}
             }}
             multiple
 			freeSolo
+			id="combo-box-developer-name"
 			options={developerNames}
 			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Developer)[]) => { 
@@ -76,3 +93,4 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 };
 
 export default AutocompleteDeveloperName;
+
