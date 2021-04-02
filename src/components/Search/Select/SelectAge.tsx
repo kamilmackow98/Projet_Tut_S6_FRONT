@@ -34,6 +34,7 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 		<FormControl size="small" variant="outlined" className={classes.selectForm}>
         	<InputLabel id="demo-simple-select-outlined-label">Ages</InputLabel>
 			<Select
+				label="Ages"
 				MenuProps={{	
 						PaperProps: {
 							onScroll: (event: any) => {

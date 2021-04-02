@@ -4,6 +4,11 @@ export interface UserType {
 	authenticated: boolean;
 };
 
+export type SortByFilter = {
+    isASC: boolean,
+    sortBy: string
+}
+
 type Screenshot = {
     id: number,
     path_thumbnail: string,

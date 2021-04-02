@@ -9,9 +9,10 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, GameSearchResult } from "types";
+import { Game, Filters, DateFilter, GameSearchResult, SortByFilter } from "types";
 import { useStyles } from "./Search.styles";
 import CustomTable from "components/Layout/Table/Table";
+import SortBy from "components/Layout/SortBy/SortBy";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -100,7 +101,31 @@ const Search = () => {
             console.error(e); 
             setGamesFound([]);
         });
-    }
+    };
+
+    const handleFilter = (sortByFilter: SortByFilter) => {
+    
+        const newFilters = { ...filters, sortBy: sortByFilter }
+
+        fetch(`/api/games`, {
+            method: "POST",
+            body: JSON.stringify(newFilters),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => res.json())
+        .then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(resJson.games);
+            setTotalNumberOfPages(resJson.numberOfPages);
+            setCurrentPage(Number(resJson.currentPage));
+        })
+        .catch((e) => { 
+            console.error(e); 
+            setGamesFound([]);
+        });
+    } 
 
     const handlePaginationClick = (page: number) => {
         fetch(`/api/games?page=${page}`, {
@@ -235,8 +260,9 @@ const Search = () => {
                 </Accordion>
             </Grid>
             
-            <Grid container>
+            <Grid container justify="center">
                 <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                    <SortBy onFilterChange={(sortByFilter: SortByFilter) => handleFilter(sortByFilter)} />
                     <IconButton onClick={() => {setDisplayAsGrid(false)}}>
                         <MenuIcon color={menuIconBtnColor}/>
                     </IconButton>
