@@ -80,7 +80,6 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
     if (items.length < 10) {
         // Fill items in order to render properly ( a bit sketchy but I got no time anymore, tired :( )
         for (let i = 0; i < 20 - items.length; i++) {
-            console.log(i);
             const emptyScreenshot: Screenshot = { id: -1, path_thumbnail: '', path_full: '' };
             items.push(emptyScreenshot);
         }

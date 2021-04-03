@@ -1,13 +1,13 @@
 import { Divider, Grid } from "@material-ui/core";
-import React from "react";
-import ChipList from "./ChipList";
+import React, { useEffect } from "react";
+import { TagCloud } from 'react-tagcloud';
 
 interface Props {
     description: string,
-    tags: string[],
+    tags: any[],
     developer: string[],
     publisher: string[]
-}
+};
 
 const BasicInfo: React.FC<Props> = ({
     description,
@@ -15,7 +15,11 @@ const BasicInfo: React.FC<Props> = ({
     developer,
     publisher,
 }) => {
-
+    const options = {
+        luminosity: 'light',
+        hue: 'blue',
+    };
+      
     return (
         <Grid item>
             <p>{description}</p>
@@ -25,7 +29,13 @@ const BasicInfo: React.FC<Props> = ({
             <p><strong>Publisher: </strong>{publisher.join(", ")}</p>
             <Divider/>
 
-            <ChipList color={'primary'} tags={tags} />
+            <TagCloud
+                minSize={12}
+                maxSize={35}
+                tags={tags}
+                colorOptions={options}
+                onClick={(tag: any) => alert(`'${tag.value}' was selected!`)}
+            />
         </Grid>
     )
 }
