@@ -49,8 +49,7 @@ const Router: React.FC = () => {
 						<Route path="/components" render={() => <TestComponents />} />
 						<Route
 							path="/game/:id"
-							render={(routeProps) =>
-								<GameInfo match={routeProps.match} />}
+							render={(routeProps) => <GameInfo id={Number(routeProps.match.params.id)} />}
 						/>
 					</Switch>
 				</GlobalLayout>

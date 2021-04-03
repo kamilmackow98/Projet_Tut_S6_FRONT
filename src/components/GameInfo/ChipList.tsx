@@ -1,23 +1,25 @@
 import React from "react";
-import {Chip, Grid} from "@material-ui/core";
+import { Chip, Grid } from "@material-ui/core";
+import { useStyles } from "./GameInfo.styles";
 
-function ChipList(props: any) {
+interface Props {
+    tags: string[],
+    color?: "primary" | "secondary" | "default" | undefined
+};
 
-    // array of Grid and Chip elements
-    let elements: JSX.Element[] = [];
-    for (let i = 0; i < props.elements.length; i++) {
-        elements.push(
-            <Grid item key={i}>
-                <Chip label={props.elements[i]} color={props.color} />
-            </Grid>
-        )
-    }
+const ChipList: React.FC<Props> = ({ tags, color }) => {
 
+    const classes = useStyles();
+    
     return (
-        <Grid item container spacing={1} style={props.style}>
-            {elements}
+        <Grid className={classes.chips} item container spacing={1}>
+            {tags.map((tag) => (
+                <Grid item key={tag}>
+                    <Chip color={color} label={tag} />
+                </Grid>
+            ))}
         </Grid>
     )
-}
+};
 
-export default ChipList
+export default ChipList;

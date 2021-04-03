@@ -5,7 +5,7 @@ import Loader from "./Layout/Loader/Loader";
 import Table from "./Layout/Table/Table";
 
 const TestComponents: React.FC = () => {
-	// TODO : In production change "any" type to the correct response data (CompleteGameInfo by default)
+	// TODO : In production change "any" type to the correct response data (Game by default)
 	const dummyData: any[] = [
 		{
 			id: 10,
