@@ -1,9 +1,7 @@
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
-import Checkbox from "@material-ui/core/Checkbox";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
@@ -11,45 +9,25 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import { Redirect } from "react-router-dom";
 import Copyright from "../Layout/Copyright";
-import { makeStyles } from "@material-ui/core/styles";
 import userContext from "../../context/user/UserContext";
-import { Alert, AlertTitle } from '@material-ui/lab';
 import React, { useState } from "react";
+import { useStyles } from "./Login.styles";
 
-const Login = () => {
+const Login: React.FC = () => {
 	const classes = useStyles();
-
 	const { user } = React.useContext(userContext);
-	const [emailValue, setEmailValue] = useState('');
-	const [passValue, setPassValue] = useState('');
-	let [error, setErrorValue] = useState('');
 
-	// TODO : FIND BETTER SOLUTION TO REDIRECT ?
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
 	if (user!.authenticated) {
 		return <Redirect to="/" />;
 	}
-	
-	const handleLogin = () => {
 
-		// axios.post('http://localhost:5000/api/user/login', null, {
-		// 	params: {
-		// 		email: emailValue,
-		// 		password: passValue
-		// 	}
-		// }).then((response) => {
-		// 	if (response.data.token !== undefined) {
-		// 		let data = response.data;
-		// 		user!.authenticated = true;
-		// 		user!.token = data.token;
-		// 		history.push("/");
-		// 	} else {
-		// 		setErrorValue("Invalid credentials");
-		// 	}
-		// }).catch((e) => console.error(e));
-	}
+	const handleSubmit = () => {};
 
 	return (
-		<Container maxWidth="xs">
+		<Container className={classes.root} maxWidth="xs">
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
@@ -57,14 +35,11 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				{error.length > 0 &&
-					<Alert severity="error">
-						<AlertTitle>Error - {error}</AlertTitle>
-					</Alert>
-				}
-				<form onSubmit={handleLogin} className={classes.form} noValidate>
+				<form onSubmit={handleSubmit} className={classes.form}>
 					<TextField
-						label="Email Address"
+						onChange={(e) => setEmail(e.target.value)}
+						value={email}
+						label="Email address"
 						autoComplete="email"
 						variant="outlined"
 						margin="normal"
@@ -72,10 +47,10 @@ const Login = () => {
 						id="email"
 						fullWidth
 						autoFocus
-						value={emailValue}
-						onChange={(e) => setEmailValue(e.target.value)}
 					/>
 					<TextField
+						onChange={(e) => setPassword(e.target.value)}
+						value={password}
 						autoComplete="current-password"
 						variant="outlined"
 						label="Password"
@@ -83,11 +58,15 @@ const Login = () => {
 						name="password"
 						type="password"
 						id="password"
-						value={passValue}
-						onChange={(e) => setPassValue(e.target.value)}
+						fullWidth
 					/>
-					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button fullWidth variant="contained" color="primary" className={classes.submit} onClick={handleLogin}>
+					<Button
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+						onClick={handleSubmit}
+					>
 						Sign In
 					</Button>
 					<Grid container justify={"center"}>
@@ -104,26 +83,6 @@ const Login = () => {
 			</Box>
 		</Container>
 	);
-}
-
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(6),
-		flexDirection: "column",
-		alignItems: "center",
-		display: "flex",
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		marginTop: theme.spacing(1),
-		width: "100%", // Fix IE 11 issue.
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
+};
 
 export default Login;
