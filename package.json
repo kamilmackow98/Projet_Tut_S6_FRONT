@@ -23,6 +23,7 @@
     "react-dom": "^17.0.1",
     "react-elastic-carousel": "^0.11.4",
     "react-material-ui-carousel": "^2.2.1",
+    "react-player": "^2.9.0",
     "react-responsive-carousel": "^3.2.18",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",

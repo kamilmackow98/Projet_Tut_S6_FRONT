@@ -46,5 +46,14 @@ export const useStyles = makeStyles((theme) => ({
     },
     carouselContainer: {
         marginTop: "10px"
+    },
+    releaseDateContainer: {
+        margin: "0",
+        padding: "0"
+    },
+    releaseDateTitle: {
+        margin: "0",
+        padding: "0",
+        marginLeft: "5px"
     }
 }));

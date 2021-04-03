@@ -44,17 +44,17 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         name={gameData.name}
                         headerImage={gameData.header_image}
                         platforms={gameData.platforms}
+                        releaseDate={gameData.release_date}
                     />
                 </Grid>
                 
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={12} md={7}>
-                        <CarouselWrapper screenshots={gameData.screenshots} />
+                        <CarouselWrapper screenshots={gameData.screenshots} movies={gameData.movies} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={5}>
                         <BasicInfo
                             description={gameData.short_description}
-                            releaseDate={gameData.release_date}
                             developer={gameData.developer}
                             publisher={gameData.publisher}
                             tags={gameData.steamspy_tags}

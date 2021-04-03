@@ -8,7 +8,7 @@ export type Screenshot = {
     path_full: string
 };
 
-type Movie = {
+export type Movie = {
     id: number,
     name: string,
     thumbnail: string,

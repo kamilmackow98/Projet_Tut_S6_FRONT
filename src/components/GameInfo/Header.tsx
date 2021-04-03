@@ -6,12 +6,14 @@ import { useStyles } from "./GameInfo.styles";
 interface Props {
     headerImage: string,
     name: string,
-    platforms: string[]
+    platforms: string[],
+    releaseDate: Date
 };
 
-const Header: React.FC<Props> = ({ headerImage, name, platforms }) => {
+const Header: React.FC<Props> = ({ headerImage, name, platforms, releaseDate }) => {
 
     const classes = useStyles(); 
+    const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
     
     return (
         <Grid container spacing={0} justify="center">
@@ -22,6 +24,9 @@ const Header: React.FC<Props> = ({ headerImage, name, platforms }) => {
                 <Grid className={classes.titleContainer} container direction="column">
                     <Grid item sm={12}>
                         <h1 className={classes.headerName}>{name}</h1>
+                    </Grid>
+                    <Grid className={classes.releaseDateContainer} item sm={12}>
+                        <h3 className={classes.releaseDateTitle}>Released: {(new Date(releaseDate)).toLocaleDateString('fr-FR', options)}</h3>
                     </Grid>
                     <Grid item sm={12}>
                         <ChipList color={'secondary'} tags={platforms} />
