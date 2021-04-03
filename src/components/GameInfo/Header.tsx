@@ -26,7 +26,7 @@ const Header: React.FC<Props> = ({ headerImage, name, platforms, releaseDate }) 
                         <h1 className={classes.headerName}>{name}</h1>
                     </Grid>
                     <Grid className={classes.releaseDateContainer} item sm={12}>
-                        <h3 className={classes.releaseDateTitle}>Released: {(new Date(releaseDate)).toLocaleDateString('fr-FR', options)}</h3>
+                        <h3 className={classes.releaseDateTitle}>Released: {(new Date(releaseDate)).toLocaleDateString('en-EN', options)}</h3>
                     </Grid>
                     <Grid item sm={12}>
                         <ChipList color={'secondary'} tags={platforms} />

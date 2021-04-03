@@ -22,32 +22,37 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
     const [Carousel, setCarousel] = useState<any>();
 
     const responsive: any = {
-        0: { items: 5 },
+        0: { items: 4 },
         568: { items: 10 },
         1024: { items: 10 },
     };
     
     const slideTo = (i: any) => { setCurrentIndex(i); setCurrentPlayingId(null); };
     const thumbItem = (item: Screenshot | Movie, i: number) => (
-        <img 
-            onClick={() => slideTo(i)} 
-            className={classes.thumbnail} 
-            src={(item.hasOwnProperty('path_full')) ? (item as Screenshot).path_full : (item as Movie).thumbnail} 
-            alt="Screenshot" 
-            onDragStart={handleDragStart} 
-        />
+        <div className={classes.screenshotContainer}>
+            <img 
+                onClick={() => slideTo(i)} 
+                className={classes.thumbnail} 
+                src={(item.hasOwnProperty('path_full')) ? (item as Screenshot).path_full : (item as Movie).thumbnail} 
+                alt="Screenshot" 
+                onDragStart={handleDragStart} 
+            />
+        </div>
+        
     );
 
     const handleDragStart = (e: any) => e.preventDefault();
     const onSlideChanged = (e: any) => { setCurrentIndex(e.item); }
 
     const screenshotsJSX: JSX.Element[] = screenshots?.map((screenshot: Screenshot) => (
-        <img 
-            className={classes.carouselImage} 
-            src={screenshot.path_full} 
-            alt="Screenshot" 
-            onDragStart={handleDragStart} 
-        />
+        <div className={classes.screenshotContainer}>
+            <img 
+                className={classes.carouselImage} 
+                src={screenshot.path_full} 
+                alt="Screenshot" 
+                onDragStart={handleDragStart} 
+            />
+        </div>
     ));
 
     const moviesJSX: JSX.Element[] = movies ? movies.map((movie: Movie) => (
@@ -72,12 +77,23 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
     }
     items = items.concat(screenshots);
 
+    if (items.length < 10) {
+        // Fill items in order to render properly ( a bit sketchy but I got no time anymore, tired :( )
+        for (let i = 0; i < 20 - items.length; i++) {
+            console.log(i);
+            const emptyScreenshot: Screenshot = { id: -1, path_thumbnail: '', path_full: '' };
+            items.push(emptyScreenshot);
+        }
+    }
+
     return (
         <Grid container className={classes.carouselContainer}>
             <Grid item xs={12} md={12}>
                 <AliceCarousel 
                     mouseTracking
                     infinite
+                    autoPlay
+                    autoPlayInterval={5000}
                     disableDotsControls={true}
                     activeIndex={currentIndex}
                     onSlideChanged={onSlideChanged}

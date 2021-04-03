@@ -21,9 +21,12 @@ export const useStyles = makeStyles((theme) => ({
         width: "100%"
     },
     screenshotContainer: {
-        display: "flex", 
-        backgroundColor: "black",
-        height: "100%"
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        alignContent: "flex-start",
+        alignItems: "flex-start",
+        justifyContent: "flex-start"
     },
     chips: {
         marginTop: "10px",
