@@ -5,7 +5,9 @@ import { Movie, Screenshot } from "types";
 import { useStyles } from "../GameInfo.styles";
 import ReactPlayer from 'react-player';
 
+
 import '../../../../node_modules/react-alice-carousel/lib/alice-carousel.css';
+import './CarouselWrapper.modules.css';
 
 interface Props {
     screenshots: Screenshot[],
