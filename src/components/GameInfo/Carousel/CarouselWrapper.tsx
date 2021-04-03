@@ -26,17 +26,20 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
     };
     
     const slideTo = (i: any) => { setCurrentIndex(i); setCurrentPlayingId(null); };
-    const thumbItem = (item: any, i: any) => (<img onClick={() => slideTo(i)} className={classes.thumbnail} src={screenshots[i].path_full} alt="Screenshot" onDragStart={handleDragStart} />);
-    let thumbVideos;
-
-    if (movies) {
-        thumbVideos = (item: any, i: any) => (<img onClick={() => slideTo(i)} className={classes.thumbnail} src={movies[i].thumbnail} alt="Screenshot" onDragStart={handleDragStart} />);
-    }
+    const thumbItem = (item: Screenshot | Movie, i: number) => (
+        <img 
+            onClick={() => slideTo(i)} 
+            className={classes.thumbnail} 
+            src={(item.hasOwnProperty('path_full')) ? (item as Screenshot).path_full : (item as Movie).thumbnail} 
+            alt="Screenshot" 
+            onDragStart={handleDragStart} 
+        />
+    );
 
     const handleDragStart = (e: any) => e.preventDefault();
     const onSlideChanged = (e: any) => { setCurrentIndex(e.item); }
 
-    const items: any = screenshots?.map((screenshot: Screenshot) => (
+    const screenshotsJSX: JSX.Element[] = screenshots?.map((screenshot: Screenshot) => (
         <img 
             className={classes.carouselImage} 
             src={screenshot.path_full} 
@@ -45,17 +48,27 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
         />
     ));
 
-    const videos: any = movies?.map((movie: Movie) => (
-        <div onDragStart={handleDragStart}>
+    const moviesJSX: JSX.Element[] = movies ? movies.map((movie: Movie) => (
+        <div className={classes.playerWrapper} onDragStart={handleDragStart}>
             <ReactPlayer 
                 playing={movie.id === currentPlayingId} 
                 controls={true} 
                 url={movie.webm[480]} 
+                className={classes.reactPlayer}
+                width='100%'
+                height='100%'
                 onPlay={() => { setCurrentPlayingId(movie.id); }}
                 onPause={() => { setCurrentPlayingId(null); }} 
             />
         </div>
-    ));
+    )) : [];
+
+    const itemsJSX: JSX.Element[] = moviesJSX.concat(screenshotsJSX);
+    let items: Array<Movie | Screenshot> = [];
+    if (movies) {
+        items = items.concat(movies);
+    }
+    items = items.concat(screenshots);
 
     return (
         <Grid container className={classes.carouselContainer}>
@@ -64,10 +77,9 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
                     mouseTracking
                     infinite
                     disableDotsControls={true}
-                    disableButtonsControls={true}
                     activeIndex={currentIndex}
                     onSlideChanged={onSlideChanged}
-                    items={videos}
+                    items={itemsJSX}
                     ref={(el) => { setCarousel(el) }}
                 />
             </Grid>
@@ -78,7 +90,7 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
                     disableButtonsControls={true}
                     disableDotsControls={true}
                     responsive={responsive}
-                    items={videos.map(thumbItem)}
+                    items={items.map(thumbItem)}
                 />
             </Grid>
         </Grid>

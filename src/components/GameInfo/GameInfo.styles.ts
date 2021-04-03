@@ -17,8 +17,13 @@ export const useStyles = makeStyles((theme) => ({
         marginLeft: "5px"
     },
     carouselImage: {
-        height: "300px",
+        height: "100%",
         width: "100%"
+    },
+    screenshotContainer: {
+        display: "flex", 
+        backgroundColor: "black",
+        height: "100%"
     },
     chips: {
         marginTop: "10px",
@@ -55,5 +60,14 @@ export const useStyles = makeStyles((theme) => ({
         margin: "0",
         padding: "0",
         marginLeft: "5px"
+    },
+    playerWrapper: {
+        position: "relative",
+        paddingTop: "56.25%" /* Player ratio: 100 / (1280 / 720) */
+    },
+    reactPlayer: {
+        position: "absolute",
+        top: 0,
+        left: 0
     }
 }));
