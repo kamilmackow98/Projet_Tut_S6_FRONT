@@ -34,7 +34,6 @@ const BasicInfo: React.FC<Props> = ({
                 maxSize={35}
                 tags={tags}
                 colorOptions={options}
-                onClick={(tag: any) => alert(`'${tag.value}' was selected!`)}
             />
         </Grid>
     )
