@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Divider, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CarouselWrapper from "./Carousel/CarouselWrapper";
 import BasicInfo from "./BasicInfo";
 import PegiRating from "./ReviewRatingBlock/PegiRating";

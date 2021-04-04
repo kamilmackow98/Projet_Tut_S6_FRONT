@@ -97,5 +97,12 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	scoreContainer: {
 		marginBottom: "10px"
+	},
+	headerImageContainer: {
+	},
+	addToLibraryContainer: {
+		display: "flex",
+		justifyContent: "end",
+		alignItems: "flex-start"
 	}
 }));
