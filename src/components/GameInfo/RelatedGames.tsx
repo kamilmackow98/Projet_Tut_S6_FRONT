@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Divider, Paper, Typography } from "@material-ui/core";
-import GameCard from "../Game/GameCard";
+import GameCard from "../Game/Card/GameCard";
 import Carousel from 'react-elastic-carousel'
 import { Game } from "types";
 
@@ -29,6 +29,7 @@ const RelatedGames: React.FC<Props> = ({ games }) => {
                     {games.map((game: Game) => (
                         <GameCard 
                             key={game.id}
+                            id={game.id}
                             name = {game.name}
                             header_image = {game.header_image}
                             disableAnimation = {true}

@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Divider, Paper } from "@material-ui/core";
 import { useStyles } from "../GameInfo.styles";
 import ChipList from "../ChipList";
+import GameScore from "components/Game/Score/GameScore";
 
 interface Props {
     positiveRatings: number,
@@ -18,10 +19,10 @@ const ReviewRatingBlock: React.FC<Props> = ({ positiveRatings, negativeRatings, 
     return (
         <Paper variant="outlined" className={classes.card}>
             <Box p={1}>
-                <p className={`${ratingPercent} > 50 ? ${classes.greenText} : ${classes.redText}`}>
-                    {ratingPercent}% positive reviews
-                </p>
-                <Divider />
+                <div className={classes.scoreContainer}>
+                    <GameScore score={ratingPercent} />
+                </div>            
+                <Divider/>
                 <p>Genres: </p>
                 <ChipList color={'primary'} tags={genres} />
                 <Divider />

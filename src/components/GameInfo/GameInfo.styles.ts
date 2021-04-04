@@ -94,5 +94,8 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	noGameFoundImage: {
 		height: "150px"
+	},
+	scoreContainer: {
+		marginBottom: "10px"
 	}
 }));
