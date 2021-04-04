@@ -1,5 +1,5 @@
 import { Divider, Grid } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { TagCloud } from 'react-tagcloud';
 
 interface Props {
