@@ -1,5 +1,12 @@
-import { Rule } from "types";
+import {
+	ErrorMessage,
+	LoginFormInputs,
+	RegisterFormInputs,
+	Rule,
+	Rules,
+} from "types";
 import { emailRegex } from "utils/misc";
+import { rules } from "./rules";
 
 export const isValid = (value: string, rule: Rule) => {
 	value = value.trim();
@@ -44,4 +51,23 @@ export const isEmailUnique = async (value: string) => {
 		.catch((e) => console.error(e));
 
 	return isUnique;
+};
+
+export const checkRules = (fields: LoginFormInputs | RegisterFormInputs) => {
+	const errorsCheck: Array<Partial<ErrorMessage>> = [];
+
+	for (const [key, value] of Object.entries(fields)) {
+		const rulesKey = key as keyof Rules;
+		const rulesArray = rules[rulesKey];
+
+		if (rulesArray) {
+			rulesArray.forEach((rule) => {
+				if (!isValid(value, rule)) {
+					errorsCheck.push({ [key]: rule.message });
+				}
+			});
+		}
+	}
+
+	return errorsCheck;
 };

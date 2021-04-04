@@ -1,37 +1,27 @@
-import { Link as RouterLink, useHistory } from "react-router-dom";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Copyright from "components/Layout/Copyright";
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
-import { isEmailUnique, isValid } from "validator/Validator";
+import { checkRules, isEmailUnique } from "validator/Validator";
+import { ErrorMessage, RegisterFormInputs } from "types";
+import { useHistory } from "react-router-dom";
 import { useStyles } from "./Register.styles";
-import { ErrorMessage, Rules } from "types";
-import { rules } from "validator/rules";
 import RedirectBox from "./RedirectBox";
-
-interface FormInputs {
-	firstname: string;
-	lastname: string;
-	email: string;
-	password: string;
-	confirmPassword: string;
-}
 
 const Register: React.FC = () => {
 	const classes = useStyles();
 	const history = useHistory();
 
-	const [errors, setErrors] = useState<ErrorMessage[]>([]);
-	const [fields, setFiels] = useState<FormInputs>({
+	const [errors, setErrors] = useState<Partial<ErrorMessage>[]>([]);
+	const [fields, setFiels] = useState<RegisterFormInputs>({
 		firstname: "",
 		lastname: "",
 		email: "",
@@ -53,29 +43,20 @@ const Register: React.FC = () => {
 		return getErrors(fieldName)[0]?.[fieldName];
 	};
 
-	const handleSubmit = async (event: FormEvent) => {
+	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		let errorsCheck: any[] = [];
-
-		for (const [key, value] of Object.entries(fields)) {
-			const rulesKey = key as keyof Rules;
-			const rulesArray = rules[rulesKey];
-
-			if (rulesArray) {
-				rulesArray.forEach((rule) => {
-					if (!isValid(value, rule)) {
-						errorsCheck.push({ [key]: rule.message });
-					}
-				});
-			}
-		}
+		const errorsCheck: Array<Partial<ErrorMessage>> = checkRules(fields);
 
 		if (fields.password !== fields.confirmPassword) {
 			errorsCheck.push({ confirmPassword: "Passwords do not match." });
 		}
 
-		const isUniqueEmail = await isEmailUnique(fields.email);
+		let isUniqueEmail = null;
+
+		if (fields.email.length > 0) {
+			isUniqueEmail = await isEmailUnique(fields.email);
+		}
 
 		if (!isUniqueEmail) {
 			errorsCheck.push({ email: "This email is already in use." });
@@ -102,7 +83,7 @@ const Register: React.FC = () => {
 		}
 	};
 
-	const handleChange = (name: string) => (
+	const handleChange = (name: keyof RegisterFormInputs) => (
 		event: ChangeEvent<HTMLInputElement>
 	) => {
 		setFiels({ ...fields, [name]: event.currentTarget.value });
@@ -119,7 +100,7 @@ const Register: React.FC = () => {
 					<LockOutlinedIcon />
 				</Avatar>
 				<Typography component="h1" variant="h5">
-					Sign in
+					Sign up
 				</Typography>
 				<form className={classes.form} onSubmit={handleSubmit}>
 					<Grid container spacing={3}>
@@ -128,10 +109,12 @@ const Register: React.FC = () => {
 								helperText={displayErrors("firstname")}
 								onChange={handleChange("firstname")}
 								error={hasErrors("firstname")}
+								value={fields.firstname}
 								variant="outlined"
 								label="First name"
 								name="firstname"
 								id="firstname"
+								autoFocus
 								fullWidth
 							/>
 						</Grid>
@@ -140,11 +123,11 @@ const Register: React.FC = () => {
 								helperText={displayErrors("lastname")}
 								onChange={handleChange("lastname")}
 								error={hasErrors("lastname")}
+								value={fields.lastname}
 								variant="outlined"
 								label="Last name"
 								name="lastname"
 								id="lastname"
-								autoFocus
 								fullWidth
 							/>
 						</Grid>
@@ -153,6 +136,7 @@ const Register: React.FC = () => {
 								helperText={displayErrors("email")}
 								onChange={handleChange("email")}
 								error={hasErrors("email")}
+								value={fields.email}
 								label="Email address"
 								autoComplete="email"
 								variant="outlined"
@@ -166,6 +150,7 @@ const Register: React.FC = () => {
 								helperText={displayErrors("password")}
 								onChange={handleChange("password")}
 								error={hasErrors("password")}
+								value={fields.password}
 								autoComplete="current-password"
 								variant="outlined"
 								label="Password"
@@ -180,7 +165,8 @@ const Register: React.FC = () => {
 								helperText={displayErrors("confirmPassword")}
 								onChange={handleChange("confirmPassword")}
 								error={hasErrors("confirmPassword")}
-								label="Confirm Password"
+								value={fields.confirmPassword}
+								label="Confirm password"
 								name="confirmPassword"
 								id="confirmPassword"
 								variant="outlined"

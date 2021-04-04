@@ -7,27 +7,105 @@ import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import { Redirect } from "react-router-dom";
 import Copyright from "../Layout/Copyright";
-import userContext from "../../context/user/UserContext";
-import React, { useState } from "react";
+
+import userContext from "context/user/UserContext";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import { ErrorMessage, LoginFormInputs } from "types";
+import { checkRules } from "validator/Validator";
+import { Redirect, useHistory } from "react-router-dom";
 import { useStyles } from "./Login.styles";
+import { Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 
 const Login: React.FC = () => {
 	const classes = useStyles();
+	const history = useHistory();
 	const { user } = React.useContext(userContext);
 
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+	const [errors, setErrors] = useState<Partial<ErrorMessage>[]>([]);
+	const [wrongInfo, setWrongInfo] = React.useState<boolean>(false);
+	const [fields, setFields] = useState<LoginFormInputs>({
+		email: "",
+		password: "",
+	});
 
 	if (user!.authenticated) {
 		return <Redirect to="/" />;
 	}
 
-	const handleSubmit = () => {};
+	const getErrors = (fieldName: keyof ErrorMessage) => {
+		return errors.filter((error) => error[fieldName]);
+	};
+
+	const hasErrors = (fieldName: keyof ErrorMessage) => {
+		return getErrors(fieldName).length > 0;
+	};
+
+	const displayErrors = (fieldName: keyof ErrorMessage) => {
+		return getErrors(fieldName)[0]?.[fieldName];
+	};
+
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		const errorsCheck: Array<Partial<ErrorMessage>> = checkRules(fields);
+		setErrors(errorsCheck);
+
+		if (!errorsCheck.length) {
+			fetch("api/user/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json; charset=UTF-8",
+				},
+				body: JSON.stringify(fields),
+			})
+				.then((res) => res)
+				.then((response) => {
+					if (response.status === 403) {
+						setWrongInfo(true);
+					}
+
+					if (response.status === 200) {
+						return response.json();
+					}
+				})
+				.then((token) => {
+					if (token) {
+						console.log(token.token); // TODO : Do the JWT
+					}
+				})
+				.catch((e) => console.error(e));
+		}
+	};
+
+	const handleChange = (name: keyof LoginFormInputs) => (
+		event: ChangeEvent<HTMLInputElement>
+	) => {
+		setFields({ ...fields, [name]: event.currentTarget.value });
+	};
+
+	const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+		if (reason === "clickaway") {
+			return;
+		}
+
+		setWrongInfo(false);
+	};
 
 	return (
 		<Container className={classes.root} maxWidth="xs">
+			<Snackbar open={wrongInfo} autoHideDuration={3000} onClose={handleClose}>
+				<Alert
+					onClose={handleClose}
+					severity="error"
+					variant="filled"
+					elevation={6}
+				>
+					Incorrect credentials !
+				</Alert>
+			</Snackbar>
+
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
@@ -37,8 +115,10 @@ const Login: React.FC = () => {
 				</Typography>
 				<form onSubmit={handleSubmit} className={classes.form}>
 					<TextField
-						onChange={(e) => setEmail(e.target.value)}
-						value={email}
+						helperText={displayErrors("email")}
+						onChange={handleChange("email")}
+						error={hasErrors("email")}
+						value={fields.email}
 						label="Email address"
 						autoComplete="email"
 						variant="outlined"
@@ -49,8 +129,10 @@ const Login: React.FC = () => {
 						autoFocus
 					/>
 					<TextField
-						onChange={(e) => setPassword(e.target.value)}
-						value={password}
+						helperText={displayErrors("password")}
+						onChange={handleChange("password")}
+						error={hasErrors("password")}
+						value={fields.password}
 						autoComplete="current-password"
 						variant="outlined"
 						label="Password"
@@ -61,11 +143,11 @@ const Login: React.FC = () => {
 						fullWidth
 					/>
 					<Button
-						fullWidth
+						className={classes.submit}
 						variant="contained"
 						color="primary"
-						className={classes.submit}
-						onClick={handleSubmit}
+						type="submit"
+						fullWidth
 					>
 						Sign In
 					</Button>

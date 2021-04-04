@@ -483,3 +483,16 @@ export type ErrorMessage = {
 };
 
 export type Rules = GenericKeyObject<PossibleFields, Rule[]>;
+
+export interface LoginFormInputs {
+	email: string;
+	password: string;
+}
+
+export interface RegisterFormInputs {
+	firstname: string;
+	lastname: string;
+	email: string;
+	password: string;
+	confirmPassword: string;
+}
