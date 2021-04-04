@@ -16,6 +16,11 @@ export type Movie = {
     highlight: boolean
 };
 
+export type FullTag = {
+    name: string,
+    value?: string
+}
+
 type Webm = {
     480: string, 
     max: string

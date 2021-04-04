@@ -11,7 +11,7 @@ interface Props {
 const TabPanel: React.FC<Props> = ({ recommended, minimum, value, index }) => {
 
     const replaceAll = (htmlString: string) => {
-        return htmlString.replace(/\\t/g,"").replace(/\\n/g,"").replace(/\\r/g,"");
+        return htmlString.replace(/\\t/g,"\t").replace(/\\n/g,"\n").replace(/\\r/g,"\r");
     };
 
     return (

@@ -36,9 +36,9 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
                     onChange={handleChange}
                     aria-label="tabs requirements"
                 >
-                    { pcRequirements && typeof pcRequirements !== 'undefined' && <Tab label="Windows" {...tabProps(0)} /> }
-                    { macRequirements && typeof macRequirements !== 'undefined' && <Tab label="Mac OS" {...tabProps(1)} /> }
-                    { linuxRequirements && typeof linuxRequirements !== 'undefined' && <Tab label="Linux" {...tabProps(2)} /> }
+                    { pcRequirements && !Array.isArray(pcRequirements) && <Tab label="Windows" {...tabProps(0)} /> }
+                    { macRequirements && !Array.isArray(macRequirements) && <Tab label="Mac OS" {...tabProps(1)} /> }
+                    { linuxRequirements && !Array.isArray(linuxRequirements) && <Tab label="Linux" {...tabProps(2)} /> }
                 </Tabs>
                 <TabPanel value={value} index={0} minimum={pcRequirements?.minimum} recommended={pcRequirements?.recommended} />
                 <TabPanel value={value} index={1} minimum={macRequirements?.minimum} recommended={macRequirements?.recommended} />

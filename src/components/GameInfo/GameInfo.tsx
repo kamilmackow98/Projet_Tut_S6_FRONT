@@ -8,7 +8,7 @@ import RequirementsCard from "./Requirements/RequirementsCard";
 import RelatedGames from "./RelatedGames";
 import DOMPurify from 'dompurify';
 import Loader from "../Layout/Loader/Loader";
-import { Game } from "types";
+import { FullTag, Game } from "types";
 import Header from "./Header";
 import { useStyles } from "./GameInfo.styles";
 
@@ -28,16 +28,12 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                 .sort(([keyA, valA]: any[], [keyB, valB]: any[]) => valB - valA)
                                 .slice(0, 6);
 
-        // const formattedTags = tags.map((tag: any[]) => ({ 
-        //     value: capitalizeFirstLetter(tag[0].replace('tag_', '').replace('_', ' ')), 
-        //     count: tag[1] 
-        // }))
         const formattedTags: any[] = [];
 
         for (const tag of tags) {
             const response = await fetch(`/api/tags?value=${tag[0]}`);
-            const tagFetched: any = await response.json();
-            const tagCloudItem = { value: tagFetched[0].name, count: tag[1] };
+            const tagFetched: FullTag = await response.json();
+            const tagCloudItem = { value: tagFetched.name, count: tag[1] };
             formattedTags.push(tagCloudItem);
         }
         setTagsFiltered(formattedTags);
