@@ -8,6 +8,11 @@ export type Screenshot = {
     path_full: string
 };
 
+export type GameSearchResult = {
+    games: Game[],
+    numberOfPages: number,
+    currentPage: number
+}
 export type Movie = {
     id: number,
     name: string,

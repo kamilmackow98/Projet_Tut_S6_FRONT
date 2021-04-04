@@ -1,4 +1,3 @@
-import React, { MouseEvent, ReactElement } from "react";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import MenuIcon from "@material-ui/icons/Menu";
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +12,8 @@ import Menu from "@material-ui/core/Menu";
 import { useStyles } from "./Layout.styles";
 import { Link } from "react-router-dom";
 import Sidebar from "./Sidebar/Sidebar";
+import Footer from "./Footer";
+import React, { MouseEvent, ReactElement } from "react";
 
 interface Props {
 	children: ReactElement;
@@ -91,6 +92,7 @@ const GlobalLayout: React.FC<Props> = ({ children }) => {
 						{children}
 					</Grid>
 				</Container>
+				<Footer classes={classes} />
 			</main>
 		</>
 	);
