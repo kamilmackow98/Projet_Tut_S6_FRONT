@@ -28,11 +28,6 @@ export const useStyles = makeStyles((theme) => ({
 		paddingTop: "56.25%",
 		position: "relative",
 		display: "flex",
-		// height: "100%",
-		// width: "100%",
-		// alignContent: "flex-start",
-		// alignItems: "flex-start",
-		// justifyContent: "flex-start"
 	},
 	chips: {
 		marginTop: "10px",
@@ -43,12 +38,8 @@ export const useStyles = makeStyles((theme) => ({
 		objectFit: "cover",
 		height: "50px",
 		width: "100%",
-
-		// width: "50px"
 	},
 	thumbnailContainer: {
-		// flexDirection: "row",
-		// display: "flex",
 
 		"& $screenshotContainer": {
 			padding: 0,
@@ -72,7 +63,6 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	carouselContainer: {
 		marginTop: theme.spacing(2),
-		// marginTop: "10px",
 
 		"& .alice-carousel__wrapper": {
 			backgroundColor: "black !important",
@@ -97,4 +87,12 @@ export const useStyles = makeStyles((theme) => ({
 		width: "100% !important",
 		position: "absolute",
 	},
+	noGameFoundContainer: {
+        display: "flex",
+		justifyContent: "center",
+		marginTop: "30px"
+	},
+	noGameFoundImage: {
+		height: "150px"
+	}
 }));

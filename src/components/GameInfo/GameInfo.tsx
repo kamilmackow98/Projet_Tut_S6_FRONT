@@ -11,6 +11,7 @@ import Loader from "../Layout/Loader/Loader";
 import { FullTag, Game } from "types";
 import Header from "./Header";
 import { useStyles } from "./GameInfo.styles";
+import GameNotFound from "./GameNotFound";
 
 interface Props {
     id: number   
@@ -20,6 +21,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
 
     const classes = useStyles();
     const [gameData, setGameData] = useState<Game>();
+    const [noGameFound, setNoGameFound] = useState<boolean>(false);
     const [tagsFiltered, setTagsFiltered] = useState<any[]>([]);
 
     const extractAndSortTags = React.useCallback(async (game: Game) => {
@@ -49,10 +51,15 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 
             }).catch((error) => {
                 console.error(error);
+                setNoGameFound(true);
             });
     }, [extractAndSortTags, id]);
 
-    if (!gameData) {
+    if (noGameFound) {
+        return (
+            <GameNotFound />
+        )
+    } else if (!gameData) {
         return (
             <Loader fixed={true}/>
         )
