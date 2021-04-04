@@ -16,8 +16,8 @@ const BasicInfo: React.FC<Props> = ({
     publisher,
 }) => {
     const options = {
-        luminosity: 'light',
-        hue: 'blue',
+        luminosity: 'dark',
+        hue: '#3a79ff',
     };
       
     return (

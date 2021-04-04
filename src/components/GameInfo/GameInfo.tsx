@@ -22,6 +22,27 @@ const GameInfo: React.FC<Props> = ({ id }) => {
     const [gameData, setGameData] = useState<Game>();
     const [tagsFiltered, setTagsFiltered] = useState<any[]>([]);
 
+    const extractAndSortTags = React.useCallback(async (game: Game) => {
+        const tags: any[] = Object.entries(game)
+                                .filter(([key, val]) => key.includes('tag_') && val && val > 0)
+                                .sort(([keyA, valA]: any[], [keyB, valB]: any[]) => valB - valA)
+                                .slice(0, 6);
+
+        // const formattedTags = tags.map((tag: any[]) => ({ 
+        //     value: capitalizeFirstLetter(tag[0].replace('tag_', '').replace('_', ' ')), 
+        //     count: tag[1] 
+        // }))
+        const formattedTags: any[] = [];
+
+        for (const tag of tags) {
+            const response = await fetch(`/api/tags?value=${tag[0]}`);
+            const tagFetched: any = await response.json();
+            const tagCloudItem = { value: tagFetched[0].name, count: tag[1] };
+            formattedTags.push(tagCloudItem);
+        }
+        setTagsFiltered(formattedTags);
+    }, []);
+
     useEffect(() => {
         fetch(`/api/game/${id}`)
             .then(response => response.json())
@@ -33,23 +54,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             }).catch((error) => {
                 console.error(error);
             });
-    }, [id]);
-
-    const extractAndSortTags = (game: Game) => {
-        const tags: any[] = Object.entries(game)
-                                .filter(([key, val]) => key.includes('tag_') && val && val > 0)
-                                .sort(([keyA, valA]: any[], [keyB, valB]: any[]) => valB - valA);
-
-        const formattedTags = tags.map((tag: any[]) => ({ 
-            value: capitalizeFirstLetter(tag[0].replace('tag_', '').replace('_', ' ')), 
-            count: tag[1] 
-        }));
-        setTagsFiltered(formattedTags);
-    }
-
-    const capitalizeFirstLetter = (string: string): string => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
+    }, [extractAndSortTags, id]);
 
     if (!gameData) {
         return (
