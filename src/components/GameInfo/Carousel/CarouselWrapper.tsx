@@ -62,8 +62,6 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
                 controls={true} 
                 url={movie.webm[480]} 
                 className={classes.reactPlayer}
-                width='100%'
-                height='100%'
                 onPlay={() => { setCurrentPlayingId(movie.id); }}
                 onPause={() => { setCurrentPlayingId(null); }} 
             />

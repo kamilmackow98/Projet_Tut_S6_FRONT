@@ -83,7 +83,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         <div 
                             className={classes.detailedDescription}
                             dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(gameData.detailed_description) }}
-                        />
+                        ></div>
                     </Grid>
                 </Grid> 
 
