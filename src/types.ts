@@ -2,23 +2,18 @@ export type GenericKeyObject<K extends keyof any, T> = {
 	[P in K]?: T;
 };
 
+import { ClassNameMap } from "@material-ui/styles";
+
 export interface UserType {
 	token: string;
 	authenticated: boolean;
-}
+};
 
 type Screenshot = {
-	id: number;
-	path_thumbnail: string;
-	path_full: string;
+    id: number,
+    path_thumbnail: string,
+    path_full: string
 };
-
-export type GameSearchResult = {
-	games: Game[];
-	numberOfPages: number;
-	currentPage: number;
-};
-
 type Requirements = {
 	minimum: string | undefined;
 	recommended: string | undefined;
@@ -35,6 +30,60 @@ type Movie = {
 type Webm = {
 	480: string;
 	max: string;
+};
+
+export type DateFilter = {
+    gte?: Date | string;
+    gt?: Date | string;
+    lt?: Date | string;
+    lte?: Date | string;
+};
+
+export type Publisher = {
+    name: string;
+}
+
+export type Developer = {
+    name: string;
+}
+
+export type Tag = {
+    name: string;
+}
+
+export type Category = {
+    name: string;
+}
+
+export type Platform = {
+    name: string;
+}
+
+export type Genre = {
+    name: string;
+}
+
+export type Age = {
+    age: number;
+}
+
+export type GameSearchResult = {
+    games: Game[],
+    numberOfPages: number,
+    currentPage: number
+}
+
+export type Filters = {
+    name: string | undefined,
+    release_date: DateFilter | undefined,
+    developer: string[] | undefined,
+    publisher: string[] | undefined,
+    platforms: string[] | undefined,
+    categories: string[] | undefined,
+    genres: string[] | undefined,
+    steamspy_tags: string[] | undefined,
+    required_age: number[] | undefined,
+    positive_rating_percent: number | undefined
 };
 
 export type Game = {
@@ -448,16 +497,16 @@ export interface HeadTableData {
 	name: string;
 	releaseDate: string;
 	score: number;
-}
+};
 
 export interface BodyTableData extends HeadTableData {
 	id: number;
-}
+};
 
 export interface HeadCell {
 	id: keyof HeadTableData;
 	label: string;
-}
+};
 
 export type Order = "asc" | "desc";
 
@@ -496,3 +545,12 @@ export interface RegisterFormInputs {
 	password: string;
 	confirmPassword: string;
 }
+export interface CustomTableProps {
+	classes: ClassNameMap;
+	onRequestSort: (
+		event: React.MouseEvent<unknown>,
+		property: keyof HeadTableData
+	) => void;
+	order: Order;
+	orderBy: string;
+};

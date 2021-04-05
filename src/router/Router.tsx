@@ -2,12 +2,12 @@ import AnotherNestedRoutes from "components/AnotherNestedRoutes";
 import BasicLayout from "components/Layout/BasicLayout";
 import GlobalLayout from "components/Layout/GlobalLayout";
 import Login from "components/Login/Login";
-import Main from "components/Main";
 import NestedRoutes from "components/NestedRoutes";
 import NotFound from "components/NotFound";
 import Protected from "components/Protected";
 import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
+import Search from "components/Search/Search";
 import { Route, Switch } from "react-router-dom";
 import React from "react";
 import Register from "../components/Register/Register";
@@ -28,7 +28,7 @@ const Router: React.FC = () => {
 			>
 				<GlobalLayout>
 					<Switch>
-						<Route exact path="/" render={() => <Main />} />
+						<Route exact path="/" render={() => <Search />} />
 						<PrivateRoute path="/protected" render={() => <Protected />} />
 						<Route
 							path="/nested"
