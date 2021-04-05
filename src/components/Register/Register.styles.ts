@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles((theme) => ({
 	root: {
@@ -12,12 +12,24 @@ export const useStyles = makeStyles((theme) => ({
 		alignItems: "center",
 		display: "flex",
 	},
+	buttonsBox: {
+		justifyContent: "center",
+		display: "flex",
+
+		"& > a": {
+			textDecoration: "none",
+
+			"& ~ a": {
+				marginLeft: theme.spacing(1),
+			},
+		},
+	},
 	avatar: {
 		margin: theme.spacing(1),
 		backgroundColor: theme.palette.secondary.main,
 	},
 	form: {
-		marginTop: theme.spacing(1),
+		marginTop: theme.spacing(3),
 		width: "100%", // Fix IE 11 issue.
 	},
 	submit: {
@@ -26,7 +38,7 @@ export const useStyles = makeStyles((theme) => ({
 	homeLink: {
 		textDecoration: "none !important",
 		position: "absolute",
-
+		
 		[theme.breakpoints.down("xs")]: {
 			left: theme.spacing(1),
 			top: theme.spacing(1),

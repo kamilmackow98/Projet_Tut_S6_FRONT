@@ -3,9 +3,12 @@ import React from "react";
 
 interface Props {
 	user: UserType;
-	setUser: React.Dispatch<React.SetStateAction<any>>;
+	setUser: React.Dispatch<React.SetStateAction<UserType>>;
 }
 
-const userContext = React.createContext<Partial<Props>>({});
+const UserContext = React.createContext<Props>({
+	user: { authenticated: false, token: "" },
+	setUser: () => {},
+});
 
-export default userContext;
+export default UserContext;

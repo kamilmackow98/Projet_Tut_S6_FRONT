@@ -10,6 +10,9 @@ import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
 import Search from "components/Search/Search";
 import { Route, Switch } from "react-router-dom";
+import React from "react";
+import Register from "../components/Register/Register";
+import AuthRoute from "./AuthRoute";
 
 const Router: React.FC = () => {
 	return (
@@ -49,10 +52,11 @@ const Router: React.FC = () => {
 				</GlobalLayout>
 			</Route>
 
-			<Route path={["/login"]}>
+			<Route path={["/login", "/register"]}>
 				<BasicLayout>
 					<Switch>
-						<Route path="/login" render={() => <Login />} />
+						<AuthRoute path="/login" render={() => <Login />} />
+						<AuthRoute path="/register" render={() => <Register />} />
 					</Switch>
 				</BasicLayout>
 			</Route>
