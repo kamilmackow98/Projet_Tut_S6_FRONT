@@ -59,8 +59,6 @@ const GameListItem: React.FC<Game> = (props) => {
 		})
 	);
 
-	console.log(score);
-
 	return (
 		<Paper variant="outlined" className={classes.root}>
 			<Grid container>
@@ -91,7 +89,11 @@ const GameListItem: React.FC<Game> = (props) => {
 								</Typography>
 								<Typography variant="caption">
 									<Box mb={2} fontWeight={600}>
-										<GameScore score={score} />
+										<GameScore
+											label="Positive reviews"
+											direction="right"
+											score={score}
+										/>
 									</Box>
 								</Typography>
 							</Grid>

@@ -12,6 +12,7 @@ import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";
 import React from "react";
 import { gameScore } from "utils/GameUtils";
+import GameScore from "components/Game/Score/GameScore";
 
 interface Props {
 	data: Game[];
@@ -35,7 +36,9 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 			</TableCell>
 			<TableCell>{game.release_date.toLocaleDateString("en-GB")}</TableCell>
 			<TableCell>
-				{gameScore(game.positive_ratings, game.negative_ratings)} %
+				<GameScore
+					score={gameScore(game.positive_ratings, game.negative_ratings)}
+				/>
 			</TableCell>
 		</TableRow>
 	));

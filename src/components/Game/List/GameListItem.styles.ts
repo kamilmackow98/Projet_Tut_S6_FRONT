@@ -16,7 +16,6 @@ export const useStyles = makeStyles<Theme, StyleProps>((theme: Theme) =>
 			left: theme.spacing(1),
 			display: "flex",
 			padding: 7,
-			// background: "rgb(20, 20, 20)"
 		},
 		img: (props) => ({
 			background: `url(${props.header_image})`,
