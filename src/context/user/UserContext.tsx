@@ -1,5 +1,5 @@
+import { UserType } from "types";
 import React from "react";
-import { UserType } from "../../types";
 
 interface Props {
 	user: UserType;

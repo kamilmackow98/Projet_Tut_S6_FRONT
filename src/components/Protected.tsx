@@ -1,4 +1,7 @@
-import { Container, makeStyles, Paper, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Protected = () => {
+const Protected: React.FC = () => {
 	const classes = useStyles();
 
 	return (
@@ -23,14 +26,24 @@ const Protected = () => {
 			</Typography>
 			<Container disableGutters>
 				<Paper className={classes.paper}>
-					Change <code className={classes.code}>userConfig = &#123; authenticated: true; &#125;</code> to{" "}
-					<code className={classes.code}>userConfig = &#123; authenticated: false; &#125;</code> in App.tsx to see it working.
+					Change{" "}
+					<code className={classes.code}>
+						userConfig = &#123; authenticated: true; &#125;
+					</code>{" "}
+					to{" "}
+					<code className={classes.code}>
+						userConfig = &#123; authenticated: false; &#125;
+					</code>{" "}
+					in App.tsx to see it working.
 				</Paper>
 				<Paper className={classes.paper}>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam animi quis quaerat, voluptates molestiae, vitae quasi officia
-					id corporis, quo quam exercitationem omnis alias laudantium? Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur
-					tempora impedit illum explicabo minus quibusdam unde, assumenda accusamus voluptatibus aut magnam odit ad accusantium est
-					consectetur, tenetur placeat labore dolor!
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam
+					animi quis quaerat, voluptates molestiae, vitae quasi officia id
+					corporis, quo quam exercitationem omnis alias laudantium? Lorem ipsum
+					dolor sit amet consectetur adipisicing elit. Consequatur tempora
+					impedit illum explicabo minus quibusdam unde, assumenda accusamus
+					voluptatibus aut magnam odit ad accusantium est consectetur, tenetur
+					placeat labore dolor!
 				</Paper>
 			</Container>
 		</>

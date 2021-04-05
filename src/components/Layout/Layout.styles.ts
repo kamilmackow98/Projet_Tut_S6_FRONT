@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 const drawerWidth = 240;
 
-export const layoutConfig = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
 	root: {
 		display: "flex",
 	},
@@ -23,20 +23,30 @@ export const layoutConfig = makeStyles((theme) => ({
 		textDecoration: "none",
 	},
 	drawerPaper: {
-		position: "relative",
 		whiteSpace: "nowrap",
+		position: "relative",
 		width: drawerWidth,
 	},
 	appBarSpacer: theme.mixins.toolbar,
 	content: {
-		flexGrow: 1,
-		height: "100vh",
+		flexDirection: "column",
 		overflow: "auto",
+		display: "flex",
+		height: "100vh",
+		flexGrow: 1,
 	},
 	container: {
+		flexGrow: 1,
 		padding: theme.spacing(4),
 		[theme.breakpoints.down("xs")]: {
 			padding: theme.spacing(3),
 		},
+	},
+	footerRoot: {
+		width: "100%",
+	},
+	footerPaper: {
+		paddingTop: 15,
+		paddingBottom: 10
 	},
 }));
