@@ -8,7 +8,7 @@ interface Props {
 	render: ComponentType<any>;
 }
 
-const PrivateRoute: React.FC<Props> = ({ path, render: Component }) => {
+const AuthRoute: React.FC<Props> = ({ path, render: Component }) => {
 	const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 	const [loading, setLoading] = React.useState(true);
 
@@ -31,10 +31,10 @@ const PrivateRoute: React.FC<Props> = ({ path, render: Component }) => {
 		<Route
 			path={path}
 			render={(props) =>
-				isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+				!isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
 			}
 		/>
 	);
 };
 
-export default PrivateRoute;
+export default AuthRoute;
