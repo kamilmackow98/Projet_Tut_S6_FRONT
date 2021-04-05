@@ -8,15 +8,12 @@ import NotFound from "components/NotFound";
 import Protected from "components/Protected";
 import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import React from "react";
 import Register from "../components/Register/Register";
-import UserContext from "context/user/UserContext";
 import AuthRoute from "./AuthRoute";
 
 const Router: React.FC = () => {
-	const { user } = React.useContext(UserContext);
-
 	return (
 		<Switch>
 			<Route
