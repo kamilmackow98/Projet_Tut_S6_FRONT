@@ -20,6 +20,7 @@ import CardsTable from "./CardsTable/CardsTable";
 import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
+import GameList from "components/Game/List/GameList";
 
 const Search = () => {
     const classes = useStyles();
@@ -247,7 +248,7 @@ const Search = () => {
                 <Grid item xs={11} sm={12} className={classes.gridGamesFoundContainer}>
                     { 
                         gamesFound && gamesFound.length > 0 
-                        ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
+                        ? !displayAsGrid ? <GameList data={gamesFound} /> : <CardsTable games={gamesFound} />
                         : <NoGamesFound />
                     }
                 </Grid>

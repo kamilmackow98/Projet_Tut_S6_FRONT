@@ -1,5 +1,5 @@
 import { Grid } from "@material-ui/core";
-import GameCard from "components/Game/GameCard";
+import GameCard from "components/Game/Card/GameCard";
 import React from "react";
 import { Game } from "types";
 
