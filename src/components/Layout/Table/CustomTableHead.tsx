@@ -9,7 +9,7 @@ interface Props {
 	classes: ClassNameMap;
 }
 
-const CustomTableHead: React.FC<Props> = (props) => {
+const CustomTableHead: React.FC<Props> = ({ classes }) => {
 	const headerCellsMap = headerCells.map((cell) => (
 		<TableCell key={cell.id}>{cell.label}</TableCell>
 	));
