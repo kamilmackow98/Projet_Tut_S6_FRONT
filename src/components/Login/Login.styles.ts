@@ -23,4 +23,15 @@ export const useStyles = makeStyles((theme) => ({
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 	},
+	homeLink: {
+		textDecoration: "none !important",
+		position: "absolute",
+
+		[theme.breakpoints.down("xs")]: {
+			left: theme.spacing(1),
+			top: theme.spacing(1),
+		},
+		left: theme.spacing(2),
+		top: theme.spacing(2),
+	},
 }));

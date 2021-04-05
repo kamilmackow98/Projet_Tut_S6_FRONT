@@ -1,4 +1,5 @@
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Container from "@material-ui/core/Container";
@@ -10,9 +11,9 @@ import Box from "@material-ui/core/Box";
 import Copyright from "components/Layout/Copyright";
 
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useHistory, Link as RouterLink } from "react-router-dom";
 import { checkRules, isEmailUnique } from "validator/Validator";
 import { ErrorMessage, RegisterFormInputs } from "types";
-import { useHistory } from "react-router-dom";
 import { useStyles } from "./Register.styles";
 import RedirectBox from "./RedirectBox";
 
@@ -95,6 +96,20 @@ const Register: React.FC = () => {
 
 	return (
 		<Container className={classes.root} maxWidth="xs">
+			<Link
+				color="primary"
+				className={classes.homeLink}
+				component={RouterLink}
+				to="/"
+			>
+				<Button
+					variant="outlined"
+					color="primary"
+					startIcon={<ArrowBackIcon />}
+				>
+					Home
+				</Button>
+			</Link>
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />

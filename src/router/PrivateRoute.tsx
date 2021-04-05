@@ -1,6 +1,7 @@
-import userContext from "../context/user/UserContext";
 import { Redirect, Route } from "react-router-dom";
 import React, { ComponentType } from "react";
+import { checkAuth } from "auth/Auth";
+import DelayedLoader from "components/Layout/Loader/DelayedLoader";
 
 interface Props {
 	path: string;
@@ -8,15 +9,29 @@ interface Props {
 }
 
 const PrivateRoute: React.FC<Props> = ({ path, render: Component }) => {
-	const { user } = React.useContext(userContext);
+	const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+	const [loading, setLoading] = React.useState(true);
 
-	const authenticated: boolean = user!.authenticated;
+	React.useEffect(() => {
+		async function fetchAuth() {
+			const response = await checkAuth();
+
+			setIsAuthenticated(response);
+			setLoading(false);
+		}
+
+		fetchAuth();
+	}, []);
+
+	if (loading) {
+		return <DelayedLoader fixed delay={300} />;
+	}
 
 	return (
 		<Route
 			path={path}
 			render={(props) =>
-				authenticated ? <Component {...props} /> : <Redirect to="/login" />
+				isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
 			}
 		/>
 	);

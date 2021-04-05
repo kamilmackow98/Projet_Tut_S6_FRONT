@@ -1,27 +1,29 @@
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
+import Snackbar from "@material-ui/core/Snackbar";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
+import Alert from "@material-ui/lab/Alert";
 import Copyright from "../Layout/Copyright";
 
-import userContext from "context/user/UserContext";
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import { useHistory, Link as RouterLink } from "react-router-dom";
 import { ErrorMessage, LoginFormInputs } from "types";
+import UserContext from "context/user/UserContext";
 import { checkRules } from "validator/Validator";
-import { Redirect, useHistory } from "react-router-dom";
 import { useStyles } from "./Login.styles";
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+import Cookie from "js-cookie";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 const Login: React.FC = () => {
 	const classes = useStyles();
+	const { user, setUser } = React.useContext(UserContext);
 	const history = useHistory();
-	const { user } = React.useContext(userContext);
 
 	const [errors, setErrors] = useState<Partial<ErrorMessage>[]>([]);
 	const [wrongInfo, setWrongInfo] = React.useState<boolean>(false);
@@ -29,10 +31,6 @@ const Login: React.FC = () => {
 		email: "",
 		password: "",
 	});
-
-	if (user!.authenticated) {
-		return <Redirect to="/" />;
-	}
 
 	const getErrors = (fieldName: keyof ErrorMessage) => {
 		return errors.filter((error) => error[fieldName]);
@@ -72,7 +70,9 @@ const Login: React.FC = () => {
 				})
 				.then((token) => {
 					if (token) {
-						console.log(token.token); // TODO : Do the JWT
+						Cookie.set("token", token.token);
+						setUser({ ...user, authenticated: true });
+						history.push({ pathname: "/" });
 					}
 				})
 				.catch((e) => console.error(e));
@@ -95,6 +95,20 @@ const Login: React.FC = () => {
 
 	return (
 		<Container className={classes.root} maxWidth="xs">
+			<Link
+				color="primary"
+				className={classes.homeLink}
+				component={RouterLink}
+				to="/"
+			>
+				<Button
+					variant="outlined"
+					color="primary"
+					startIcon={<ArrowBackIcon />}
+				>
+					Home
+				</Button>
+			</Link>
 			<Snackbar open={wrongInfo} autoHideDuration={3000} onClose={handleClose}>
 				<Alert
 					onClose={handleClose}

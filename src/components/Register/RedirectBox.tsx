@@ -12,40 +12,38 @@ const RedirectBox: React.FC = () => {
 	const classes = useStyles();
 
 	return (
-		<div>
-			<Container className={classes.root} maxWidth="sm">
-				<div className={classes.paper}>
-					<Paper elevation={4}>
-						<Box paddingX={5} paddingY={8}>
-							<Grid container spacing={4}>
-								<Grid item xs={12}>
-									<Typography align="center">
-										You have been successfully registered !
-									</Typography>
-									<Typography align="center">
-										You will be redirected to the login page in 5 seconds.
-									</Typography>
-								</Grid>
-								<Grid item xs={12}>
-									<Box className={classes.buttonsBox}>
-										<RouterLink to="/login">
-											<Button tabIndex={-1} variant="contained" color="primary">
-												Login
-											</Button>
-										</RouterLink>
-										<RouterLink to="/">
-											<Button tabIndex={-1} variant="outlined" color="primary">
-												Home
-											</Button>
-										</RouterLink>
-									</Box>
-								</Grid>
+		<Container className={classes.root} maxWidth="sm">
+			<div className={classes.paper}>
+				<Paper elevation={4}>
+					<Box paddingX={5} paddingY={8}>
+						<Grid container spacing={4}>
+							<Grid item xs={12}>
+								<Typography align="center">
+									You have been successfully registered !
+								</Typography>
+								<Typography align="center">
+									You will be redirected to the login page in 5 seconds.
+								</Typography>
 							</Grid>
-						</Box>
-					</Paper>
-				</div>
-			</Container>
-		</div>
+							<Grid item xs={12}>
+								<Box className={classes.buttonsBox}>
+									<RouterLink to="/login">
+										<Button tabIndex={-1} variant="contained" color="primary">
+											Login
+										</Button>
+									</RouterLink>
+									<RouterLink to="/">
+										<Button tabIndex={-1} variant="outlined" color="primary">
+											Home
+										</Button>
+									</RouterLink>
+								</Box>
+							</Grid>
+						</Grid>
+					</Box>
+				</Paper>
+			</div>
+		</Container>
 	);
 };
 
