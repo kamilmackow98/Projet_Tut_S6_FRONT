@@ -1,71 +1,35 @@
-import { Box, Container, Grid, Typography } from "@material-ui/core";
-import React from "react";
-import GameCard from "./Game/GameCard";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Box from "@material-ui/core/Box";
+import { GameSearchResult, Game } from "types";
+import GameCard from "./Game/Card/GameCard";
+import GameList from "./Game/List/GameList";
 import Loader from "./Layout/Loader/Loader";
 import Table from "./Layout/Table/Table";
+import React from "react";
 
 const TestComponents: React.FC = () => {
-	// TODO : In production change "any" type to the correct response data (Game by default)
-	const dummyData: any[] = [
-		{
-			id: 10,
-			name: "Counter-strike",
-			release_date: new Date(),
-			positive_ratings: 255,
-			negative_ratings: 40,
-		},
-		{
-			id: 20,
-			name: "Counter-strike2",
-			release_date: new Date(),
-			positive_ratings: 225,
-			negative_ratings: 40,
-		},
-		{
-			id: 30,
-			name: "Counter-strike3",
-			release_date: new Date(),
-			positive_ratings: 155,
-			negative_ratings: 70,
-		},
-		{
-			id: 40,
-			name: "Counter-strike4",
-			release_date: new Date(),
-			positive_ratings: 355,
-			negative_ratings: 10,
-		},
-	];
+	const [games, setGames] = React.useState<Game[]>([]);
+
+	React.useEffect(() => {
+		fetch("/api/games", { method: "POST" })
+			.then((res) => res.json())
+			.then((resJson: GameSearchResult) => {
+				const games: Game[] = resJson.games.slice(1);
+				setGames(games);
+			})
+			.catch((e) => console.error(e));
+	}, []);
 
 	return (
 		<Container fixed disableGutters>
 			<Box pb={5}>
 				<Typography paragraph variant="button">
-					Game card (with name / without name / without animations)
+					List view for game list
 				</Typography>
 
-				<Grid container spacing={1}>
-					<Grid item xs={12} sm={10} md={6} lg={4}>
-						<GameCard
-							id={10}
-							name="Counter-Strike"
-							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
-						/>
-					</Grid>
-					<Grid item xs={12} sm={10} md={6} lg={4}>
-						<GameCard
-							id={20}
-							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
-						/>
-					</Grid>
-					<Grid item xs={12} sm={10} md={6} lg={4}>
-						<GameCard
-							id={30}
-							disableAnimation
-							header_image="https://steamcdn-a.akamaihd.net/steam/apps/10/header.jpg"
-						/>
-					</Grid>
-				</Grid>
+				<GameList data={games} spacing={2} />
 			</Box>
 
 			<Box pb={5}>
@@ -82,12 +46,26 @@ const TestComponents: React.FC = () => {
 
 			<Box pb={5}>
 				<Typography paragraph variant="button">
+					Game card (with name / without name / without animations)
+				</Typography>
+
+				<Grid container spacing={2} justify="center">
+					{games.map((props) => (
+						<Grid key={props.id} item xs={12} sm={10} md={6} lg={4}>
+							<GameCard {...props} />
+						</Grid>
+					))}
+				</Grid>
+			</Box>
+
+			<Box pb={5}>
+				<Typography paragraph variant="button">
 					Table view for game list
 				</Typography>
 
 				<Grid container>
 					<Grid item xs={12}>
-						<Table data={dummyData} />
+						<Table data={games} />
 					</Grid>
 				</Grid>
 			</Box>
