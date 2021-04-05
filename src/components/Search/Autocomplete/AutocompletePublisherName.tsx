@@ -73,7 +73,6 @@ const AutocompletePublisherName: React.FC<Props> = ({ onChangePublishers }) => {
 				onScroll: (event: React.SyntheticEvent) => {
 					const listboxNode = event.currentTarget;
 					if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
-						console.log(publisherNamePagination);
 						setPublisherNamePagination(publisherNamePagination + 1);
 					}
 				}

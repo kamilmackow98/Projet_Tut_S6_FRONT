@@ -73,7 +73,6 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 				onScroll: (event: React.SyntheticEvent) => {
 					const listboxNode = event.currentTarget;
 					if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
-						console.log(developerNamePagination);
 						setDeveloperNamePagination(developerNamePagination + 1);
 					}
 				}

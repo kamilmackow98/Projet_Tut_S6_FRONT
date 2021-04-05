@@ -60,9 +60,11 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 				}}
 				renderValue={(selected) => (
 					<div className={classes.chips}>
-						{(selected as any).map((value: any) => (
-							<Chip label={value} className={classes.chip} />
-						))}
+						{React.Children.toArray(
+							(selected as any).map((value: any) => (
+								<Chip label={value} className={classes.chip} />
+							))
+						)}
 					</div>
 				)}
 			>
