@@ -2,7 +2,6 @@ import AnotherNestedRoutes from "components/AnotherNestedRoutes";
 import BasicLayout from "components/Layout/BasicLayout";
 import GlobalLayout from "components/Layout/GlobalLayout";
 import Login from "components/Login/Login";
-import Main from "components/Main";
 import NestedRoutes from "components/NestedRoutes";
 import NotFound from "components/NotFound";
 import Protected from "components/Protected";

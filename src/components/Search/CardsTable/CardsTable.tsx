@@ -15,7 +15,7 @@ const CardsTable: React.FC<Props> = ({
         <Grid container spacing={3} justify="center">
                 {
                     games.map((game: Game) => (
-                        <Grid key={game.id} item xs={12} sm={4}>
+                        <Grid key={game.id} item xs={12} sm={6} md={4}>
                             <GameCard 
                                 id={game.id}
                                 header_image={game.header_image} 
