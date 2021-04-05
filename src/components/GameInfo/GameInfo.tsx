@@ -8,7 +8,7 @@ import RequirementsCard from "./Requirements/RequirementsCard";
 import RelatedGames from "./RelatedGames";
 import DOMPurify from 'dompurify';
 import Loader from "../Layout/Loader/Loader";
-import { FullTag, Game } from "types";
+import { FullTag, Game, TagCloud, TagFilter } from "types";
 import Header from "./Header";
 import { useStyles } from "./GameInfo.styles";
 import GameNotFound from "./GameNotFound";
@@ -22,7 +22,28 @@ const GameInfo: React.FC<Props> = ({ id }) => {
     const classes = useStyles();
     const [gameData, setGameData] = useState<Game>();
     const [noGameFound, setNoGameFound] = useState<boolean>(false);
+    const [relatedGames, setRelatedGames] = useState<Game[] | []>([]);
     const [tagsFiltered, setTagsFiltered] = useState<any[]>([]);
+
+    const getRelatedGames = (formattedTags : any[], id: number) => {
+        const tags = formattedTags.map((tag: TagCloud) => tag.value);
+        const tagFilter: TagFilter = { tags: tags };
+
+        fetch(`/api/games/related/${id}`,
+        {
+            method: 'POST',
+            body: JSON.stringify(tagFilter),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then(response => response.json())
+            .then((games: Game[]) => {
+                setRelatedGames(games);
+            }).catch((error) => {
+                console.error(error);
+            });
+    };
 
     const extractAndSortTags = React.useCallback(async (game: Game) => {
         const tags: any[] = Object.entries(game)
@@ -30,7 +51,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                 .sort(([keyA, valA]: any[], [keyB, valB]: any[]) => valB - valA)
                                 .slice(0, 6);
 
-        const formattedTags: any[] = [];
+        const formattedTags: TagCloud[] = [];
 
         for (const tag of tags) {
             const response = await fetch(`/api/tags?value=${tag[0]}`);
@@ -38,7 +59,9 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             const tagCloudItem = { value: tagFetched.name, count: tag[1] };
             formattedTags.push(tagCloudItem);
         }
+
         setTagsFiltered(formattedTags);
+        getRelatedGames(formattedTags.slice(0,3), game.id);
     }, []);
 
     useEffect(() => {
@@ -48,12 +71,12 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 setGameData(game);
                 document.title = game.name + " | Video Games Encyclopedia";
                 extractAndSortTags(game);
-                
             }).catch((error) => {
                 console.error(error);
                 setNoGameFound(true);
             });
     }, [extractAndSortTags, id]);
+
 
     if (noGameFound) {
         return (

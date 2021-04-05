@@ -21,6 +21,16 @@ export type Movie = {
     highlight: boolean
 };
 
+
+export type TagFilter = {
+    tags: string[]
+}
+
+export type TagCloud = {
+    value: string,
+    count: number
+}
+
 export type FullTag = {
     name: string,
     value?: string
