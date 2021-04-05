@@ -33,8 +33,8 @@ const AccountMenu: React.FC<Props> = ({ classes }) => {
 
 	const menuItems = user.authenticated ? (
 		<div>
-			<MenuItem component={Link} to="/favorites" onClick={handleCloseAnchor}>
-				Favorite games
+			<MenuItem component={Link} to="/library" onClick={handleCloseAnchor}>
+				My library
 			</MenuItem>
 			<Divider />
 			<MenuItem component={Link} to="/" onClick={handleLogout}>
