@@ -104,5 +104,8 @@ export const useStyles = makeStyles((theme) => ({
 		display: "flex",
 		justifyContent: "end",
 		alignItems: "flex-start"
+	},
+	relatedGameCard: {
+		margin: "10px"
 	}
 }));

@@ -31,18 +31,22 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
             <Box p={1}>
                 <Typography className={classes.cardTitle} variant="h6">System requirements</Typography>
                 <Divider />
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="tabs requirements"
-                >
-                    { pcRequirements && !Array.isArray(pcRequirements) && <Tab label="Windows" {...tabProps(0)} /> }
-                    { macRequirements && !Array.isArray(macRequirements) && <Tab label="Mac OS" {...tabProps(1)} /> }
-                    { linuxRequirements && !Array.isArray(linuxRequirements) && <Tab label="Linux" {...tabProps(2)} /> }
-                </Tabs>
-                <TabPanel value={value} index={0} minimum={pcRequirements?.minimum} recommended={pcRequirements?.recommended} />
-                <TabPanel value={value} index={1} minimum={macRequirements?.minimum} recommended={macRequirements?.recommended} />
-                <TabPanel value={value} index={2} minimum={linuxRequirements?.minimum} recommended={linuxRequirements?.recommended} />
+                {
+                   (!Array.isArray(pcRequirements) && !Array.isArray(pcRequirements) && !Array.isArray(pcRequirements))
+                   ? <p>No system requirements.</p> 
+                   : <><Tabs
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="tabs requirements"
+                    >
+                        { pcRequirements && !Array.isArray(pcRequirements) && <Tab label="Windows" {...tabProps(0)} /> }
+                        { macRequirements && !Array.isArray(macRequirements) && <Tab label="Mac OS" {...tabProps(1)} /> }
+                        { linuxRequirements && !Array.isArray(linuxRequirements) && <Tab label="Linux" {...tabProps(2)} /> }
+                    </Tabs>
+                    <TabPanel value={value} index={0} minimum={pcRequirements?.minimum} recommended={pcRequirements?.recommended} />
+                    <TabPanel value={value} index={1} minimum={macRequirements?.minimum} recommended={macRequirements?.recommended} />
+                    <TabPanel value={value} index={2} minimum={linuxRequirements?.minimum} recommended={linuxRequirements?.recommended} /></>
+                }
             </Box>
         </Paper>
     )

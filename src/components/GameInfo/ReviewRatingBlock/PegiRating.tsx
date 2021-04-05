@@ -15,7 +15,6 @@ const PegiRating: React.FC<Props> = ({ requiredAge }) => {
                             <a href={"https://pegi.info/"}>
                                 <img src={`/images/pegi/${requiredAge}.png`} alt={`pegi-${requiredAge} rating`}/>
                             </a>
-                            <span>Rating for: PEGI</span>
                         </Box>
                     </Paper>
                 </Grid>

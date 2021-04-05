@@ -73,6 +73,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 extractAndSortTags(game);
             }).catch((error) => {
                 console.error(error);
+                console.error('error', JSON.stringify(error));
                 setNoGameFound(true);
             });
     }, [extractAndSortTags, id]);
@@ -110,7 +111,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                             tags={tagsFiltered}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={7}>
+                    <Grid item xs={12} sm={12} md={7}>
                         <div 
                             className={classes.detailedDescription}
                             dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(gameData.detailed_description) }}
@@ -133,10 +134,17 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                             macRequirements={gameData.mac_requirements}
                             linuxRequirements={gameData.linux_requirements}
                         />
-                        {/* <RelatedGames games={dummyData} /> */}
-                        
                     </Grid>
-                    <Grid item>
+                </Grid>
+                <Grid container className={classes.bottomContainer} spacing={3}>
+                    <Grid item md={7} />
+                    <Grid item xs={12} sm={12} md={5}>
+                        <RelatedGames games={relatedGames} />
+                    </Grid>
+                </Grid>
+                <Grid container className={classes.bottomContainer} spacing={3}>
+                    <Grid item md={7} />
+                    <Grid item xs={12} sm={12} md={5}>
                         <PegiRating requiredAge={gameData.required_age} />
                     </Grid>
                 </Grid>
