@@ -73,7 +73,6 @@ const AutocompleteTagName: React.FC<Props> = ({ onChangeTags }) => {
 				onScroll: (event: React.SyntheticEvent) => {
 					const listboxNode = event.currentTarget;
 					if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
-						console.log(tagNamePagination);
 						setTagNamePagination(tagNamePagination + 1);
 					}
 				}

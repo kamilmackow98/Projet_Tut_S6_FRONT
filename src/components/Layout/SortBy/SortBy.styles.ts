@@ -5,11 +5,9 @@ export const useStyles = makeStyles((theme: Theme) =>
         sortByContainer: {
             width: "100%",
             marginTop: "10px",
-            marginBottom: "10px",
-            marginLeft: "5px"
+            marginBottom: "20px"
         },
         sortBySelect: {
-            marginLeft: "10px",
             width: "100%"
         },
         sortBySwitch: {

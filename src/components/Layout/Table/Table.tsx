@@ -6,18 +6,13 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
-import { Game, HeadTableData, Order } from "types";
+import { Game } from "types";
 import { Link as RouterLink } from "react-router-dom";
 import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";
 import React from "react";
-
-const score = (positive_ratings: number, negative_ratings: number) => {
-	return (
-		(positive_ratings / (positive_ratings + negative_ratings)) *
-		100
-	).toFixed(1);
-};
+import { gameScore } from "utils/GameUtils";
+import GameScore from "components/Game/Score/GameScore";
 
 interface Props {
 	data: Game[];
@@ -25,6 +20,10 @@ interface Props {
 
 const CustomTable: React.FC<Props> = ({ data }) => {
 	const classes = useStyles();
+
+	data.forEach((obj) => {
+		obj.release_date = new Date(obj.release_date);
+	}, data);
 
 	const dataMap = data.map((game) => (
 		<TableRow hover key={game.id}>
@@ -35,13 +34,11 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 					</Link>
 				</Typography>
 			</TableCell>
+			<TableCell>{game.release_date.toLocaleDateString("en-GB")}</TableCell>
 			<TableCell>
-				{game.release_date.toLocaleDateString("fr-FR", {
-					timeZone: "America/New_York",
-				})}
-			</TableCell>
-			<TableCell>
-				{score(game.positive_ratings, game.negative_ratings)} %
+				<GameScore
+					score={gameScore(game.positive_ratings, game.negative_ratings)}
+				/>
 			</TableCell>
 		</TableRow>
 	));

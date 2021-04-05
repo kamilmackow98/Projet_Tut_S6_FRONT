@@ -21,6 +21,7 @@ import CardsTable from "./CardsTable/CardsTable";
 import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
+import GameList from "components/Game/List/GameList";
 
 const Search = () => {
     const classes = useStyles();
@@ -262,33 +263,43 @@ const Search = () => {
                     </AccordionDetails>
                 </Accordion>
             </Grid>
-            
-            <Grid container justify="center">
-                <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
-                    <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
-                    <IconButton onClick={() => {setDisplayAsGrid(false)}}>
-                        <MenuIcon color={menuIconBtnColor}/>
-                    </IconButton>
-                    <IconButton onClick={() => {setDisplayAsGrid(true)}}>
-                        <AppsIcon color={gridIconBtnColor} />
-                    </IconButton>
-                </Grid>
-                <Grid item xs={11} sm={12} className={classes.gridGamesFoundContainer}>
+
+            <Grid item xs={12}>
+                <Grid container justify="center">
+                    <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                        <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
+                        <IconButton onClick={() => {setDisplayAsGrid(false)}}>
+                            <MenuIcon color={menuIconBtnColor}/>
+                        </IconButton>
+                        <IconButton onClick={() => {setDisplayAsGrid(true)}}>
+                            <AppsIcon color={gridIconBtnColor} />
+                        </IconButton>
+                    </Grid>
                     { 
                         gamesFound && gamesFound.length > 0 
-                        ? !displayAsGrid ? <CustomTable data={gamesFound} /> : <CardsTable games={gamesFound} />
-                        : <NoGamesFound />
+                        ? !displayAsGrid ? 
+                        <Grid item xs={12} sm={8} md={12}>
+                            <GameList spacing={2} data={gamesFound} />
+                        </Grid> 
+                        : 
+                        <Grid item xs={12}>
+                            <CardsTable games={gamesFound} />
+                        </Grid>
+                        : 
+                        <Grid item xs={12}>
+                            <NoGamesFound />
+                        </Grid>
                     }
-                </Grid>
-                <Grid item xs={12} sm={12} className={classes.paginationContainer}>
-                    <Pagination 
-                        count={totalNumberOfPages} 
-                        page={currentPage}
-                        siblingCount={0} 
-                        color="secondary" 
-                        variant="outlined" 
-                        onChange={(event, value) => { handlePaginationClick(value) }}
-                    />
+                    <Grid item xs={12} sm={12} className={classes.paginationContainer}>
+                        <Pagination 
+                            count={totalNumberOfPages} 
+                            page={currentPage}
+                            siblingCount={0} 
+                            color="secondary" 
+                            variant="outlined" 
+                            onChange={(event, value) => { handlePaginationClick(value) }}
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

@@ -35,13 +35,7 @@ export const useStyles = makeStyles((theme) => ({
     gridButtonContainer: {
         display: "flex",
         flexDirection: "row",
-        alignItems: "right",
-        alignContent: "right",
-        justifyContent: "right"
-    },
-    gridGamesFoundContainer: {
-        margin: "10px",
-        marginLeft: "14px"
+        justifyContent: "flex-end"
     },
     paginationContainer: {
         display: "flex",
