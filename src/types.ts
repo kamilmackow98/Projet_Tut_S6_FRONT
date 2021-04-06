@@ -27,6 +27,10 @@ export type Library = {
 	library: number[]
 };
 
+export type SortFilter = {
+    sortBy: string,
+    isASC: boolean
+};
 
 export type DateFilter = {
 	gte?: Date | string;
@@ -89,18 +93,19 @@ type Webm = {
 };
 
 export type Filters = {
-    name: string | undefined,
-    release_date: DateFilter | undefined,
-    developer: string[] | undefined,
-    publisher: string[] | undefined,
-    platforms: string[] | undefined,
-    categories: string[] | undefined,
-    genres: string[] | undefined,
-    steamspy_tags: string[] | undefined,
-    required_age: number[] | undefined,
-    positive_rating_percent: number | undefined
-
-};
+    name?: string,
+    release_date?: DateFilter,
+    developer?: string[],
+    publisher?: string[],
+    platforms?: string[],
+    categories?: string[],
+    genres?: string[],
+    steamspy_tags?: string[],
+    required_age?: number[],
+	positive_rating_percent?: number,
+	sort?: SortFilter,
+	library?: boolean
+} | undefined;
 
 export type Requirements = {
     minimum: string | undefined,

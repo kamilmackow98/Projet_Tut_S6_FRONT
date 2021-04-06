@@ -52,7 +52,7 @@ const Search = () => {
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
-    const [filters, setFilters] = useState<Filters>(undefined);
+    const [filters, setFilters] = useState<Filters | undefined>(undefined);
     const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
