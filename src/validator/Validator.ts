@@ -37,7 +37,7 @@ export const isValid = (value: string, rule: Rule) => {
 };
 
 export const isEmailUnique = async (value: string) => {
-	const isUnique = await fetch(`api/user/email?email=${value}`, {
+	const isUnique = await fetch(`/api/user/email?email=${value}`, {
 		method: "GET",
 	})
 		.then((res) => res.status)

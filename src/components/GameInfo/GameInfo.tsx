@@ -161,56 +161,52 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         onRemoveFromLibrary={handleRemoveFromLibrary}
                     />
                 </Grid>
-                
-                <Grid container spacing={3}>
-                    <Grid item xs={12} sm={12} md={7}>
-                        <CarouselWrapper screenshots={gameData.screenshots} movies={gameData.movies} />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={5}>
-                        <BasicInfo
-                            description={gameData.short_description}
-                            developer={gameData.developer}
-                            publisher={gameData.publisher}
-                            tags={tagsFiltered}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={7}>
-                        <div 
-                            className={classes.detailedDescription}
-                            dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(gameData.detailed_description) }}
-                        ></div>
+                <Grid item xs={12}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={12} md={7} >
+                            <CarouselWrapper screenshots={gameData.screenshots} movies={gameData.movies} />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={5} className={classes.basicInfo}>
+                            <BasicInfo
+                                description={gameData.short_description}
+                                developer={gameData.developer}
+                                publisher={gameData.publisher}
+                                tags={tagsFiltered}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={7}>
+                            <div 
+                                className={classes.detailedDescription}
+                                dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(gameData.detailed_description) }}
+                            ></div>
+                            <Grid container className={classes.bottomContainer}>
+                                <Grid item xs={12}>
+                                    <RequirementsCard
+                                        pcRequirements={gameData.pc_requirements}
+                                        macRequirements={gameData.mac_requirements}
+                                        linuxRequirements={gameData.linux_requirements}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={5}>
+                            <Grid container className={classes.stickyContainer} spacing={2}>
+                                <Grid item xs={12}>
+                                    <ReviewRatingBlock
+                                        positiveRatings={gameData.positive_ratings}
+                                        negativeRatings={gameData.negative_ratings}
+                                        categories={gameData.categories}
+                                        genres={gameData.genres}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <RelatedGames games={relatedGames} />
+                                </Grid>
+                                <PegiRating requiredAge={gameData.required_age} />
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid> 
-
-                <Grid container className={classes.bottomContainer} direction="row-reverse" spacing={3}>
-                    <Grid item xs={12} sm={12} md={5}>
-                        <ReviewRatingBlock
-                            positiveRatings={gameData.positive_ratings}
-                            negativeRatings={gameData.negative_ratings}
-                            categories={gameData.categories}
-                            genres={gameData.genres}
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={12} md={7}>
-                        <RequirementsCard
-                            pcRequirements={gameData.pc_requirements}
-                            macRequirements={gameData.mac_requirements}
-                            linuxRequirements={gameData.linux_requirements}
-                        />
-                    </Grid>
-                </Grid>
-                <Grid container className={classes.bottomContainer} spacing={3}>
-                    <Grid item md={7} />
-                    <Grid item xs={12} sm={12} md={5}>
-                        <RelatedGames games={relatedGames} />
-                    </Grid>
-                </Grid>
-                <Grid container className={classes.bottomContainer} spacing={3}>
-                    <Grid item md={7} />
-                    <Grid item xs={12} sm={12} md={5}>
-                        <PegiRating requiredAge={gameData.required_age} />
-                    </Grid>
-                </Grid>
             </Grid>
         )
     }

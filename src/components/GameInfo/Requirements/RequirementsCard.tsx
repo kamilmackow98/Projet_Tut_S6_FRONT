@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Divider, Tab, Tabs, Typography } from "@material-ui/core";
 import TabPanel from "./TabPanel";
 import { Requirements } from "types";
 import { useStyles } from "../GameInfo.styles";
@@ -27,14 +27,13 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
     };
 
     return (
-        <Paper className={classes.card} variant="outlined">
-            <Box p={1}>
+            <>
                 <Typography className={classes.cardTitle} variant="h6">System requirements</Typography>
                 <Divider />
                 {
-                   (!Array.isArray(pcRequirements) && !Array.isArray(pcRequirements) && !Array.isArray(pcRequirements))
-                   ? <p>No system requirements.</p> 
-                   : <><Tabs
+                    (Array.isArray(pcRequirements) && Array.isArray(macRequirements) && Array.isArray(linuxRequirements))
+                    ? <p>No system requirements.</p> 
+                    : <><Tabs
                         value={value}
                         onChange={handleChange}
                         aria-label="tabs requirements"
@@ -47,8 +46,8 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
                     <TabPanel value={value} index={1} minimum={macRequirements?.minimum} recommended={macRequirements?.recommended} />
                     <TabPanel value={value} index={2} minimum={linuxRequirements?.minimum} recommended={linuxRequirements?.recommended} /></>
                 }
-            </Box>
-        </Paper>
+            </>
+       
     )
 }
 

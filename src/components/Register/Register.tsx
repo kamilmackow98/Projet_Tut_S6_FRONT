@@ -66,7 +66,7 @@ const Register: React.FC = () => {
 		setErrors(errorsCheck);
 
 		if (!errorsCheck.length) {
-			fetch("api/user/create", {
+			fetch("/api/user/create", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json; charset=UTF-8",

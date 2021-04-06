@@ -15,96 +15,97 @@ export type Screenshot = {
     path_full: string
 };
 
-export type Requirements = {
-	minimum: string | undefined;
-	recommended: string | undefined;
-};
-
 export type Movie = {
-	id: number;
-	name: string;
-	thumbnail: string;
-	webm: Webm;
-	highlight: boolean;
+    id: number,
+    name: string,
+    thumbnail: string,
+    webm: Webm,
+    highlight: boolean
 };
 
 export type Library = {
 	library: number[]
 };
 
-type Webm = {
-	480: string;
-	max: string;
-};
 
 export type DateFilter = {
-    gte?: Date | string;
-    gt?: Date | string;
-    lt?: Date | string;
-    lte?: Date | string;
+	gte?: Date | string;
+	gt?: Date | string;
+	lt?: Date | string;
+	lte?: Date | string;
 };
 
 export type Publisher = {
-    name: string;
-}
+	name: string;
+};
 
 export type Developer = {
-    name: string;
-}
+	name: string;
+};
 
 export type Tag = {
-    name: string;
-}
+	name: string;
+};
 
 export type Category = {
-    name: string;
-}
+	name: string;
+};
 
 export type Platform = {
-    name: string;
-}
+	name: string;
+};
 
 export type Genre = {
-    name: string;
-}
+	name: string;
+};
 
 export type Age = {
-    age: number;
-}
+	age: number;
+};
 
 export type GameSearchResult = {
     games: Game[],
     numberOfPages: number,
     currentPage: number
-}
-
-export type Filters = {
-    name?: string,
-    release_date?: DateFilter,
-    developer?: string[],
-    publisher?: string[],
-    platforms?: string[],
-    categories?: string[],
-    genres?: string[],
-    steamspy_tags?: string[],
-    required_age?: number[],
-	positive_rating_percent?: number,
-	library?: boolean
 };
 
 export type TagFilter = {
     tags: string[]
-}
+};
 
 export type TagCloud = {
     value: string,
     count: number
-}
+};
 
 export type FullTag = {
     name: string,
     value?: string
-}
+};
+
+type Webm = {
+    480: string, 
+    max: string
+};
+
+export type Filters = {
+    name: string | undefined,
+    release_date: DateFilter | undefined,
+    developer: string[] | undefined,
+    publisher: string[] | undefined,
+    platforms: string[] | undefined,
+    categories: string[] | undefined,
+    genres: string[] | undefined,
+    steamspy_tags: string[] | undefined,
+    required_age: number[] | undefined,
+    positive_rating_percent: number | undefined
+
+};
+
+export type Requirements = {
+    minimum: string | undefined,
+    recommended: string | undefined
+};
 
 export type Game = {
 	id: number;
@@ -556,7 +557,7 @@ export type Rules = GenericKeyObject<PossibleFields, Rule[]>;
 export interface LoginFormInputs {
 	email: string;
 	password: string;
-}
+};
 
 export interface RegisterFormInputs {
 	firstname: string;
@@ -564,7 +565,8 @@ export interface RegisterFormInputs {
 	email: string;
 	password: string;
 	confirmPassword: string;
-}
+};
+
 export interface CustomTableProps {
 	classes: ClassNameMap;
 	onRequestSort: (

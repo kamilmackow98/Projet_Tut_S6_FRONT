@@ -9,8 +9,9 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, GameSearchResult } from "types";
+import { Game, Filters, DateFilter, GameSearchResult, SortFilter } from "types";
 import { useStyles } from "./Search.styles";
+import SortBy from "components/Layout/SortBy/SortBy";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -51,7 +52,8 @@ const Search = () => {
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
-    const [filters, setFilters] = useState<Filters | {}>({});
+    const [filters, setFilters] = useState<Filters>(undefined);
+    const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -84,6 +86,7 @@ const Search = () => {
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
             required_age: requiredAges ? requiredAges : undefined,
             positive_rating_percent: ratingFilter,
+            sort: sortByFilter? sortByFilter : undefined,
             library: onlyShowItemsFromLibrary
         };
 
@@ -108,7 +111,32 @@ const Search = () => {
             console.error(e); 
             setGamesFound([]);
         });
-    }
+    };
+
+    const handleFilter = (newSortByFilter: SortFilter) => {
+        const newFilters = { ...filters, sort: newSortByFilter };
+        setFilters(newFilters);
+        setSortByFilter(newSortByFilter);
+
+        fetch(`/api/games`, {
+            method: "POST",
+            body: JSON.stringify(newFilters),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+        .then((res) => res.json())
+        .then((resJson: GameSearchResult) => {
+            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+            setGamesFound(resJson.games);
+            setTotalNumberOfPages(resJson.numberOfPages);
+            setCurrentPage(Number(resJson.currentPage));
+        })
+        .catch((e) => { 
+            console.error(e); 
+            setGamesFound([]);
+        });
+    } 
 
     const handlePaginationClick = (page: number) => {
         fetch(`/api/games?page=${page}`, {
@@ -258,14 +286,15 @@ const Search = () => {
                     </AccordionDetails>
                 </Accordion>
             </Grid>
-            
+
             <Grid item xs={12}>
                 <Grid container justify="center">
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
-                        <IconButton onClick={() => {setDisplayAsGrid(false)}}>
+                        <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
+                        <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(false)}}>
                             <MenuIcon color={menuIconBtnColor}/>
                         </IconButton>
-                        <IconButton onClick={() => {setDisplayAsGrid(true)}}>
+                        <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(true)}}>
                             <AppsIcon color={gridIconBtnColor} />
                         </IconButton>
                     </Grid>

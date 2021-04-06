@@ -20,7 +20,7 @@ const ReviewRatingBlock: React.FC<Props> = ({ positiveRatings, negativeRatings, 
         <Paper variant="outlined" className={classes.card}>
             <Box p={1}>
                 <div className={classes.scoreContainer}>
-                    <GameScore score={ratingPercent} />
+                    <GameScore label="Positive ratings" direction="right" score={ratingPercent} />
                 </div>            
                 <Divider/>
                 <p>Genres: </p>
