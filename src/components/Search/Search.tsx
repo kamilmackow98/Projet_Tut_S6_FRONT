@@ -190,26 +190,28 @@ const Search = () => {
             <Grid item xs={12} sm={12}>
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon  />}>
-                        <Grid 
-                            item 
-                            xs={10}
-                            sm={10}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()} 
-                        >
-                            <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
-                        </Grid>
-                        <Grid 
-                            item 
-                            className={classes.buttonContainer}
-                            xs={1}
-                            sm={2}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()} 
-                        >
-                            <Button onClick={handleSearch} variant="contained" color="secondary">
-                                <SearchIcon />
-                            </Button>
+                        <Grid container>
+                            <Grid 
+                                item 
+                                xs={10}
+                                sm={10}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                            </Grid>
+                            <Grid 
+                                item 
+                                className={classes.buttonContainer}
+                                xs={1}
+                                sm={2}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <Button onClick={handleSearch} variant="contained" color="secondary">
+                                    <SearchIcon />
+                                </Button>
+                            </Grid>
                         </Grid>
                     </AccordionSummary>
                     <AccordionDetails>
