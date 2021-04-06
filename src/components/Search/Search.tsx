@@ -27,8 +27,9 @@ import React from "react";
 
 const Search = () => {
     const classes = useStyles();
-    const { user, setUser } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
 
+    const [token, setToken] = useState<string | undefined>();
     const [gameName, setGameName] = useState("");
     const [publishersName, setPublishersName] = useState<string[]>([]);
     const [developersName, setDevelopersName] = useState<string[]>([]);
@@ -122,7 +123,8 @@ const Search = () => {
             method: "POST",
             body: JSON.stringify(newFilters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -143,7 +145,8 @@ const Search = () => {
             method: "POST",
             body: JSON.stringify(filters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -160,11 +163,13 @@ const Search = () => {
     }
 
     useEffect(() => {
+        setToken(Cookies.get('token'));
         fetch(`/api/games`, {
             method: "POST",
             body: JSON.stringify({}),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
