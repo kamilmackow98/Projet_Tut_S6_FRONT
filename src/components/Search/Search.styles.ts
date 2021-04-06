@@ -56,5 +56,9 @@ export const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "row",
         marginTop: "15px"
+    },
+    libraryTitle: {
+        marginLeft: "5px",
+        fontSize: "1.5em"
     }
 }));
