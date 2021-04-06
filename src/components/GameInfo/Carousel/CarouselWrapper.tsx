@@ -36,11 +36,10 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
                 onDragStart={handleDragStart} 
             />
         </div>
-        
     );
 
     const handleDragStart = (e: any) => e.preventDefault();
-    const onSlideChanged = (e: any) => { setCurrentIndex(e.item); }
+    const onSlideChanged = (e: any) => { setCurrentIndex(e.item); setCurrentPlayingId(null); }
 
     const screenshotsJSX: JSX.Element[] = screenshots?.map((screenshot: Screenshot) => (
         <div className={classes.screenshotContainer}>
@@ -77,10 +76,6 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
         <Grid container className={classes.carouselContainer}>
             <Grid item xs={12} md={12}>
                 <AliceCarousel 
-                    mouseTracking
-                    infinite
-                    autoPlay
-                    autoPlayInterval={5000}
                     disableDotsControls={true}
                     activeIndex={currentIndex}
                     onSlideChanged={onSlideChanged}
