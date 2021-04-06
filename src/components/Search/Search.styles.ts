@@ -56,5 +56,8 @@ export const useStyles = makeStyles((theme) => ({
         display: "flex",
         flexDirection: "row",
         marginTop: "15px"
-    }
+    },
+    iconButtons: {
+        alignSelf: "center"
+    },
 }));

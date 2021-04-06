@@ -8,7 +8,12 @@ export const useStyles = makeStyles((theme: Theme) =>
             marginBottom: "20px"
         },
         sortBySelect: {
-            width: "100%"
+            width: "100%",
+
+            "& .MuiTypography-root": {
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+            }
         },
         sortBySwitch: {
             marginLeft: "10px",

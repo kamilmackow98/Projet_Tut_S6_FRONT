@@ -268,10 +268,10 @@ const Search = () => {
                 <Grid container justify="center">
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
                         <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
-                        <IconButton onClick={() => {setDisplayAsGrid(false)}}>
+                        <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(false)}}>
                             <MenuIcon color={menuIconBtnColor}/>
                         </IconButton>
-                        <IconButton onClick={() => {setDisplayAsGrid(true)}}>
+                        <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(true)}}>
                             <AppsIcon color={gridIconBtnColor} />
                         </IconButton>
                     </Grid>
