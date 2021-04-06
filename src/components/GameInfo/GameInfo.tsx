@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Container, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CarouselWrapper from "./Carousel/CarouselWrapper";
 import BasicInfo from "./BasicInfo";
 import PegiRating from "./ReviewRatingBlock/PegiRating";
@@ -97,9 +97,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         platforms={gameData.platforms}
                         releaseDate={gameData.release_date}
                     />
-                    
                 </Grid>
-                
                 <Grid item xs={12}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={12} md={7} >
@@ -137,8 +135,6 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                         categories={gameData.categories}
                                         genres={gameData.genres}
                                     />
-                                    
-                                    
                                 </Grid>
                                 <Grid item xs={12}>
                                     <RelatedGames games={relatedGames} />
@@ -146,11 +142,8 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                 <PegiRating requiredAge={gameData.required_age} />
                             </Grid>
                         </Grid>
-                        
                     </Grid>
                 </Grid> 
-
-                
             </Grid>
         )
     }

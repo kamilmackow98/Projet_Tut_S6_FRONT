@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Divider, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { Divider, Tab, Tabs, Typography } from "@material-ui/core";
 import TabPanel from "./TabPanel";
 import { Requirements } from "types";
 import { useStyles } from "../GameInfo.styles";

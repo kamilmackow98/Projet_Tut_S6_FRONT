@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Grid, Paper, Typography } from "@material-ui/core";
 import GameCard from "../Game/Card/GameCard";
 import AliceCarousel from 'react-alice-carousel';
-import Carousel from 'react-elastic-carousel'
 import { Game } from "types";
 import { useStyles } from "./GameInfo.styles";
 
@@ -13,9 +12,7 @@ interface Props {
 };
 
 const RelatedGames: React.FC<Props> = ({ games }) => {
-
     const classes = useStyles();
-    const [Carousel, setCarousel] = useState<any>();
 
     const responsive: any = {
         0: { items: 2 },
@@ -24,13 +21,10 @@ const RelatedGames: React.FC<Props> = ({ games }) => {
     };
 
     const gamesJSX: JSX.Element[] = games.map((game: Game) => (
-        <Grid item className={classes.relatedGameCard}>
+        <Grid item key={game.id} className={classes.relatedGameCard}>
             <GameCard 
-                key={game.id}
-                id={game.id}
-                name = {game.name}
-                header_image = {game.header_image}
-                disableAnimation = {true}
+                disableAnimation
+                {...game}
             /> 
         </Grid>
     ));
@@ -44,7 +38,6 @@ const RelatedGames: React.FC<Props> = ({ games }) => {
                     responsive={responsive}
                     disableDotsControls={true}
                     items={gamesJSX}
-                    ref={(el) => { setCarousel(el) }}
                 />
             </Box>
         </Paper>
