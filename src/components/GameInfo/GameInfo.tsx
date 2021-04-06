@@ -107,7 +107,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
     }, []);
 
     useEffect(() => {
-        if (user.authenticated) {
+        if (user.isAuthenticated) {
             const token: string | undefined = Cookies.get('token');
             fetch(`/api/user/library/${id}`, {
                 method: 'GET',
@@ -123,7 +123,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                     setIsInLibrary(false);
                 });
         }
-    }, [id, user.authenticated]);
+    }, [id, user.isAuthenticated]);
 
     useEffect(() => {
         fetch(`/api/game/${id}`)
@@ -156,7 +156,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         platforms={gameData.platforms}
                         releaseDate={gameData.release_date}
                         isInLibrary={isInLibrary}
-                        isAuthenticated={user.authenticated}
+                        isAuthenticated={user.isAuthenticated}
                         onAddToLibrary={handleAddToLibrary}
                         onRemoveFromLibrary={handleRemoveFromLibrary}
                     />

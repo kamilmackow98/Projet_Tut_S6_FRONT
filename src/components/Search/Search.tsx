@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch } from "@material-ui/core";
+import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch, FormControlLabel, Checkbox } from "@material-ui/core";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
 import AutocompletePublisherName from "./Autocomplete/AutocompletePublisherName";
@@ -20,9 +20,13 @@ import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
 import GameList from "components/Game/List/GameList";
+import Cookies from "js-cookie";
+import UserContext from "context/user/UserContext";
+import React from "react";
 
 const Search = () => {
     const classes = useStyles();
+    const { user, setUser } = React.useContext(UserContext);
 
     const [gameName, setGameName] = useState("");
     const [publishersName, setPublishersName] = useState<string[]>([]);
@@ -37,6 +41,8 @@ const Search = () => {
     const [releaseDateEnd, setReleaseDateEnd] = useState<Date | string | undefined>(undefined);
     
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
+
+    const [onlyShowItemsFromLibrary, setOnlyShowItemsFromLibrary] = useState<boolean>(false);
 
     const [totalNumberOfPages, setTotalNumberOfPages] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -77,16 +83,18 @@ const Search = () => {
             genres: genresName && genresName.length > 0 ? genresName : undefined,
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
             required_age: requiredAges ? requiredAges : undefined,
-            positive_rating_percent: ratingFilter
+            positive_rating_percent: ratingFilter,
+            library: onlyShowItemsFromLibrary
         };
 
         setFilters(newFilters);
-
+        const token: string | undefined = Cookies.get('token');
         fetch(`/api/games`, {
             method: "POST",
             body: JSON.stringify(newFilters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -227,9 +235,25 @@ const Search = () => {
                                     type="number"
                                     onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                                     variant="outlined"
+                                    InputProps={{ inputProps: { min: 0, max: 100 } }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4} />
+                            <Grid item xs={12} sm={4}>
+                                { 
+                                    user.isAuthenticated &&
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={onlyShowItemsFromLibrary}
+                                                onChange={() => { setOnlyShowItemsFromLibrary(!onlyShowItemsFromLibrary) }}
+                                                color="secondary"
+                                            />
+                                        }
+                                        label="Only show items from my library"
+                                    />
+                                }
+                                
+                            </Grid>
                         </Grid>
                     </AccordionDetails>
                 </Accordion>

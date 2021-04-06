@@ -29,7 +29,7 @@ const GamesLibrary = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     
     useEffect(() => {
-        if (user.authenticated) {
+        if (user.isAuthenticated) {
             const token: string | undefined = Cookies.get('token');
             fetch(`/api/user/library`, {
                 method: 'GET',

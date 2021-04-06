@@ -6,7 +6,7 @@ export type GenericKeyObject<K extends keyof any, T> = {
 
 export interface UserType {
 	token: string;
-	authenticated: boolean;
+	isAuthenticated: boolean;
 };
 
 export type Screenshot = {
@@ -79,16 +79,17 @@ export type GameSearchResult = {
 }
 
 export type Filters = {
-    name: string | undefined,
-    release_date: DateFilter | undefined,
-    developer: string[] | undefined,
-    publisher: string[] | undefined,
-    platforms: string[] | undefined,
-    categories: string[] | undefined,
-    genres: string[] | undefined,
-    steamspy_tags: string[] | undefined,
-    required_age: number[] | undefined,
-    positive_rating_percent: number | undefined
+    name?: string,
+    release_date?: DateFilter,
+    developer?: string[],
+    publisher?: string[],
+    platforms?: string[],
+    categories?: string[],
+    genres?: string[],
+    steamspy_tags?: string[],
+    required_age?: number[],
+	positive_rating_percent?: number,
+	library?: boolean
 };
 
 export type TagFilter = {

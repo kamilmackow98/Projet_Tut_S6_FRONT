@@ -71,7 +71,7 @@ const Login: React.FC = () => {
 				.then((token) => {
 					if (token) {
 						Cookie.set("token", token.token);
-						setUser({ ...user, authenticated: true });
+						setUser({ ...user, isAuthenticated: true });
 						history.push({ pathname: "/" });
 					}
 				})

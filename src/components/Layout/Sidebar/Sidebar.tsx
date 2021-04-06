@@ -27,7 +27,7 @@ const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 			open={open}
 		>
 			<List onClick={toggleDrawer(false)}>{mainListItems}</List>
-			{user.authenticated && (
+			{user.isAuthenticated && (
 				<>
 					<Divider />
 					<List onClick={toggleDrawer(false)}>{secondaryListItems}</List>

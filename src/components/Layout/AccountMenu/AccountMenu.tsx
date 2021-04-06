@@ -28,10 +28,10 @@ const AccountMenu: React.FC<Props> = ({ classes }) => {
 	const handleLogout = () => {
 		setAnchorEl(null);
 		removeToken();
-		setUser({ ...user, authenticated: false });
+		setUser({ ...user, isAuthenticated: false });
 	};
 
-	const menuItems = user.authenticated ? (
+	const menuItems = user.isAuthenticated ? (
 		<div>
 			<MenuItem component={Link} to="/library" onClick={handleCloseAnchor}>
 				My library
