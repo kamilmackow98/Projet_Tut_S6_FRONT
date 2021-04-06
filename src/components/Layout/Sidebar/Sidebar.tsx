@@ -14,7 +14,6 @@ interface Props {
 
 const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 	const { user } = React.useContext(UserContext);
-	if (user.isAuthenticated && mainListItems.length === 3) mainListItems.push(libraryItem);
 
 	return (
 		<SwipeableDrawer
@@ -27,7 +26,10 @@ const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 			anchor={"left"}
 			open={open}
 		>
-			<List onClick={toggleDrawer(false)}>{mainListItems}</List>
+			<List onClick={toggleDrawer(false)}>
+				{mainListItems}
+				{user.isAuthenticated && libraryItem}
+			</List>
 			{user.isAuthenticated && (
 				<>
 					<Divider />
