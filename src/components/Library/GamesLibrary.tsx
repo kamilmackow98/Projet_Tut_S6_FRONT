@@ -43,8 +43,6 @@ const GamesLibrary = () => {
                     const ids: number[] = [];
                     response.library.forEach((gameId: number) => ids.push(gameId));
                     setGameIds(ids);
-                    console.log(Math.floor(ids.length / 10));
-                    console.log(ids.length / 10);
                     setTotalNumberOfPages(Math.ceil(ids.length / 10));
                     fetchGames(ids.slice(0, 10));
                 }).catch((error) => {

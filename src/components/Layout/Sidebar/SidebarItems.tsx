@@ -8,15 +8,15 @@ import SidebarLink from "./SidebarLink";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
 export const mainListItems = [
-	<SidebarLink text="Home" to="/">
+	<SidebarLink key={"home"} text="Home" to="/">
 		<GamepadIcon />
 	</SidebarLink>,
 
-	<SidebarLink text="Protected" to="/protected">
+	<SidebarLink key={"protected"} text="Protected" to="/protected">
 		<SportsEsportsIcon />
 	</SidebarLink>,
 
-	<SidebarLink text="Nested" to="/nested">
+	<SidebarLink key={"nested"} text="Nested" to="/nested">
 		<VideogameAssetIcon />
 	</SidebarLink>
 ];
