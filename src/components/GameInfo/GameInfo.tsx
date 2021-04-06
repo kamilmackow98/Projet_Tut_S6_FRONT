@@ -133,11 +133,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                 <Grid item xs={12}>
                                     <RelatedGames games={relatedGames} />
                                 </Grid>
-                                {gameData.required_age > 0 && (
-                                    <Grid item xs={12}>
-                                        <PegiRating requiredAge={gameData.required_age} />
-                                    </Grid>
-                                )}
+                                <PegiRating requiredAge={gameData.required_age} />
                             </Grid>
                         </Grid>
                         
@@ -145,8 +141,8 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 </Grid> 
 
                 <Grid item xs={12} className={classes.bottomContainer}>
-                    <Grid container >
-                        <Grid item xs={12} sm={12} md={7} >
+                    <Grid container>
+                        <Grid item xs={12} sm={12}>
                             <RequirementsCard
                                 pcRequirements={gameData.pc_requirements}
                                 macRequirements={gameData.mac_requirements}

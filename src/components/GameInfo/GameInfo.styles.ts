@@ -64,10 +64,10 @@ export const useStyles = makeStyles((theme) => ({
 		padding: "10px",
 	},
 	cardTitle: {
-		// marginBottom: "5px",
+		marginBottom: "5px",
 	},
 	bottomContainer: {
-		marginTop: "10px",
+		marginTop: theme.spacing(2),
 	},
 	carouselContainer: {
 		marginTop: theme.spacing(2),

@@ -9,7 +9,7 @@ const PegiRating: React.FC<Props> = ({ requiredAge }) => {
 
         return (
                 requiredAge !== 0 ?
-                <Grid item>
+                <Grid item xs={12}>
                     <Paper variant="outlined">
                         <Box p={1}>
                             <a href={"https://pegi.info/"}>
