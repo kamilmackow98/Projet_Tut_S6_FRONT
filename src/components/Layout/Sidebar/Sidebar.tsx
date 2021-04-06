@@ -1,8 +1,9 @@
 import { mainListItems, secondaryListItems } from "./SidebarItems";
-import { ClassNameMap } from "@material-ui/styles";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
+import { ClassNameMap } from "@material-ui/styles";
 import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
+import UserContext from "context/user/UserContext";
 import React from "react";
 
 interface Props {
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
+	const { user } = React.useContext(UserContext);
+
 	return (
 		<SwipeableDrawer
 			classes={{
@@ -24,8 +27,12 @@ const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 			open={open}
 		>
 			<List onClick={toggleDrawer(false)}>{mainListItems}</List>
-			<Divider />
-			<List onClick={toggleDrawer(false)}>{secondaryListItems}</List>
+			{user.authenticated && (
+				<>
+					<Divider />
+					<List onClick={toggleDrawer(false)}>{secondaryListItems}</List>
+				</>
+			)}
 		</SwipeableDrawer>
 	);
 };

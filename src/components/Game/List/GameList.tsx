@@ -8,7 +8,7 @@ interface Props extends GridProps {
 }
 
 const GameList: React.FC<Props> = (props) => {
-	const { data } = props;
+	const { data, ...others } = props;
 
 	const games = data.map((game) => (
 		<Grid item key={game.id} xs={12}>
@@ -17,7 +17,7 @@ const GameList: React.FC<Props> = (props) => {
 	));
 
 	return (
-		<Grid {...props} container>
+		<Grid {...others} container>
 			{games}
 		</Grid>
 	);
