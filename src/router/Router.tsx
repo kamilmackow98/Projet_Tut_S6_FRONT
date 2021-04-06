@@ -8,6 +8,7 @@ import Protected from "components/Protected";
 import TestComponents from "components/TestComponents";
 import PrivateRoute from "./PrivateRoute";
 import Search from "components/Search/Search";
+import GameInfo from "components/GameInfo/GameInfo";
 import { Route, Switch } from "react-router-dom";
 import React from "react";
 import Register from "../components/Register/Register";
@@ -24,6 +25,7 @@ const Router: React.FC = () => {
 					"/nested",
 					"/nested/another-nested",
 					"/components",
+					"/game/:id"
 				]}
 			>
 				<GlobalLayout>
@@ -47,6 +49,10 @@ const Router: React.FC = () => {
 							)}
 						/>
 						<Route path="/components" render={() => <TestComponents />} />
+						<Route
+							path="/game/:id"
+							render={(routeProps) => <GameInfo id={Number(routeProps.match.params.id)} />}
+						/>
 					</Switch>
 				</GlobalLayout>
 			</Route>

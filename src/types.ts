@@ -9,32 +9,47 @@ export interface UserType {
 	authenticated: boolean;
 }
 
+export type Screenshot = {
+    id: number,
+    path_thumbnail: string,
+    path_full: string
+}; 
+
 export type SortFilter = {
 	isASC: boolean;
 	sortBy: string;
 };
 
-type Screenshot = {
-	id: number;
-	path_thumbnail: string;
-	path_full: string;
-};
-type Requirements = {
-	minimum: string | undefined;
-	recommended: string | undefined;
+export type Movie = {
+    id: number,
+    name: string,
+    thumbnail: string,
+    webm: Webm,
+    highlight: boolean
 };
 
-type Movie = {
-	id: number;
-	name: string;
-	thumbnail: string;
-	webm: Webm;
-	highlight: boolean;
+export type TagFilter = {
+    tags: string[]
+};
+
+export type TagCloud = {
+    value: string,
+    count: number
+};
+
+export type FullTag = {
+    name: string,
+    value?: string
 };
 
 type Webm = {
 	480: string;
 	max: string;
+};
+
+export type Requirements = {
+    minimum: string | undefined,
+    recommended: string | undefined
 };
 
 export type DateFilter = {
@@ -79,19 +94,18 @@ export type GameSearchResult = {
 };
 
 export type Filters = {
-			name?: string;
-			release_date?: DateFilter;
-			developer?: string[];
-			publisher?: string[];
-			platforms?: string[];
-			categories?: string[];
-			genres?: string[];
-			steamspy_tags?: string[];
-			required_age?: number[];
-			positive_rating_percent?: number;
-			sort?: SortFilter;
-	  }
-	| undefined;
+	name?: string;
+	release_date?: DateFilter;
+	developer?: string[];
+	publisher?: string[];
+	platforms?: string[];
+	categories?: string[];
+	genres?: string[];
+	steamspy_tags?: string[];
+	required_age?: number[];
+	positive_rating_percent?: number;
+	sort?: SortFilter;
+} | undefined;
 
 export type Game = {
 	id: number;
@@ -504,16 +518,16 @@ export interface HeadTableData {
 	name: string;
 	releaseDate: string;
 	score: number;
-}
+};
 
 export interface BodyTableData extends HeadTableData {
 	id: number;
-}
+};
 
 export interface HeadCell {
 	id: keyof HeadTableData;
 	label: string;
-}
+};
 
 export type Order = "asc" | "desc";
 
@@ -543,7 +557,7 @@ export type Rules = GenericKeyObject<PossibleFields, Rule[]>;
 export interface LoginFormInputs {
 	email: string;
 	password: string;
-}
+};
 
 export interface RegisterFormInputs {
 	firstname: string;
@@ -551,7 +565,8 @@ export interface RegisterFormInputs {
 	email: string;
 	password: string;
 	confirmPassword: string;
-}
+};
+
 export interface CustomTableProps {
 	classes: ClassNameMap;
 	onRequestSort: (
@@ -560,4 +575,4 @@ export interface CustomTableProps {
 	) => void;
 	order: Order;
 	orderBy: string;
-}
+};
