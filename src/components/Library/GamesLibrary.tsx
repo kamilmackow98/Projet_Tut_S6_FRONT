@@ -11,13 +11,10 @@ import AppsIcon from '@material-ui/icons/Apps';
 import MenuIcon from '@material-ui/icons/Menu';
 import { useStyles } from "../Search/Search.styles";
 
-interface Props {
-};
-
-const GamesLibrary = () => {
+const GamesLibrary: React.FC = () => {
 
     const classes = useStyles();
-    const { user, setUser } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
     const [games, setGames] = useState<Game[] | []>([]);
     const [gameIds, setGameIds] = useState<number[] | []>([]);
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
@@ -49,7 +46,7 @@ const GamesLibrary = () => {
                     console.log(error);
                 });
         }
-    }, []);
+    }, [user.isAuthenticated]);
 
     const fetchGames = (ids: number[]) => {
         if (ids.length > 0) {
