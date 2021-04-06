@@ -1,25 +1,26 @@
+import { ClassNameMap } from "@material-ui/styles";
+
 export type GenericKeyObject<K extends keyof any, T> = {
 	[P in K]?: T;
 };
-
-import { ClassNameMap } from "@material-ui/styles";
 
 export interface UserType {
 	token: string;
 	authenticated: boolean;
 };
 
-type Screenshot = {
+export type Screenshot = {
     id: number,
     path_thumbnail: string,
     path_full: string
 };
-type Requirements = {
+
+export type Requirements = {
 	minimum: string | undefined;
 	recommended: string | undefined;
 };
 
-type Movie = {
+export type Movie = {
 	id: number;
 	name: string;
 	thumbnail: string;

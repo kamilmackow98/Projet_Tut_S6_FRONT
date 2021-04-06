@@ -9,7 +9,7 @@ export const checkAuth = async () => {
 		token = "";
 	}
 
-	isTokenValid = await fetch("api/user/token", {
+	isTokenValid = await fetch("/api/user/token", {
 		method: "POST",
 		body: JSON.stringify({ token }),
 		headers: {
