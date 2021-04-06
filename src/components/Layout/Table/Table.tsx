@@ -6,7 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import Link from "@material-ui/core/Link";
-import { Game } from "types";
+import { Game, HeadTableData, Order } from "types";
 import { Link as RouterLink } from "react-router-dom";
 import CustomTableHead from "./CustomTableHead";
 import { useStyles } from "./Table.styles";

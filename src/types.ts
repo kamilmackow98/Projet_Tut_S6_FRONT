@@ -86,6 +86,20 @@ export type Filters = {
     positive_rating_percent: number | undefined
 };
 
+export type TagFilter = {
+    tags: string[]
+}
+
+export type TagCloud = {
+    value: string,
+    count: number
+}
+
+export type FullTag = {
+    name: string,
+    value?: string
+}
+
 export type Game = {
 	id: number;
 	name: string;
