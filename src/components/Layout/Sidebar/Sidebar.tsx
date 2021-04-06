@@ -1,4 +1,4 @@
-import { mainListItems, secondaryListItems } from "./SidebarItems";
+import { libraryItem, mainListItems, secondaryListItems } from "./SidebarItems";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { ClassNameMap } from "@material-ui/styles";
 import Divider from "@material-ui/core/Divider";
@@ -26,8 +26,11 @@ const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 			anchor={"left"}
 			open={open}
 		>
-			<List onClick={toggleDrawer(false)}>{mainListItems}</List>
-			{user.authenticated && (
+			<List onClick={toggleDrawer(false)}>
+				{mainListItems}
+				{user.isAuthenticated && libraryItem}
+			</List>
+			{user.isAuthenticated && (
 				<>
 					<Divider />
 					<List onClick={toggleDrawer(false)}>{secondaryListItems}</List>

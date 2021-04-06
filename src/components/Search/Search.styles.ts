@@ -60,4 +60,8 @@ export const useStyles = makeStyles((theme) => ({
     iconButtons: {
         alignSelf: "center"
     },
+    libraryTitle: {
+        marginLeft: "5px",
+        fontSize: "1.5em"
+    }
 }));

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch } from "@material-ui/core";
+import { TextField, Grid, Button, Accordion, AccordionSummary, AccordionDetails, IconButton, Switch, FormControlLabel, Checkbox } from "@material-ui/core";
 import AutocompleteDeveloperName from "./Autocomplete/AutocompleteDeveloperName";
 import AutocompleteGameName from './Autocomplete/AutocompleteGameName';
 import AutocompletePublisherName from "./Autocomplete/AutocompletePublisherName";
@@ -21,10 +21,15 @@ import { Pagination } from "@material-ui/lab";
 import NoGamesFound from "./NoGamesFound/NoGamesFound";
 import ReleaseYearPicker from "./ReleaseDatePicker/ReleaseYearPicker";
 import GameList from "components/Game/List/GameList";
+import Cookies from "js-cookie";
+import UserContext from "context/user/UserContext";
+import React from "react";
 
 const Search = () => {
     const classes = useStyles();
+    const { user } = React.useContext(UserContext);
 
+    const [token, setToken] = useState<string | undefined>();
     const [gameName, setGameName] = useState("");
     const [publishersName, setPublishersName] = useState<string[]>([]);
     const [developersName, setDevelopersName] = useState<string[]>([]);
@@ -39,6 +44,8 @@ const Search = () => {
     
     const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
 
+    const [onlyShowItemsFromLibrary, setOnlyShowItemsFromLibrary] = useState<boolean>(false);
+
     const [totalNumberOfPages, setTotalNumberOfPages] = useState<number>(1);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [gamesFound, setGamesFound] = useState<Game[]>([]);
@@ -46,7 +53,7 @@ const Search = () => {
     const [displayAsGrid, setDisplayAsGrid] = useState<boolean>(true);
     const [isDateInYear, setDateInYear] = useState<boolean>(false);
 
-    const [filters, setFilters] = useState<Filters>(undefined);
+    const [filters, setFilters] = useState<Filters | undefined>(undefined);
     const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
@@ -80,16 +87,18 @@ const Search = () => {
             steamspy_tags: tagsName && tagsName.length > 0 ? tagsName : undefined,
             required_age: requiredAges ? requiredAges : undefined,
             positive_rating_percent: ratingFilter,
-            sort: sortByFilter? sortByFilter : undefined
+            sort: sortByFilter? sortByFilter : undefined,
+            library: onlyShowItemsFromLibrary
         };
 
         setFilters(newFilters);
-
+        const token: string | undefined = Cookies.get('token');
         fetch(`/api/games`, {
             method: "POST",
             body: JSON.stringify(newFilters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -114,7 +123,8 @@ const Search = () => {
             method: "POST",
             body: JSON.stringify(newFilters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -135,7 +145,8 @@ const Search = () => {
             method: "POST",
             body: JSON.stringify(filters),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -152,11 +163,13 @@ const Search = () => {
     }
 
     useEffect(() => {
+        setToken(Cookies.get('token'));
         fetch(`/api/games`, {
             method: "POST",
             body: JSON.stringify({}),
             headers: {
-                "Content-type": "application/json; charset=UTF-8"
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
             }
         })
         .then((res) => res.json())
@@ -170,33 +183,35 @@ const Search = () => {
             console.error(e); 
             setGamesFound([]);
         });
-    }, []);
+    }, [token]);
 
 	return (
         <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreIcon  />}>
-                        <Grid 
-                            item 
-                            xs={10}
-                            sm={10}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()} 
-                        >
-                            <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
-                        </Grid>
-                        <Grid 
-                            item 
-                            className={classes.buttonContainer}
-                            xs={1}
-                            sm={2}
-                            onClick={(event) => event.stopPropagation()}
-                            onFocus={(event) => event.stopPropagation()} 
-                        >
-                            <Button onClick={handleSearch} variant="contained" color="secondary">
-                                <SearchIcon />
-                            </Button>
+                        <Grid container>
+                            <Grid 
+                                item 
+                                xs={10}
+                                sm={10}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                            </Grid>
+                            <Grid 
+                                item 
+                                className={classes.buttonContainer}
+                                xs={1}
+                                sm={2}
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()} 
+                            >
+                                <Button onClick={handleSearch} variant="contained" color="secondary">
+                                    <SearchIcon />
+                                </Button>
+                            </Grid>
                         </Grid>
                     </AccordionSummary>
                     <AccordionDetails>
@@ -255,9 +270,25 @@ const Search = () => {
                                     type="number"
                                     onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                                     variant="outlined"
+                                    InputProps={{ inputProps: { min: 0, max: 100 } }}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4} />
+                            <Grid item xs={12} sm={4}>
+                                { 
+                                    user.isAuthenticated &&
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={onlyShowItemsFromLibrary}
+                                                onChange={() => { setOnlyShowItemsFromLibrary(!onlyShowItemsFromLibrary) }}
+                                                color="secondary"
+                                            />
+                                        }
+                                        label="Only show items from my library"
+                                    />
+                                }
+                                
+                            </Grid>
                         </Grid>
                     </AccordionDetails>
                 </Accordion>

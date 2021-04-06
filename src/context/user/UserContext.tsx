@@ -7,7 +7,7 @@ interface Props {
 }
 
 const UserContext = React.createContext<Props>({
-	user: { authenticated: false, token: "" },
+	user: { isAuthenticated: false, token: "" },
 	setUser: () => {},
 });
 

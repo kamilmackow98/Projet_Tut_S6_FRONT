@@ -33,6 +33,7 @@ const BasicInfo: React.FC<Props> = ({
                 minSize={12}
                 maxSize={35}
                 tags={tags}
+                shuffle={false}
                 colorOptions={options}
             />
         </Grid>

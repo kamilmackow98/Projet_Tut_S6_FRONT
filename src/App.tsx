@@ -6,7 +6,7 @@ import Router from "router/Router";
 import React from "react";
 
 const userConfig = {
-	authenticated: false,
+	isAuthenticated: false,
 	token: "",
 };
 
@@ -30,7 +30,7 @@ const App = () => {
 
 		const fetchAuth = async () => {
 			isAuthenticated = await checkAuth();
-			setUser((user) => ({ ...user, authenticated: isAuthenticated }));
+			setUser((user) => ({ ...user, isAuthenticated: isAuthenticated }));
 			setLoading(false);
 		};
 

@@ -12,6 +12,8 @@ import { FullTag, Game, TagCloud, TagFilter } from "types";
 import Header from "./Header";
 import { useStyles } from "./GameInfo.styles";
 import GameNotFound from "./GameNotFound";
+import Cookies from "js-cookie";
+import UserContext from "context/user/UserContext";
 
 interface Props {
     id: number   
@@ -19,11 +21,13 @@ interface Props {
 
 const GameInfo: React.FC<Props> = ({ id }) => {
 
+    const { user } = React.useContext(UserContext);
     const classes = useStyles();
     const [gameData, setGameData] = useState<Game>();
     const [noGameFound, setNoGameFound] = useState<boolean>(false);
     const [relatedGames, setRelatedGames] = useState<Game[] | []>([]);
     const [tagsFiltered, setTagsFiltered] = useState<any[]>([]);
+    const [isInLibrary, setIsInLibrary] = useState<boolean>(false);
 
     const getRelatedGames = (formattedTags : any[], id: number) => {
         const tags = formattedTags.map((tag: TagCloud) => tag.value);
@@ -45,6 +49,44 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             });
     };
 
+    const handleAddToLibrary = () => {
+        const token: string | undefined = Cookies.get('token');
+        fetch(`/api/user/library/add`,
+        {
+            method: 'POST',
+            body: JSON.stringify({ gameId: id }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
+            }
+        })
+            .then(response => response.json())
+            .then(() => {
+                setIsInLibrary(true);
+            }).catch((error) => {
+                console.error(error);
+            });
+    };
+
+    const handleRemoveFromLibrary = () => {
+        const token: string | undefined = Cookies.get('token');
+        fetch(`/api/user/library/remove`,
+        {
+            method: 'POST',
+            body: JSON.stringify({ gameId: id }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Authorization": token ? token : ""
+            }
+        })
+            .then(response => response.json())
+            .then(() => {
+                setIsInLibrary(false);
+            }).catch((error) => {
+                console.error(error);
+            });
+    }
+
     const extractAndSortTags = React.useCallback(async (game: Game) => {
         const tags: any[] = Object.entries(game)
                                 .filter(([key, val]) => key.includes('tag_') && val && val > 0)
@@ -65,6 +107,25 @@ const GameInfo: React.FC<Props> = ({ id }) => {
     }, []);
 
     useEffect(() => {
+        if (user.isAuthenticated) {
+            const token: string | undefined = Cookies.get('token');
+            fetch(`/api/user/library/${id}`, {
+                method: 'GET',
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                    "Authorization": token ? token : ""
+                }
+            })
+                .then(response => response.json())
+                .then((response) => {
+                    setIsInLibrary(response.isInLibrary);
+                }).catch((error) => {
+                    setIsInLibrary(false);
+                });
+        }
+    }, [id, user.isAuthenticated]);
+
+    useEffect(() => {
         fetch(`/api/game/${id}`)
             .then(response => response.json())
             .then((game: Game) => {
@@ -73,11 +134,9 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 extractAndSortTags(game);
             }).catch((error) => {
                 console.error(error);
-                console.error('error', JSON.stringify(error));
                 setNoGameFound(true);
             });
     }, [extractAndSortTags, id]);
-
 
     if (noGameFound) {
         return (
@@ -96,6 +155,10 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         headerImage={gameData.header_image}
                         platforms={gameData.platforms}
                         releaseDate={gameData.release_date}
+                        isInLibrary={isInLibrary}
+                        isAuthenticated={user.isAuthenticated}
+                        onAddToLibrary={handleAddToLibrary}
+                        onRemoveFromLibrary={handleRemoveFromLibrary}
                     />
                 </Grid>
                 <Grid item xs={12}>

@@ -1,20 +1,14 @@
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
 
 export const checkAuth = async () => {
 	let isTokenValid: boolean = false;
-	let token = Cookie.get("token");
+	const token: string | undefined = Cookies.get('token');
 
-	// The ternarny operator cannot be used since Cookie.get may return undefined
-	if (!token) {
-		token = "";
-	}
-
-	isTokenValid = await fetch("api/user/token", {
-		method: "POST",
-		body: JSON.stringify({ token }),
+	isTokenValid = await fetch("/api/user/token", {
+		method: "GET",
 		headers: {
 			"Content-type": "application/json; charset=UTF-8",
-			Authorization: token,
+			"Authorization": token ? token : "",
 		},
 	})
 		.then((res) => res.status)
@@ -34,5 +28,5 @@ export const checkAuth = async () => {
 };
 
 export const removeToken = () => {
-	Cookie.remove("token");
+	Cookies.remove("token");
 }

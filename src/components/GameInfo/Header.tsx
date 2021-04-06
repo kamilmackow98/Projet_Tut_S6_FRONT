@@ -3,18 +3,35 @@ import { Grid, IconButton } from '@material-ui/core';
 import ChipList from "./ChipList";
 import { useStyles } from "./GameInfo.styles";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlinedIcon from '@material-ui/icons/RemoveCircleOutlined';
 
 interface Props {
     headerImage: string,
     name: string,
     platforms: string[],
-    releaseDate: Date
+    releaseDate: Date,
+    isInLibrary: boolean,
+    isAuthenticated: boolean,
+    onAddToLibrary: Function,
+    onRemoveFromLibrary: Function
 };
 
-const Header: React.FC<Props> = ({ headerImage, name, platforms, releaseDate }) => {
+const Header: React.FC<Props> = ({ 
+    headerImage, 
+    name, 
+    platforms, 
+    releaseDate, 
+    isInLibrary, 
+    isAuthenticated,
+    onAddToLibrary,
+    onRemoveFromLibrary
+}) => {
 
     const classes = useStyles(); 
     const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
+
+    const handleAddToLibrary = () =>  onAddToLibrary();
+    const handleRemoveFromLibrary = () => onRemoveFromLibrary();
     
     return (
         <Grid container spacing={0} justify="center">
@@ -35,12 +52,20 @@ const Header: React.FC<Props> = ({ headerImage, name, platforms, releaseDate }) 
                 </Grid>
             </Grid>
             <Grid item xs={1} sm={1} md={1} lg={1} className={classes.addToLibraryContainer}>
-                <IconButton>
-                    <AddCircleOutlineIcon color="secondary" />
-                </IconButton>
+                {
+                    isAuthenticated && 
+                    <IconButton onClick={() => { if (isInLibrary) handleRemoveFromLibrary() 
+                                                else handleAddToLibrary()  }}>
+                    { 
+                        !isInLibrary && isAuthenticated
+                        ? <AddCircleOutlineIcon color="secondary" />
+                        : <RemoveCircleOutlinedIcon color="secondary" />
+                    }
+                    </IconButton>
+                }
             </Grid>
         </Grid>
     )
 }
 
-export default Header
+export default Header;

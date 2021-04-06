@@ -6,18 +6,13 @@ export type GenericKeyObject<K extends keyof any, T> = {
 
 export interface UserType {
 	token: string;
-	authenticated: boolean;
-}
+	isAuthenticated: boolean;
+};
 
 export type Screenshot = {
     id: number,
     path_thumbnail: string,
     path_full: string
-}; 
-
-export type SortFilter = {
-	isASC: boolean;
-	sortBy: string;
 };
 
 export type Movie = {
@@ -28,28 +23,13 @@ export type Movie = {
     highlight: boolean
 };
 
-export type TagFilter = {
-    tags: string[]
+export type Library = {
+	library: number[]
 };
 
-export type TagCloud = {
-    value: string,
-    count: number
-};
-
-export type FullTag = {
-    name: string,
-    value?: string
-};
-
-type Webm = {
-	480: string;
-	max: string;
-};
-
-export type Requirements = {
-    minimum: string | undefined,
-    recommended: string | undefined
+export type SortFilter = {
+    sortBy: string,
+    isASC: boolean
 };
 
 export type DateFilter = {
@@ -88,24 +68,49 @@ export type Age = {
 };
 
 export type GameSearchResult = {
-	games: Game[];
-	numberOfPages: number;
-	currentPage: number;
+    games: Game[],
+    numberOfPages: number,
+    currentPage: number
+};
+
+export type TagFilter = {
+    tags: string[]
+};
+
+export type TagCloud = {
+    value: string,
+    count: number
+};
+
+export type FullTag = {
+    name: string,
+    value?: string
+};
+
+type Webm = {
+    480: string, 
+    max: string
 };
 
 export type Filters = {
-	name?: string;
-	release_date?: DateFilter;
-	developer?: string[];
-	publisher?: string[];
-	platforms?: string[];
-	categories?: string[];
-	genres?: string[];
-	steamspy_tags?: string[];
-	required_age?: number[];
-	positive_rating_percent?: number;
-	sort?: SortFilter;
+    name?: string,
+    release_date?: DateFilter,
+    developer?: string[],
+    publisher?: string[],
+    platforms?: string[],
+    categories?: string[],
+    genres?: string[],
+    steamspy_tags?: string[],
+    required_age?: number[],
+	positive_rating_percent?: number,
+	sort?: SortFilter,
+	library?: boolean
 } | undefined;
+
+export type Requirements = {
+    minimum: string | undefined,
+    recommended: string | undefined
+};
 
 export type Game = {
 	id: number;

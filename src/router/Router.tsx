@@ -13,6 +13,7 @@ import { Route, Switch } from "react-router-dom";
 import React from "react";
 import Register from "../components/Register/Register";
 import AuthRoute from "./AuthRoute";
+import GamesLibrary from "components/Library/GamesLibrary";
 
 const Router: React.FC = () => {
 	return (
@@ -25,6 +26,7 @@ const Router: React.FC = () => {
 					"/nested",
 					"/nested/another-nested",
 					"/components",
+					"/library",
 					"/game/:id"
 				]}
 			>
@@ -32,6 +34,7 @@ const Router: React.FC = () => {
 					<Switch>
 						<Route exact path="/" render={() => <Search />} />
 						<PrivateRoute path="/protected" render={() => <Protected />} />
+						<PrivateRoute path="/library" render={() => <GamesLibrary />} />
 						<Route
 							path="/nested"
 							render={({ match: { url } }) => (
