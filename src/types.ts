@@ -1,18 +1,23 @@
+import { ClassNameMap } from "@material-ui/styles";
+
 export type GenericKeyObject<K extends keyof any, T> = {
 	[P in K]?: T;
 };
 
-import { ClassNameMap } from "@material-ui/styles";
-
 export interface UserType {
 	token: string;
 	authenticated: boolean;
+}
+
+export type SortFilter = {
+	isASC: boolean;
+	sortBy: string;
 };
 
 type Screenshot = {
-    id: number,
-    path_thumbnail: string,
-    path_full: string
+	id: number;
+	path_thumbnail: string;
+	path_full: string;
 };
 type Requirements = {
 	minimum: string | undefined;
@@ -33,58 +38,60 @@ type Webm = {
 };
 
 export type DateFilter = {
-    gte?: Date | string;
-    gt?: Date | string;
-    lt?: Date | string;
-    lte?: Date | string;
+	gte?: Date | string;
+	gt?: Date | string;
+	lt?: Date | string;
+	lte?: Date | string;
 };
 
 export type Publisher = {
-    name: string;
-}
+	name: string;
+};
 
 export type Developer = {
-    name: string;
-}
+	name: string;
+};
 
 export type Tag = {
-    name: string;
-}
+	name: string;
+};
 
 export type Category = {
-    name: string;
-}
+	name: string;
+};
 
 export type Platform = {
-    name: string;
-}
+	name: string;
+};
 
 export type Genre = {
-    name: string;
-}
+	name: string;
+};
 
 export type Age = {
-    age: number;
-}
+	age: number;
+};
 
 export type GameSearchResult = {
-    games: Game[],
-    numberOfPages: number,
-    currentPage: number
-}
+	games: Game[];
+	numberOfPages: number;
+	currentPage: number;
+};
 
 export type Filters = {
-    name: string | undefined,
-    release_date: DateFilter | undefined,
-    developer: string[] | undefined,
-    publisher: string[] | undefined,
-    platforms: string[] | undefined,
-    categories: string[] | undefined,
-    genres: string[] | undefined,
-    steamspy_tags: string[] | undefined,
-    required_age: number[] | undefined,
-    positive_rating_percent: number | undefined
-};
+			name?: string;
+			release_date?: DateFilter;
+			developer?: string[];
+			publisher?: string[];
+			platforms?: string[];
+			categories?: string[];
+			genres?: string[];
+			steamspy_tags?: string[];
+			required_age?: number[];
+			positive_rating_percent?: number;
+			sort?: SortFilter;
+	  }
+	| undefined;
 
 export type Game = {
 	id: number;
@@ -497,16 +504,16 @@ export interface HeadTableData {
 	name: string;
 	releaseDate: string;
 	score: number;
-};
+}
 
 export interface BodyTableData extends HeadTableData {
 	id: number;
-};
+}
 
 export interface HeadCell {
 	id: keyof HeadTableData;
 	label: string;
-};
+}
 
 export type Order = "asc" | "desc";
 
@@ -553,4 +560,4 @@ export interface CustomTableProps {
 	) => void;
 	order: Order;
 	orderBy: string;
-};
+}
