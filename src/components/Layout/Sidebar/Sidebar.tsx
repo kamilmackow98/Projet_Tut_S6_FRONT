@@ -1,4 +1,4 @@
-import { mainListItems, secondaryListItems } from "./SidebarItems";
+import { libraryItem, mainListItems, secondaryListItems } from "./SidebarItems";
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer";
 import { ClassNameMap } from "@material-ui/styles";
 import Divider from "@material-ui/core/Divider";
@@ -14,6 +14,7 @@ interface Props {
 
 const Sidebar: React.FC<Props> = ({ open, toggleDrawer, classes }) => {
 	const { user } = React.useContext(UserContext);
+	if (user.isAuthenticated && mainListItems.length === 3) mainListItems.push(libraryItem);
 
 	return (
 		<SwipeableDrawer

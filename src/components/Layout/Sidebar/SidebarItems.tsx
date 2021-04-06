@@ -7,24 +7,24 @@ import ListSubheader from "@material-ui/core/ListSubheader";
 import SidebarLink from "./SidebarLink";
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 
-export const mainListItems = (
-	<>
-		<SidebarLink text="Home" to="/">
-			<GamepadIcon />
-		</SidebarLink>
+export const mainListItems = [
+	<SidebarLink text="Home" to="/">
+		<GamepadIcon />
+	</SidebarLink>,
 
-		<SidebarLink text="Protected" to="/protected">
-			<SportsEsportsIcon />
-		</SidebarLink>
+	<SidebarLink text="Protected" to="/protected">
+		<SportsEsportsIcon />
+	</SidebarLink>,
 
-		<SidebarLink text="My Library" to="/library">
-			<LibraryBooksIcon />
-		</SidebarLink>
+	<SidebarLink text="Nested" to="/nested">
+		<VideogameAssetIcon />
+	</SidebarLink>
+];
 
-		<SidebarLink text="Nested" to="/nested">
-			<VideogameAssetIcon />
-		</SidebarLink>
-	</>
+export const libraryItem = (
+	<SidebarLink text="My Library" to="/library">
+		<LibraryBooksIcon />
+	</SidebarLink>
 );
 
 export const secondaryListItems = (
