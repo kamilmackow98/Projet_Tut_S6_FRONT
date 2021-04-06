@@ -17,7 +17,6 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
     const classes = useStyles();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [currentPlayingId, setCurrentPlayingId] = useState<number | null>(null);
-    const [Carousel, setCarousel] = useState<any>();
 
     const responsive: any = {
         0: { items: 4 },
@@ -80,7 +79,6 @@ const CarouselWrapper: React.FC<Props> = ({ screenshots, movies }) => {
                     activeIndex={currentIndex}
                     onSlideChanged={onSlideChanged}
                     items={itemsJSX}
-                    ref={(el) => { setCarousel(el) }}
                 />
             </Grid>
 
