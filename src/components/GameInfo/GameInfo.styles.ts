@@ -51,12 +51,20 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	detailedDescription: {
 		marginTop: "10px",
+
+		"& img": {
+			maxWidth: "100%",
+		}
+	},
+	stickyContainer: {
+		position: "sticky",
+		top: "76px"
 	},
 	card: {
 		padding: "10px",
 	},
 	cardTitle: {
-		marginBottom: "5px",
+		// marginBottom: "5px",
 	},
 	bottomContainer: {
 		marginTop: "10px",

@@ -23,7 +23,7 @@ const GameCard: React.FC<Props> = ({
 
 	return (
 		<Card elevation={5} className={classes.root}>
-			<Link className={classes.link} color="primary" to={`game/${id}`}>
+			<Link className={classes.link} color="primary" to={`/game/${id}`}>
 				<CardActionArea>
 					<CardMedia className={classes.media} image={header_image} />
 				</CardActionArea>
