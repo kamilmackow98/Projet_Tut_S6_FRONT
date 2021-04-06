@@ -11,7 +11,6 @@ import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
 import { Game, Filters, DateFilter, GameSearchResult, SortFilter } from "types";
 import { useStyles } from "./Search.styles";
-import CustomTable from "components/Layout/Table/Table";
 import SortBy from "components/Layout/SortBy/SortBy";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchIcon from '@material-ui/icons/Search';
