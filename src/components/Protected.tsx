@@ -26,15 +26,7 @@ const Protected: React.FC = () => {
 			</Typography>
 			<Container disableGutters>
 				<Paper className={classes.paper}>
-					Change{" "}
-					<code className={classes.code}>
-						userConfig = &#123; authenticated: true; &#125;
-					</code>{" "}
-					to{" "}
-					<code className={classes.code}>
-						userConfig = &#123; authenticated: false; &#125;
-					</code>{" "}
-					in App.tsx to see it working.
+					Logged !
 				</Paper>
 				<Paper className={classes.paper}>
 					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam

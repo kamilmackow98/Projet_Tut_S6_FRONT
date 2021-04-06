@@ -5,9 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import { sortByOccurrences } from "utils/ObjectUtils";
 import { countOccurrences } from "utils/ArrayUtils";
-import { CompleteGameInfo } from "types";
 import Loader from "components/Layout/Loader";
-import GameCard from "./GameCard";
+import GameCard from "components/Game/Card/GameCard"
 import React, { useState, useEffect } from "react";
 
 const TOP_TAGS_LENGTH = 5;
@@ -45,8 +44,8 @@ const Recommended: React.FC = () => {
 		340840,
 		807000,
 	]);
-	const [favoritesData, setFavoritesData] = useState<CompleteGameInfo[]>([]);
-	const [recommendedGames, setRecommendedGames] = useState<CompleteGameInfo[]>(
+	const [favoritesData, setFavoritesData] = useState<any[]>([]);
+	const [recommendedGames, setRecommendedGames] = useState<any[]>(
 		[]
 	);
 	const [loading, setLoading] = useState(true);
@@ -73,7 +72,7 @@ const Recommended: React.FC = () => {
 	useEffect(() => {
 		if (favoritesData.length > 0) {
 			favoritesData.forEach((entry) => {
-				tags = tags.concat(entry.steamspy_tags.map((tag) => tag));
+				tags = tags.concat(entry.steamspy_tags.map((tag: any) => tag));
 			});
 
 			const sortedTags = sortByOccurrences(countOccurrences(tags)).slice(
@@ -92,7 +91,7 @@ const Recommended: React.FC = () => {
 			})
 				.then((res) => res.json())
 				.then((data) => {
-					setRecommendedGames(data);
+					setRecommendedGames(data.games);
 					setTimeout(() => {
 						setLoading(false);
 					}, 250);
