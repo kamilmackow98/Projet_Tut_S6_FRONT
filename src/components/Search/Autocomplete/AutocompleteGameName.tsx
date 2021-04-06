@@ -83,7 +83,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 			id="combo-box-game-name"
 			options={gameNames}
 			filterOptions={(options, state) => options}
-			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { if (newValue) onChangeName((newValue as Game).name) }}
+			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { newValue ? onChangeName((newValue as Game).name) : onChangeName(undefined) }}
 			getOptionLabel={(option: Game) => option.name}
 			renderInput={(params) => <TextField {...params} label="Game's name" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
