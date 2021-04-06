@@ -45,9 +45,9 @@ export const useStyles = makeStyles((theme) => ({
 			padding: 0,
 		},
 
-        "& .alice-carousel__stage-item": {
-            border: "1px solid #FAFAFA",
-        }
+			"& .alice-carousel__stage-item": {
+					border: "1px solid #FAFAFA",
+			}
 	},
 	detailedDescription: {
 		marginTop: "10px",
@@ -64,7 +64,8 @@ export const useStyles = makeStyles((theme) => ({
 		padding: "10px",
 	},
 	cardTitle: {
-		marginBottom: "5px",
+		marginBottom: theme.spacing(2),
+		fontWeight: 600
 	},
 	bottomContainer: {
 		marginTop: theme.spacing(2),
@@ -115,5 +116,10 @@ export const useStyles = makeStyles((theme) => ({
 	},
 	relatedGameCard: {
 		margin: "10px"
+	},
+	basicInfo: {
+		"& .tag-cloud": {
+			marginTop: theme.spacing(1),
+		}
 	}
 }));

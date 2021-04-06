@@ -27,8 +27,7 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
     };
 
     return (
-        <Paper className={classes.card} variant="outlined">
-            <Box p={1}>
+            <>
                 <Typography className={classes.cardTitle} variant="h6">System requirements</Typography>
                 <Divider />
                 {
@@ -47,8 +46,8 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
                     <TabPanel value={value} index={1} minimum={macRequirements?.minimum} recommended={macRequirements?.recommended} />
                     <TabPanel value={value} index={2} minimum={linuxRequirements?.minimum} recommended={linuxRequirements?.recommended} /></>
                 }
-            </Box>
-        </Paper>
+            </>
+       
     )
 }
 

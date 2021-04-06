@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import CarouselWrapper from "./Carousel/CarouselWrapper";
 import BasicInfo from "./BasicInfo";
 import PegiRating from "./ReviewRatingBlock/PegiRating";
@@ -97,6 +97,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         platforms={gameData.platforms}
                         releaseDate={gameData.release_date}
                     />
+                    
                 </Grid>
                 
                 <Grid item xs={12}>
@@ -104,7 +105,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                         <Grid item xs={12} sm={12} md={7} >
                             <CarouselWrapper screenshots={gameData.screenshots} movies={gameData.movies} />
                         </Grid>
-                        <Grid item xs={12} sm={12} md={5} >
+                        <Grid item xs={12} sm={12} md={5} className={classes.basicInfo}>
                             <BasicInfo
                                 description={gameData.short_description}
                                 developer={gameData.developer}
@@ -112,11 +113,20 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                                 tags={tagsFiltered}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={12} md={7} >
+                        <Grid item xs={12} sm={12} md={7}>
                             <div 
                                 className={classes.detailedDescription}
                                 dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(gameData.detailed_description) }}
                             ></div>
+                            <Grid container className={classes.bottomContainer}>
+                                <Grid item xs={12}>
+                                    <RequirementsCard
+                                        pcRequirements={gameData.pc_requirements}
+                                        macRequirements={gameData.mac_requirements}
+                                        linuxRequirements={gameData.linux_requirements}
+                                    />
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={12} sm={12} md={5}>
                             <Grid container className={classes.stickyContainer} spacing={2}>
@@ -140,17 +150,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                     </Grid>
                 </Grid> 
 
-                <Grid item xs={12} className={classes.bottomContainer}>
-                    <Grid container>
-                        <Grid item xs={12} sm={12}>
-                            <RequirementsCard
-                                pcRequirements={gameData.pc_requirements}
-                                macRequirements={gameData.mac_requirements}
-                                linuxRequirements={gameData.linux_requirements}
-                            />
-                        </Grid>
-                    </Grid>
-                </Grid>
+                
             </Grid>
         )
     }
