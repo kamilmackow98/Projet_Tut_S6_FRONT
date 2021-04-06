@@ -61,7 +61,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             }
         })
             .then(response => response.json())
-            .then((response) => {
+            .then(() => {
                 setIsInLibrary(true);
             }).catch((error) => {
                 console.error(error);
@@ -80,7 +80,7 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             }
         })
             .then(response => response.json())
-            .then((response) => {
+            .then(() => {
                 setIsInLibrary(false);
             }).catch((error) => {
                 console.error(error);
@@ -137,7 +137,6 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 setNoGameFound(true);
             });
     }, [extractAndSortTags, id]);
-
 
     if (noGameFound) {
         return (

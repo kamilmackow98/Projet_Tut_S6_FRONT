@@ -28,6 +28,10 @@ export type Movie = {
 	highlight: boolean;
 };
 
+export type Library = {
+	library: number[]
+};
+
 type Webm = {
 	480: string;
 	max: string;
