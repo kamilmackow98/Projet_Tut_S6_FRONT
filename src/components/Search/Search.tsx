@@ -183,7 +183,7 @@ const Search = () => {
             console.error(e); 
             setGamesFound([]);
         });
-    }, []);
+    }, [token]);
 
 	return (
         <Grid container spacing={3}>
