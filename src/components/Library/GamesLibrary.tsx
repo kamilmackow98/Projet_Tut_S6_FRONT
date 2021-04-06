@@ -102,6 +102,7 @@ const GamesLibrary = () => {
                 : 
                 <Grid item xs={12}>
                     <NoGamesFound />
+                    <h3 className={classes.noGamesFoundContainer}>We could show you suggestions based on your library !</h3>
                 </Grid>
             }
             <Grid item xs={12} sm={12} className={classes.paginationContainer}>
