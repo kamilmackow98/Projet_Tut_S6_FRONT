@@ -21,7 +21,7 @@ interface Props {
 
 const GameInfo: React.FC<Props> = ({ id }) => {
 
-    const { user, setUser } = React.useContext(UserContext);
+    const { user } = React.useContext(UserContext);
     const classes = useStyles();
     const [gameData, setGameData] = useState<Game>();
     const [noGameFound, setNoGameFound] = useState<boolean>(false);
