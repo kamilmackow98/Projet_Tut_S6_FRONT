@@ -32,9 +32,9 @@ const RequirementsCard: React.FC<Props> = ({ pcRequirements, macRequirements, li
                 <Typography className={classes.cardTitle} variant="h6">System requirements</Typography>
                 <Divider />
                 {
-                   (!Array.isArray(pcRequirements) && !Array.isArray(pcRequirements) && !Array.isArray(pcRequirements))
-                   ? <p>No system requirements.</p> 
-                   : <><Tabs
+                    (Array.isArray(pcRequirements) && Array.isArray(macRequirements) && Array.isArray(linuxRequirements))
+                    ? <p>No system requirements.</p> 
+                    : <><Tabs
                         value={value}
                         onChange={handleChange}
                         aria-label="tabs requirements"
