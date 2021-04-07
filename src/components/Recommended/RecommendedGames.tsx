@@ -11,7 +11,7 @@ import React, { MouseEvent, useContext, useState } from "react";
 import { useStyles } from "./RecommendedGames.styles";
 import UserContext from "context/user/UserContext";
 import Cookies from "js-cookie";
-import { Game } from "types";
+import { APIErrorMessage, Game } from "types";
 
 const RecommendedGames: React.FC = () => {
 	const classes = useStyles();
@@ -37,9 +37,13 @@ const RecommendedGames: React.FC = () => {
 					Authorization: token ? token : "",
 				},
 			})
-				.then((response) => response.json())
-				.then((response: Game[]) => {
-					setGames(response);
+				.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+				.then((obj) => {
+					if (obj.status === 200) {
+						setGames(obj.body as Game[]);
+					} else {
+						throw new Error((obj.body as APIErrorMessage).message);
+					}
 				})
 				.catch((error) => {
 					console.error(error);

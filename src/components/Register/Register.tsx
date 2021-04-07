@@ -13,7 +13,7 @@ import Copyright from "components/Layout/Copyright";
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { useHistory, Link as RouterLink } from "react-router-dom";
 import { checkRules, isEmailUnique } from "validator/Validator";
-import { ErrorMessage, RegisterFormInputs } from "types";
+import { APIErrorMessage, ErrorMessage, RegisterFormInputs } from "types";
 import { useStyles } from "./Register.styles";
 import RedirectBox from "./RedirectBox";
 
@@ -73,12 +73,17 @@ const Register: React.FC = () => {
 				},
 				body: JSON.stringify(fields),
 			})
-				.then(() => {
-					setRegistered(true);
+				.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+				.then((obj) => {
+					if (obj.status === 200) {
+						setRegistered(true);
 
-					setTimeout(() => {
-						history.push({ pathname: "/login" });
-					}, 5000);
+						setTimeout(() => {
+							history.push({ pathname: "/login" });
+						}, 5000);
+					} else {
+						throw new Error((obj.body as APIErrorMessage).message);
+					}
 				})
 				.catch((e) => console.error(e));
 		}

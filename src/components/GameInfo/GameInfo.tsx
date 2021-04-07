@@ -8,7 +8,7 @@ import RequirementsCard from "./Requirements/RequirementsCard";
 import RelatedGames from "./RelatedGames";
 import DOMPurify from 'dompurify';
 import Loader from "../Layout/Loader/Loader";
-import { FullTag, Game, TagCloud, TagFilter } from "types";
+import { APIErrorMessage, FullTag, Game, TagCloud, TagFilter } from "types";
 import Header from "./Header";
 import { useStyles } from "./GameInfo.styles";
 import GameNotFound from "./GameNotFound";
@@ -41,9 +41,13 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-            .then(response => response.json())
-            .then((games: Game[]) => {
-                setRelatedGames(games);
+            .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+            .then((obj) => {
+                if (obj.status === 200) {
+                    setRelatedGames(obj.body as Game[]);
+                } else {
+                    throw new Error((obj.body as APIErrorMessage).message);
+                }
             }).catch((error) => {
                 console.error(error);
             });
@@ -60,9 +64,13 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 "Authorization": token ? token : ""
             }
         })
-            .then(response => response.json())
-            .then(() => {
-                setIsInLibrary(true);
+            .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+            .then((obj) => {
+                if (obj.status === 200) {
+                    setIsInLibrary(true);
+                } else {
+                    throw new Error((obj.body as APIErrorMessage).message);
+                }
             }).catch((error) => {
                 console.error(error);
             });
@@ -79,9 +87,13 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                 "Authorization": token ? token : ""
             }
         })
-            .then(response => response.json())
-            .then(() => {
-                setIsInLibrary(false);
+            .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+            .then((obj) => {
+                if (obj.status === 200) {
+                    setIsInLibrary(false);
+                } else {
+                    throw new Error((obj.body as APIErrorMessage).message);
+                }
             }).catch((error) => {
                 console.error(error);
             });
@@ -116,9 +128,13 @@ const GameInfo: React.FC<Props> = ({ id }) => {
                     "Authorization": token ? token : ""
                 }
             })
-                .then(response => response.json())
-                .then((response) => {
-                    setIsInLibrary(response.isInLibrary);
+                .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+                .then((obj) => {
+                    if (obj.status === 200) {
+                        setIsInLibrary(obj.body.isInLibrary);
+                    } else {
+                        throw new Error((obj.body as APIErrorMessage).message);
+                    }
                 }).catch((error) => {
                     setIsInLibrary(false);
                 });
@@ -127,11 +143,14 @@ const GameInfo: React.FC<Props> = ({ id }) => {
 
     useEffect(() => {
         fetch(`/api/game/${id}`)
-            .then(response => response.json())
-            .then((game: Game) => {
-                setGameData(game);
-                document.title = game.name + " | Video Games Encyclopedia";
-                extractAndSortTags(game);
+            .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+            .then((obj) => {
+                if (obj.status === 200) {
+                    setGameData(obj.body as Game);
+                    extractAndSortTags(obj.body as Game);
+                } else {
+                    throw new Error((obj.body as APIErrorMessage).message);
+                }
             }).catch((error) => {
                 console.error(error);
                 setNoGameFound(true);

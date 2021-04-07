@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import UserContext from "context/user/UserContext";
-import { Game, Library } from "types";
+import { APIErrorMessage, Game, Library } from "types";
 import Cookies from "js-cookie";
 import { Grid, IconButton } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
@@ -35,13 +35,17 @@ const GamesLibrary: React.FC = () => {
                     "Authorization": token ? token : ""
                 }
             })
-                .then(response => response.json())
-                .then((response: Library) => {
-                    const ids: number[] = [];
-                    response.library.forEach((gameId: number) => ids.push(gameId));
-                    setGameIds(ids);
-                    setTotalNumberOfPages(Math.ceil(ids.length / 10));
-                    fetchGames(ids.slice(0, 10));
+                .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+                .then((obj) => {
+                    if (obj.status === 200) {
+                        const ids: number[] = [];
+                        (obj.body as Library).library.forEach((gameId: number) => ids.push(gameId));
+                        setGameIds(ids);
+                        setTotalNumberOfPages(Math.ceil(ids.length / 10));
+                        fetchGames(ids.slice(0, 10));
+                    } else {
+                        throw new Error((obj.body as APIErrorMessage).message);
+                    }
                 }).catch((error) => {
                     console.log(error);
                 });
@@ -51,16 +55,20 @@ const GamesLibrary: React.FC = () => {
     const fetchGames = (ids: number[]) => {
         if (ids.length > 0) {
             Promise.all(
-                ids.map((id) =>
+                ids.map((id: number): Promise<Game | void> =>
                     fetch(`/api/game/${id}`)
-                        .then((res) => res.json())
+                        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+                        .then((obj) => {
+                            if (obj.status === 200) return (obj.body as Game)
+                            else throw new Error((obj.body as APIErrorMessage).message);
+                        })
                         .catch((e) => console.error(e))
                 )
             )
-                .then((data) => {
+                .then((games: (Game | void)[]) => {
                     // Get rid of null / undefined items
-                    data = data.filter((item) => item);
-                    setGames(data);
+                    const libraryGames: (Game | void)[] = games.filter((game: Game | void) => game);
+                    setGames(libraryGames as Game[]);
                 })
                 .catch((e) => console.error(e));
         }
