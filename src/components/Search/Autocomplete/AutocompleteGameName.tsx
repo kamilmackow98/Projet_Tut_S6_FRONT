@@ -62,7 +62,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 		}
 	}, [gameNamePagination]);
 	
-	const handleChange = debounce(function(value: string) { 
+	const handleChange = debounce((value: string) => { 
 		setInputGameNameSearch(value);
 		onChangeName(value);
 	}, 500);
@@ -82,8 +82,9 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 			freeSolo
 			id="combo-box-game-name"
 			options={gameNames}
+			onInputChange={(event) => { if (event.type !== "change") onChangeName(null) }}
 			filterOptions={(options, state) => options}
-			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { newValue ? onChangeName((newValue as Game).name) : onChangeName(undefined) }}
+			onChange={(event: React.ChangeEvent<{}>, newValue: string | Game | null) => { newValue !== null ? onChangeName((newValue as Game).name) : onChangeName(null) }}
 			getOptionLabel={(option: Game) => option.name}
 			renderInput={(params) => <TextField {...params} label="Game's name" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
