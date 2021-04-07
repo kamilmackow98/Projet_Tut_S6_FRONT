@@ -47,7 +47,7 @@ const GamesLibrary: React.FC = () => {
                         throw new Error((obj.body as APIErrorMessage).message);
                     }
                 }).catch((error) => {
-                    console.log(error);
+                    console.error(error);
                 });
         }
     }, [user.isAuthenticated]);
