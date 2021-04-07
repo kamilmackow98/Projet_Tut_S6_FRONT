@@ -1,7 +1,4 @@
-import VideogameAssetIcon from "@material-ui/icons/VideogameAsset";
-import SportsEsportsIcon from "@material-ui/icons/SportsEsports";
 import GamepadIcon from "@material-ui/icons/Gamepad";
-import LayersIcon from "@material-ui/icons/Layers";
 import StarsIcon from "@material-ui/icons/Stars";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import SidebarLink from "./SidebarLink";
@@ -11,14 +8,6 @@ export const mainListItems = [
 	<SidebarLink key={"home"} text="Home" to="/">
 		<GamepadIcon />
 	</SidebarLink>,
-
-	<SidebarLink key={"protected"} text="Protected" to="/protected">
-		<SportsEsportsIcon />
-	</SidebarLink>,
-
-	<SidebarLink key={"nested"} text="Nested" to="/nested">
-		<VideogameAssetIcon />
-	</SidebarLink>
 ];
 
 export const libraryItem = (
@@ -33,10 +22,6 @@ export const secondaryListItems = (
 
 		<SidebarLink text="Games" to="/recommended">
 			<StarsIcon />
-		</SidebarLink>
-
-		<SidebarLink text="Test components" to="/components">
-			<LayersIcon />
 		</SidebarLink>
 	</>
 );

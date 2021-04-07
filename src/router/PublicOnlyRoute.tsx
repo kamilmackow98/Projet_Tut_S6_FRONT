@@ -8,7 +8,7 @@ interface Props {
 	render: ComponentType<any>;
 }
 
-const AuthRoute: React.FC<Props> = ({ path, render: Component }) => {
+const PublicOnlyRoute: React.FC<Props> = ({ path, render: Component }) => {
 	const [isAuthenticated, setIsAuthenticated] = React.useState(false);
 	const [loading, setLoading] = React.useState(true);
 
@@ -37,4 +37,4 @@ const AuthRoute: React.FC<Props> = ({ path, render: Component }) => {
 	);
 };
 
-export default AuthRoute;
+export default PublicOnlyRoute;
