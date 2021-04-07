@@ -1,13 +1,14 @@
 import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Age } from "types";
+import { Age, APIErrorMessage } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeAges: Function
-}
+	onChangeAges: Function,
+	mustClear: boolean
+};
 
-const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
+const SelectAge: React.FC<Props> = ({ onChangeAges, mustClear }) => {
 
 	const [age, setAge] = useState<Age[]>([]);
 	const [agePagination, setAgePagination] = useState(1);
@@ -19,15 +20,26 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 	useEffect(() => {
 		ageRef.current = age;
 	});
+
+	useEffect(() => {
+		if (mustClear) {
+			setAgeChosen([]);
+			onChangeAges(undefined);
+		}
+	}, [mustClear, onChangeAges]);
    
 	useEffect(() => {
 		fetch(`/api/ages?page=${agePagination}`)
-		.then((res) => res.json())
-		.then((ages: Age[]) => {
-			const extendedAges: Age[] = ageRef.current.concat(ages);
-			setAge(extendedAges);
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const extendedAges: Age[] = ageRef.current.concat(obj.body as Age[]);
+				setAge(extendedAges);
+			} else {
+				throw new Error((obj.body as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 	}, [agePagination]);
 	
 	return (
@@ -68,8 +80,8 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 				)}
 			>
 				{age.map((age: Age) => (
-					<MenuItem value={age.age} key={age.age}>
-						{age.age}
+					<MenuItem value={age.value} key={age.value}>
+						{age.value}
 					</MenuItem>
 				))}
 			</Select>

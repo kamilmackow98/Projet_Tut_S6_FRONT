@@ -64,7 +64,7 @@ export type Genre = {
 };
 
 export type Age = {
-	age: number;
+	value: number;
 };
 
 export type GameSearchResult = {
@@ -90,6 +90,10 @@ export type FullTag = {
 type Webm = {
     480: string, 
     max: string
+};
+
+export type APIErrorMessage = {
+	message: string;
 };
 
 export type Filters = {

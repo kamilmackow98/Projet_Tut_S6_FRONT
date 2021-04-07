@@ -9,7 +9,7 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, GameSearchResult, SortFilter } from "types";
+import { Game, Filters, DateFilter, GameSearchResult, SortFilter, APIErrorMessage } from "types";
 import { useStyles } from "./Search.styles";
 import SortBy from "components/Layout/SortBy/SortBy";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -42,7 +42,7 @@ const Search = () => {
     const [releaseDateBeg, setReleaseDateBeg] = useState<Date | string | undefined>(undefined);
     const [releaseDateEnd, setReleaseDateEnd] = useState<Date | string | undefined>(undefined);
     
-    const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | undefined>(undefined);
+    const [minimumPositiveReviews, setMinimumPositiveReviews] = useState<number | null>(0);
 
     const [onlyShowItemsFromLibrary, setOnlyShowItemsFromLibrary] = useState<boolean>(false);
 
@@ -55,6 +55,8 @@ const Search = () => {
 
     const [filters, setFilters] = useState<Filters | undefined>(undefined);
     const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
+
+    const [mustClear, setMustClear] = useState<boolean>(false);
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -101,12 +103,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -127,12 +133,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -149,18 +159,31 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
             setGamesFound([]);
         });
-    }
+    };
+
+    const clearForm = () => {
+        // Triggers a state change in the components that will clear them
+        setMustClear(true);
+        setMinimumPositiveReviews(0);
+        setTimeout(() => {
+            setMustClear(false);
+        }, 1000);
+    };
 
     useEffect(() => {
         setToken(Cookies.get('token'));
@@ -172,12 +195,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -198,7 +225,7 @@ const Search = () => {
                                 onClick={(event) => event.stopPropagation()}
                                 onFocus={(event) => event.stopPropagation()} 
                             >
-                                <AutocompleteGameName onChangeName={(name: string) => handleGameNameChange(name)} />
+                                <AutocompleteGameName mustClear={mustClear} onChangeName={(name: string) => handleGameNameChange(name)} />
                             </Grid>
                             <Grid 
                                 item 
@@ -217,22 +244,22 @@ const Search = () => {
                     <AccordionDetails>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
-                                <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
+                                <AutocompletePublisherName mustClear={mustClear} onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
+                                <AutocompleteDeveloperName mustClear={mustClear} onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
+                                <AutocompleteTagName mustClear={mustClear} onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <SelectCategoryName onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
+                                <SelectCategoryName mustClear={mustClear} onChangeCategories={(names: string[]) => handleCategoryNamesChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <SelectPlaftormName onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
+                                <SelectPlaftormName mustClear={mustClear} onChangePlatforms={(names: string[]) => handlePlatformNamesChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <SelectGenreName onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
+                                <SelectGenreName mustClear={mustClear} onChangeGenres={(names: string[]) => handleGenreNamesChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={12} className={classes.removeBottomSpace}>
                                 <hr style={{ color: 'lightGrey' }} className={classes.removeBottomSpace} />
@@ -240,10 +267,12 @@ const Search = () => {
                             {
                                 !isDateInYear 
                                 ?   <ReleaseDatePickerFull 
+                                        mustClear={mustClear}
                                         onChangeDateBeg={(date: Date) => { setReleaseDateBeg(date)}}
                                         onChangeDateEnd={(date: Date) => {setReleaseDateEnd(date)}}
                                     /> 
                                 :   <ReleaseYearPicker 
+                                        mustClear={mustClear}
                                         onChangeDateBeg={(year: string) => { setReleaseDateBeg(year)}}
                                         onChangeDateEnd={(year: string) => { setReleaseDateEnd(year)}}
                                     />
@@ -260,7 +289,7 @@ const Search = () => {
                                 <Grid item style={{ marginTop: "8px" }}>Full date</Grid>
                             </Grid> 
                             <Grid item xs={12} sm={4}>
-                                <SelectAge onChangeAges={(ages: number[]) => handleAgesChange(ages)} />
+                                <SelectAge mustClear={mustClear} onChangeAges={(ages: number[]) => handleAgesChange(ages)} />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField
@@ -268,6 +297,7 @@ const Search = () => {
                                     className={classes.textfieldInput}
                                     label="Min. (+) reviews (%)"
                                     type="number"
+                                    value={minimumPositiveReviews}
                                     onChange={(event) => { setMinimumPositiveReviews(Number(event.target.value)) }}
                                     variant="outlined"
                                     InputProps={{ inputProps: { min: 0, max: 100 } }}
@@ -296,6 +326,10 @@ const Search = () => {
 
             <Grid item xs={12}>
                 <Grid container justify="center">
+                    <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                        <Button className={classes.clearFormButton} onClick={clearForm}>CLEAR FORM</Button>
+                    </Grid>
+
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
                         <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
                         <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(false)}}>

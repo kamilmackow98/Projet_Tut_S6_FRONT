@@ -1,14 +1,14 @@
 import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Genre } from "types";
+import { APIErrorMessage, Genre } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeGenres: Function
-}
+	onChangeGenres: Function,
+	mustClear: boolean
+};
 
-
-const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
+const SelectGenreName: React.FC<Props> = ({ onChangeGenres, mustClear }) => {
 
 	const [genreNames, setGenreNames] = useState<Genre[]>([]);
 	const [genreNamePagination, setGenreNamePagination] = useState(1);
@@ -22,13 +22,24 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 	});
 
 	useEffect(() => {
+		if (mustClear) {
+			setGenreNamesChosen([]);
+			onChangeGenres(undefined);
+		}
+	}, [mustClear, onChangeGenres]);
+
+	useEffect(() => {
 		fetch(`/api/genres?page=${genreNamePagination}`)
-		.then((res) => res.json())
-		.then((genres: Genre[]) => {
-			const extendedGenres: Genre[] = genreNamesRef.current.concat(genres);
-			setGenreNames(extendedGenres);
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const extendedGenres: Genre[] = genreNamesRef.current.concat(obj.body as Genre[]);
+				setGenreNames(extendedGenres);
+			} else {
+				throw new Error((obj.body as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 	}, [genreNamePagination]);
 	
 	return (

@@ -1,31 +1,46 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from "react";
-import { Developer } from "types";
+import { APIErrorMessage, Developer } from "types";
 import { debounce } from "lodash";
 
 interface Props {
-	onChangeDevelopers: Function
+	onChangeDevelopers: Function,
+	mustClear: boolean
 }
 
-const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
+const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustClear }) => {
 
 	const [developerNames, setDeveloperNames] = useState<Developer[]>([]);
     const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
 	const [developerNamePagination, setDeveloperNamePagination] = useState(1);
 	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
+	const [value, setValue] = useState<(string | Developer)[] | undefined>([]);
 
 	const developerNamesRef = React.useRef(developerNames);
 	const inputDeveloperNameSearchRef = React.useRef(inputDeveloperNameSearch);
 	const firstLaunchRef = React.useRef(firstLaunch);
+
+	useEffect(() => {
+		if (mustClear) {
+			setValue([]);
+			setInputDeveloperNameSearch("");
+			onChangeDevelopers(undefined);
+		}
+	}, [mustClear, onChangeDevelopers]);
    
 	useEffect(() => {
 		fetch(`/api/developers`)
-		.then((res) => res.json())
-		.then((developers: Developer[]) => {
-			setDeveloperNames(developers);
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const developers: Developer[] = obj.body as Developer[];
+				setDeveloperNames(developers);
+			} else {
+				throw new Error((obj.body as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 
 		setFirstLaunch(false);
 	}, []);
@@ -41,23 +56,33 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 			setDeveloperNamePagination(1);
 			setDeveloperNames([]);
 			fetch(`/api/developers?name=${inputDeveloperNameSearch}`)
-			.then((res) => res.json())
-			.then((developers: Developer[]) => {
-				setDeveloperNames(developers);
+			.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+			.then((obj) => {
+				if (obj.status === 200) {
+					const developers: Developer[] = obj.body as Developer[];
+					setDeveloperNames(developers);
+				} else {
+					throw new Error((obj.body as APIErrorMessage).message);
+				}
 			})
-			.catch((e) => console.error(e));
+			.catch((e) => {});
 		}
 	}, [inputDeveloperNameSearch]);
 
 	useEffect(() => {
 		if (!firstLaunchRef.current && developerNamePagination !== 1) {
 			fetch(`/api/developers?name=${inputDeveloperNameSearchRef.current}&page=${developerNamePagination}`)
-			.then((res) => res.json())
-			.then((developers: Developer[]) => {
-				const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
-				setDeveloperNames(extendedDevelopers);
+			.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+			.then((obj) => {
+				if (obj.status === 200) {
+					const developers: Developer[] = obj.body as Developer[];
+					const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
+					setDeveloperNames(extendedDevelopers);
+				} else {
+					throw new Error((obj.body as APIErrorMessage).message);
+				}
 			})
-			.catch((e) => console.error(e));
+			.catch((e) => {});
 		}
 	}, [developerNamePagination]);
 	
@@ -79,12 +104,14 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
             }}
             multiple
 			freeSolo
+			value={value}
 			id="combo-box-developer-name"
 			options={developerNames}
 			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Developer)[]) => { 
-                onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
-            }
+				onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name));
+				setValue(newValues);
+			}}
 			getOptionLabel={(option: Developer) => option.name}
 			renderInput={(params) => <TextField {...params} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>

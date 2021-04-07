@@ -1,13 +1,14 @@
 import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Category } from "types";
+import { APIErrorMessage, Category } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeCategories: Function
+	onChangeCategories: Function,
+	mustClear: boolean
 }
 
-const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
+const SelectCategoryName: React.FC<Props> = ({ onChangeCategories, mustClear }) => {
 
 	const [categoryNames, setCategoryNames] = useState<Category[]>([]);
 	const [categoryNamePagination, setCategoryNamePagination] = useState(1);
@@ -17,17 +18,28 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	const classes = useStyles();
 
 	useEffect(() => {
+		if (mustClear) {
+			setCategoryNamesChosen([]);
+			onChangeCategories(undefined);
+		}
+	}, [mustClear, onChangeCategories]);
+   
+	useEffect(() => {
 		categoryNamesRef.current = categoryNames;
 	});
    
 	useEffect(() => {
 		fetch(`/api/categories?page=${categoryNamePagination}`)
-		.then((res) => res.json())
-		.then((categories: Category[]) => {
-			const extendedCategories: Category[] = categoryNamesRef.current.concat(categories);
-			setCategoryNames(extendedCategories);
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const extendedCategories: Category[] = categoryNamesRef.current.concat(obj.body as Category[]);
+				setCategoryNames(extendedCategories);
+			} else {
+				throw new Error((obj.body as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 	}, [categoryNamePagination]);
 	
 	return (
