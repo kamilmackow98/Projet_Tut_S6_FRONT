@@ -15,7 +15,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
     const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
 	const [developerNamePagination, setDeveloperNamePagination] = useState(1);
 	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
-	const [value, setValue] = useState<(string | Developer)[] | undefined>(undefined);
+	const [value, setValue] = useState<(string | Developer)[] | undefined>([]);
 
 	const developerNamesRef = React.useRef(developerNames);
 	const inputDeveloperNameSearchRef = React.useRef(inputDeveloperNameSearch);
@@ -24,8 +24,8 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
 
 	useEffect(() => {
 		if (mustClear) {
-			console.log('boom');
-			setValue(undefined);
+			setValue([]);
+			setInputDeveloperNameSearch("");
 		}
 	}, [mustClear]);
    
@@ -112,7 +112,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
                 onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
             }
 			getOptionLabel={(option: Developer) => option.name}
-			renderInput={(params) => <TextField {...params} inputRef={myRef} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params}  inputRef={myRef} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };

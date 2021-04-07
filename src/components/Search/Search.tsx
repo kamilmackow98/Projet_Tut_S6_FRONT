@@ -165,7 +165,11 @@ const Search = () => {
     };
 
     const clearForm = () => {
+        // Triggers a state change in the components that will clear them
         setMustClear(true);
+        setTimeout(() => {
+            setMustClear(false);
+        }, 1000);
     };
 
     useEffect(() => {
