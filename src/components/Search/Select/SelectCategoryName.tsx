@@ -4,10 +4,11 @@ import { Category } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeCategories: Function
+	onChangeCategories: Function,
+	mustClear: boolean
 }
 
-const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
+const SelectCategoryName: React.FC<Props> = ({ onChangeCategories, mustClear }) => {
 
 	const [categoryNames, setCategoryNames] = useState<Category[]>([]);
 	const [categoryNamePagination, setCategoryNamePagination] = useState(1);
@@ -16,6 +17,13 @@ const SelectCategoryName: React.FC<Props> = ({ onChangeCategories }) => {
 	const categoryNamesRef = React.useRef(categoryNames);
 	const classes = useStyles();
 
+	useEffect(() => {
+		if (mustClear) {
+			setCategoryNamesChosen([]);
+			onChangeCategories(undefined);
+		}
+	}, [mustClear, onChangeCategories]);
+   
 	useEffect(() => {
 		categoryNamesRef.current = categoryNames;
 	});

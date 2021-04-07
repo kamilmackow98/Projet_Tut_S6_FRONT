@@ -64,7 +64,7 @@ export type Genre = {
 };
 
 export type Age = {
-	age: number;
+	value: number;
 };
 
 export type GameSearchResult = {

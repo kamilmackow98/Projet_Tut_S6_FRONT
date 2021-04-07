@@ -4,10 +4,11 @@ import { Age } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeAges: Function
-}
+	onChangeAges: Function,
+	mustClear: boolean
+};
 
-const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
+const SelectAge: React.FC<Props> = ({ onChangeAges, mustClear }) => {
 
 	const [age, setAge] = useState<Age[]>([]);
 	const [agePagination, setAgePagination] = useState(1);
@@ -19,6 +20,13 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 	useEffect(() => {
 		ageRef.current = age;
 	});
+
+	useEffect(() => {
+		if (mustClear) {
+			setAgeChosen([]);
+			onChangeAges(undefined);
+		}
+	}, [mustClear, onChangeAges]);
    
 	useEffect(() => {
 		fetch(`/api/ages?page=${agePagination}`)
@@ -68,8 +76,8 @@ const SelectAge: React.FC<Props> = ({ onChangeAges }) => {
 				)}
 			>
 				{age.map((age: Age) => (
-					<MenuItem value={age.age} key={age.age}>
-						{age.age}
+					<MenuItem value={age.value} key={age.value}>
+						{age.value}
 					</MenuItem>
 				))}
 			</Select>

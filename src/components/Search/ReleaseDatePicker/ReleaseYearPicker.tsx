@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import DateFnsUtils from '@date-io/date-fns';
@@ -7,12 +7,14 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 interface Props {
     onChangeDateBeg: Function,
-    onChangeDateEnd: Function
-}
+    onChangeDateEnd: Function,
+    mustClear: boolean
+};
 
 const ReleaseYearPicker: React.FC<Props> = ({
     onChangeDateBeg,
-    onChangeDateEnd
+    onChangeDateEnd,
+    mustClear
 }) => {
     const [releaseDateBeg, setReleaseDateBeg] = useState<string | null>(null);
     const [releaseDateEnd, setReleaseDateEnd] = useState<string | null>(null);
@@ -21,6 +23,13 @@ const ReleaseYearPicker: React.FC<Props> = ({
     const handleReleaseDateEndChange = (date: string) => { onChangeDateEnd(date); setReleaseDateEnd(date); }
     
     const classes = useStyles();
+
+    useEffect(() => {
+        if (mustClear) {
+            setReleaseDateBeg(null);
+            setReleaseDateEnd(null);
+        }
+    }, [mustClear]);
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>

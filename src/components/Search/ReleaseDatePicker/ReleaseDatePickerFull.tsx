@@ -2,16 +2,18 @@ import { Grid } from "@material-ui/core";
 import { useStyles } from "../Search.styles";
 import DateFnsUtils from '@date-io/date-fns';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
     onChangeDateBeg: Function,
-    onChangeDateEnd: Function
+    onChangeDateEnd: Function,
+    mustClear: boolean
 }
 
 const ReleaseDatePickerFull: React.FC<Props> = ({
     onChangeDateBeg,
-    onChangeDateEnd
+    onChangeDateEnd,
+    mustClear
 }) => {
     const classes = useStyles();
 
@@ -20,6 +22,15 @@ const ReleaseDatePickerFull: React.FC<Props> = ({
     
     const handleReleaseDateBegChange = (date: Date) => { onChangeDateBeg(date); setReleaseDateBeg(date); }
     const handleReleaseDateEndChange = (date: Date) => { onChangeDateEnd(date); setReleaseDateEnd(date); }
+
+    useEffect(() => {
+        if (mustClear) {
+            setReleaseDateBeg(null);
+            setReleaseDateEnd(null);
+            onChangeDateBeg(null);
+            onChangeDateEnd(null);
+        }
+    }, [mustClear, onChangeDateBeg, onChangeDateEnd]);
 	
 	return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>

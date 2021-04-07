@@ -20,14 +20,14 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
 	const developerNamesRef = React.useRef(developerNames);
 	const inputDeveloperNameSearchRef = React.useRef(inputDeveloperNameSearch);
 	const firstLaunchRef = React.useRef(firstLaunch);
-	const myRef = React.useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		if (mustClear) {
 			setValue([]);
 			setInputDeveloperNameSearch("");
+			onChangeDevelopers(undefined);
 		}
-	}, [mustClear]);
+	}, [mustClear, onChangeDevelopers]);
    
 	useEffect(() => {
 		fetch(`/api/developers`)
@@ -113,7 +113,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
 				setValue(newValues);
 			}}
 			getOptionLabel={(option: Developer) => option.name}
-			renderInput={(params) => <TextField {...params}  inputRef={myRef} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };

@@ -4,10 +4,11 @@ import { Platform } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangePlatforms: Function
+	onChangePlatforms: Function,
+	mustClear: boolean
 }
 
-const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
+const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms, mustClear }) => {
 
 	const [platformNames, setPlatformNames] = useState<Platform[]>([]);
 	const [platformNamePagination, setPlatformNamePagination] = useState(1);
@@ -19,6 +20,13 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms }) => {
 	useEffect(() => {
 		platformNamesRef.current = platformNames;
 	});
+
+	useEffect(() => {
+		if (mustClear) {
+			setPlatformNamesChosen([]);
+			onChangePlatforms(undefined);
+		}
+	}, [mustClear, onChangePlatforms]);
    
 	useEffect(() => {
 		fetch(`/api/platforms?page=${platformNamePagination}`)

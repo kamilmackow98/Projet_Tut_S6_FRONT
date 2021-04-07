@@ -4,11 +4,11 @@ import { Genre } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
-	onChangeGenres: Function
-}
+	onChangeGenres: Function,
+	mustClear: boolean
+};
 
-
-const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
+const SelectGenreName: React.FC<Props> = ({ onChangeGenres, mustClear }) => {
 
 	const [genreNames, setGenreNames] = useState<Genre[]>([]);
 	const [genreNamePagination, setGenreNamePagination] = useState(1);
@@ -20,6 +20,13 @@ const SelectGenreName: React.FC<Props> = ({ onChangeGenres }) => {
 	useEffect(() => {
 		genreNamesRef.current = genreNames;
 	});
+
+	useEffect(() => {
+		if (mustClear) {
+			setGenreNamesChosen([]);
+			onChangeGenres(undefined);
+		}
+	}, [mustClear, onChangeGenres]);
 
 	useEffect(() => {
 		fetch(`/api/genres?page=${genreNamePagination}`)

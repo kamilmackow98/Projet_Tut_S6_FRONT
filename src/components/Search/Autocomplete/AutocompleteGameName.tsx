@@ -5,19 +5,23 @@ import { Game, GameSearchResult } from "types";
 import { debounce } from "lodash";
 
 interface Props {
-	onChangeName: Function
+	onChangeName: Function,
+	mustClear: boolean
 }
 
-const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
+const AutocompleteGameName: React.FC<Props> = ({ onChangeName, mustClear }) => {
 
 	const [gameNames, setGameNames] = useState<Game[]>([]);
 	const [inputGameNameSearch, setInputGameNameSearch] = useState("");
 	const [gameNamePagination, setGameNamePagination] = useState(1);
 	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
+	const [value, setValue] = useState<string | Game | null | undefined>(null);
+	const [key, setKey] = useState<number>(1);
 
 	const gameNamesRef = React.useRef(gameNames);
 	const inputGameNameSearchRef = React.useRef(inputGameNameSearch);
 	const firstLaunchRef = React.useRef(firstLaunch);
+	const keyRef = React.useRef(key);
 
 	useEffect(() => {
 		fetch(`/api/games`)
@@ -31,9 +35,19 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 	}, []);
 
 	useEffect(() => {
+		if (mustClear) {
+			setValue(null);
+			setInputGameNameSearch("");
+			onChangeName(null);
+			setKey(keyRef.current === 1 ? 2 : 1);
+		}
+	}, [mustClear, onChangeName]);
+
+	useEffect(() => {
 		gameNamesRef.current = gameNames;
 		inputGameNameSearchRef.current = inputGameNameSearch;
 		firstLaunchRef.current = firstLaunch;
+		keyRef.current = key;
 	});
 
 	useEffect(() => {
@@ -69,6 +83,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 
 	return (
 		<Autocomplete
+			key={key}
 			size="small" 
 			ListboxProps={{
 				style: { maxHeight: 200, overflow: 'auto' },
@@ -80,6 +95,7 @@ const AutocompleteGameName: React.FC<Props> = ({ onChangeName }) => {
 				}
 			}}
 			freeSolo
+			value={value}
 			id="combo-box-game-name"
 			options={gameNames}
 			onInputChange={(event) => { if (event.type !== "change") onChangeName(null) }}
