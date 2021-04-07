@@ -31,6 +31,7 @@ const Register: React.FC = () => {
 	});
 
 	const [registered, setRegistered] = useState<boolean>(false);
+	const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
 	const getErrors = (fieldName: keyof ErrorMessage) => {
 		return errors.filter((error) => error[fieldName]);
@@ -46,6 +47,7 @@ const Register: React.FC = () => {
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setIsDisabled(true);
 
 		const errorsCheck: Array<Partial<ErrorMessage>> = checkRules(fields);
 
@@ -88,6 +90,7 @@ const Register: React.FC = () => {
 		event: ChangeEvent<HTMLInputElement>
 	) => {
 		setFiels({ ...fields, [name]: event.currentTarget.value });
+		isDisabled && setIsDisabled(false);
 	};
 
 	if (registered) {
@@ -193,6 +196,7 @@ const Register: React.FC = () => {
 
 					<Button
 						className={classes.submit}
+						disabled={isDisabled}
 						variant="contained"
 						color="primary"
 						type="submit"
@@ -202,7 +206,7 @@ const Register: React.FC = () => {
 					</Button>
 					<Grid container justify={"center"}>
 						<Grid item>
-							<Link href="/login" variant="body2">
+							<Link to="/login" component={RouterLink} variant="body2">
 								{"Already have an account? Sign In"}
 							</Link>
 						</Grid>
