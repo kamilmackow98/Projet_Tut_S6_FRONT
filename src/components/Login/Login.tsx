@@ -13,7 +13,7 @@ import Alert from "@material-ui/lab/Alert";
 import Copyright from "../Layout/Copyright";
 
 import { useHistory, Link as RouterLink } from "react-router-dom";
-import { ErrorMessage, LoginFormInputs } from "types";
+import { APIErrorMessage, ErrorMessage, LoginFormInputs } from "types";
 import UserContext from "context/user/UserContext";
 import { checkRules } from "validator/Validator";
 import { useStyles } from "./Login.styles";
@@ -59,24 +59,23 @@ const Login: React.FC = () => {
 					"Content-Type": "application/json; charset=UTF-8",
 				},
 				body: JSON.stringify(fields),
-			})
-				.then((response) => {
-					if (response.status === 403) {
-						setWrongInfo(true);
-					}
-
-					if (response.status === 200) {
-						return response.json();
-					}
-				})
-				.then((token) => {
-					if (token) {
-						Cookie.set("token", token.token);
-						setUser({ ...user, isAuthenticated: true });
-						history.push({ pathname: "/" });
+			})	
+				.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+                .then((obj) => {
+					if (obj.status === 200) {
+						if (obj.body) {
+							Cookie.set("token", obj.body.token);
+							setUser({ ...user, isAuthenticated: true });
+							history.push({ pathname: "/" });
+						}
+					} else {
+						throw new Error((obj.body as APIErrorMessage).message);
 					}
 				})
-				.catch((e) => console.error(e));
+				.catch((e) => { 
+					setWrongInfo(true);
+					console.error(e);
+				});
 		}
 	};
 
