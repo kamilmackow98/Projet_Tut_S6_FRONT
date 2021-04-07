@@ -311,7 +311,7 @@ const Search = () => {
             <Grid item xs={12}>
                 <Grid container justify="center">
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
-                        <Button color="secondary" onClick={clearForm}>CLEAR FORM</Button>
+                        <Button className={classes.clearFormButton} onClick={clearForm}>CLEAR FORM</Button>
                     </Grid>
 
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>

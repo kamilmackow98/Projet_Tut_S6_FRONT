@@ -63,5 +63,8 @@ export const useStyles = makeStyles((theme) => ({
     libraryTitle: {
         marginLeft: "5px",
         fontSize: "1.5em"
+    },
+    clearFormButton: {
+        color: '#bd3922'
     }
 }));
