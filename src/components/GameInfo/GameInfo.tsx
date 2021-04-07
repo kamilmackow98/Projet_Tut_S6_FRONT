@@ -130,7 +130,6 @@ const GameInfo: React.FC<Props> = ({ id }) => {
             .then(response => response.json())
             .then((game: Game) => {
                 setGameData(game);
-                document.title = game.name + " | Video Games Encyclopedia";
                 extractAndSortTags(game);
             }).catch((error) => {
                 console.error(error);

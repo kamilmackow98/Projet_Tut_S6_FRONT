@@ -15,10 +15,7 @@ import RecommendedGames from "components/Recommended/RecommendedGames";
 const Router: React.FC = () => {
 	return (
 		<Switch>
-			<Route
-				exact
-				path={["/", "/recommended", "/library", "/game/:id"]}
-			>
+			<Route exact path={["/", "/recommended", "/library", "/game/:id"]}>
 				<GlobalLayout>
 					<Switch>
 						<Route exact path="/" render={() => <Search />} />

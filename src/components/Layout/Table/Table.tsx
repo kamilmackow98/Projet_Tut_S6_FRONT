@@ -34,7 +34,13 @@ const CustomTable: React.FC<Props> = ({ data }) => {
 					</Link>
 				</Typography>
 			</TableCell>
-			<TableCell>{game.release_date.toLocaleDateString("en-GB")}</TableCell>
+			<TableCell>
+				{game.release_date.toLocaleDateString("en-US", {
+					year: "numeric",
+					month: "short",
+					day: "2-digit",
+				})}
+			</TableCell>
 			<TableCell>
 				<GameScore
 					score={gameScore(game.positive_ratings, game.negative_ratings)}
