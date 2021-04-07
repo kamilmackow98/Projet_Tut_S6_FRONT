@@ -21,6 +21,7 @@ export const useStyles = makeStyles((theme) => ({
 	title: {
 		flexGrow: 1,
 		textDecoration: "none",
+		outline: "none",
 	},
 	drawerPaper: {
 		whiteSpace: "nowrap",
