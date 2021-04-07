@@ -1,6 +1,6 @@
 import { Select, Chip, MenuItem, FormControl, InputLabel } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { Platform } from "types";
+import { APIErrorMessage, Platform } from "types";
 import { useStyles } from "../Search.styles";
 
 interface Props {
@@ -30,12 +30,16 @@ const SelectPlatformName: React.FC<Props> = ({ onChangePlatforms, mustClear }) =
    
 	useEffect(() => {
 		fetch(`/api/platforms?page=${platformNamePagination}`)
-		.then((res) => res.json())
-		.then((platforms: Platform[]) => {
-			const extendedPlatforms: Platform[] = platformNamesRef.current.concat(platforms);
-			setPlatformNames(extendedPlatforms);
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const extendedPlatforms: Platform[] = platformNamesRef.current.concat(obj.body as Platform[]);
+				setPlatformNames(extendedPlatforms);
+			} else {
+				throw new Error((obj.body as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 	}, [platformNamePagination]);
 	
 	return (
