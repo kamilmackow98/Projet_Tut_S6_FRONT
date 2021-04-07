@@ -29,7 +29,11 @@ const GameListItem: React.FC<Game> = (props) => {
 
 	const classes = useStyles({ header_image });
 
-	const releaseDate = new Date(release_date).toLocaleDateString("en-GB");
+	const releaseDate = new Date(release_date).toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "long",
+		day: "2-digit",
+	});
 	const score = gameScore(positive_ratings, negative_ratings);
 	const platformsMap = React.Children.toArray(
 		platforms.map((platform) => {

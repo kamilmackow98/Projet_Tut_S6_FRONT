@@ -22,11 +22,12 @@ import React, { ChangeEvent, FormEvent, useState } from "react";
 
 const Login: React.FC = () => {
 	const classes = useStyles();
-	const { user, setUser } = React.useContext(UserContext);
 	const history = useHistory();
 
+	const { user, setUser } = React.useContext(UserContext);
 	const [errors, setErrors] = useState<Partial<ErrorMessage>[]>([]);
 	const [wrongInfo, setWrongInfo] = React.useState<boolean>(false);
+	const [isDisabled, setIsDisabled] = React.useState<boolean>(false);
 	const [fields, setFields] = useState<LoginFormInputs>({
 		email: "",
 		password: "",
@@ -46,6 +47,7 @@ const Login: React.FC = () => {
 
 	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+		setIsDisabled(true);
 
 		const errorsCheck: Array<Partial<ErrorMessage>> = checkRules(fields);
 		setErrors(errorsCheck);
@@ -82,13 +84,15 @@ const Login: React.FC = () => {
 		event: ChangeEvent<HTMLInputElement>
 	) => {
 		setFields({ ...fields, [name]: event.currentTarget.value });
+		isDisabled && setIsDisabled(false);
 	};
 
 	const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
 		if (reason === "clickaway") {
 			return;
 		}
-
+		
+		setIsDisabled(false);
 		setWrongInfo(false);
 	};
 
@@ -157,6 +161,7 @@ const Login: React.FC = () => {
 					/>
 					<Button
 						className={classes.submit}
+						disabled={isDisabled}
 						variant="contained"
 						color="primary"
 						type="submit"
@@ -166,7 +171,7 @@ const Login: React.FC = () => {
 					</Button>
 					<Grid container justify={"center"}>
 						<Grid item>
-							<Link href="/register" variant="body2">
+							<Link to="/register" component={RouterLink} variant="body2">
 								{"Don't have an account? Sign Up"}
 							</Link>
 						</Grid>
