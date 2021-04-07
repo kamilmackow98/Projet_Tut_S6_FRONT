@@ -9,7 +9,7 @@ import SelectCategoryName from "./Select/SelectCategoryName";
 import SelectGenreName from "./Select/SelectGenreName";
 import SelectAge from "./Select/SelectAge";
 import ReleaseDatePickerFull from './ReleaseDatePicker/ReleaseDatePickerFull';
-import { Game, Filters, DateFilter, GameSearchResult, SortFilter } from "types";
+import { Game, Filters, DateFilter, GameSearchResult, SortFilter, APIErrorMessage } from "types";
 import { useStyles } from "./Search.styles";
 import SortBy from "components/Layout/SortBy/SortBy";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -103,12 +103,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -129,12 +133,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -151,12 +159,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
@@ -183,12 +195,16 @@ const Search = () => {
                 "Authorization": token ? token : ""
             }
         })
-        .then((res) => res.json())
-        .then((resJson: GameSearchResult) => {
-            resJson.games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
-            setGamesFound(resJson.games);
-            setTotalNumberOfPages(resJson.numberOfPages);
-            setCurrentPage(Number(resJson.currentPage));
+        .then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+            if (obj.status === 200) {
+                (obj.body as GameSearchResult).games.forEach((game: Game) => { game.release_date = new Date(game.release_date)})
+                setGamesFound((obj.body as GameSearchResult).games);
+                setTotalNumberOfPages((obj.body as GameSearchResult).numberOfPages);
+                setCurrentPage(Number((obj.body as GameSearchResult).currentPage));
+            } else {
+                throw new Error((obj.body as APIErrorMessage).message);
+            }
         })
         .catch((e) => { 
             console.error(e); 
