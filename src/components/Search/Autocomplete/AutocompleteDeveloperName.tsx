@@ -109,8 +109,9 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustCl
 			options={developerNames}
 			filterOptions={(options, state) => options}
 			onChange={(event: React.ChangeEvent<{}>, newValues: (string | Developer)[]) => { 
-                onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
-            }
+				onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name));
+				setValue(newValues);
+			}}
 			getOptionLabel={(option: Developer) => option.name}
 			renderInput={(params) => <TextField {...params}  inputRef={myRef} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
