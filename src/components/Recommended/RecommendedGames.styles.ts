@@ -8,4 +8,8 @@ export const useStyles = makeStyles((theme) => ({
 		justifyContent: "flex-end",
 		display: "flex",
 	},
+	noGamesFoundContainer: {
+        display: "flex",
+        justifyContent: "center"
+    }
 }));

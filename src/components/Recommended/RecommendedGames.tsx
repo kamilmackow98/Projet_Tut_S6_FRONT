@@ -76,7 +76,14 @@ const RecommendedGames: React.FC = () => {
 				</Grid>
 			</Grid>
 			<Grid container justify="center">
-				{hasGames ? displayGames : <NoGamesFound />}
+				{
+					hasGames 
+					? displayGames 
+					: <>
+						<NoGamesFound /> 
+						<h3 className={classes.noGamesFoundContainer}>We could show you suggestions based on your library !</h3>
+					  </>
+				 }
 			</Grid>
 		</Container>
 	);
