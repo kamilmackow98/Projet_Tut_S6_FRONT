@@ -73,7 +73,7 @@ const SelectAge: React.FC<Props> = ({ onChangeAges, mustClear }) => {
 					<div className={classes.chips}>
 						{React.Children.toArray(
 							(selected as any).map((value: any) => (
-								<Chip label={value} className={classes.chip} />
+								<Chip key={value} label={value} className={classes.chip} />
 							))
 						)}
 					</div>
