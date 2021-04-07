@@ -5,29 +5,39 @@ import { APIErrorMessage, Developer } from "types";
 import { debounce } from "lodash";
 
 interface Props {
-	onChangeDevelopers: Function
+	onChangeDevelopers: Function,
+	mustClear: boolean
 }
 
-const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
+const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers, mustClear }) => {
 
 	const [developerNames, setDeveloperNames] = useState<Developer[]>([]);
     const [inputDeveloperNameSearch, setInputDeveloperNameSearch] = useState("");
 	const [developerNamePagination, setDeveloperNamePagination] = useState(1);
 	const [firstLaunch, setFirstLaunch] = useState<boolean>(true);
+	const [value, setValue] = useState<(string | Developer)[] | undefined>(undefined);
 
 	const developerNamesRef = React.useRef(developerNames);
 	const inputDeveloperNameSearchRef = React.useRef(inputDeveloperNameSearch);
 	const firstLaunchRef = React.useRef(firstLaunch);
+	const myRef = React.useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (mustClear) {
+			console.log('boom');
+			setValue(undefined);
+		}
+	}, [mustClear]);
    
 	useEffect(() => {
 		fetch(`/api/developers`)
-		.then(async (res) => ({ status: res.status, json: await res.json() }))
-		.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
-			if (status === 200) {
-				const developers: Developer[] = json as Developer[];
+		.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+		.then((obj) => {
+			if (obj.status === 200) {
+				const developers: Developer[] = obj.body as Developer[];
 				setDeveloperNames(developers);
 			} else {
-				throw new Error((json as APIErrorMessage).message);
+				throw new Error((obj.body as APIErrorMessage).message);
 			}
 		})
 		.catch((e) => {});
@@ -46,14 +56,13 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 			setDeveloperNamePagination(1);
 			setDeveloperNames([]);
 			fetch(`/api/developers?name=${inputDeveloperNameSearch}`)
-			.then(async (res) => ({ status: res.status, json: await res.json() }))
-			.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
-				if (status === 200) {
-					const developers: Developer[] = json as Developer[];
+			.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+			.then((obj) => {
+				if (obj.status === 200) {
+					const developers: Developer[] = obj.body as Developer[];
 					setDeveloperNames(developers);
 				} else {
-					console.log('here');
-					throw new Error((json as APIErrorMessage).message);
+					throw new Error((obj.body as APIErrorMessage).message);
 				}
 			})
 			.catch((e) => {});
@@ -63,14 +72,14 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 	useEffect(() => {
 		if (!firstLaunchRef.current && developerNamePagination !== 1) {
 			fetch(`/api/developers?name=${inputDeveloperNameSearchRef.current}&page=${developerNamePagination}`)
-			.then(async (res) => ({ status: res.status, json: await res.json() }))
-			.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
-				if (status === 200) {
-					const developers: Developer[] = json as Developer[];
+			.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+			.then((obj) => {
+				if (obj.status === 200) {
+					const developers: Developer[] = obj.body as Developer[];
 					const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
 					setDeveloperNames(extendedDevelopers);
 				} else {
-					throw new Error((json as APIErrorMessage).message);
+					throw new Error((obj.body as APIErrorMessage).message);
 				}
 			})
 			.catch((e) => {});
@@ -95,6 +104,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
             }}
             multiple
 			freeSolo
+			value={value}
 			id="combo-box-developer-name"
 			options={developerNames}
 			filterOptions={(options, state) => options}
@@ -102,7 +112,7 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
                 onChangeDevelopers((newValues as Developer[]).map((developer: Developer) => developer.name)); }
             }
 			getOptionLabel={(option: Developer) => option.name}
-			renderInput={(params) => <TextField {...params} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
+			renderInput={(params) => <TextField {...params} inputRef={myRef} label="Developer(s)" variant="outlined" onChange={event => handleChange(event.target.value)}/>}
 		/>
 	);
 };

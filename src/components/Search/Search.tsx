@@ -55,6 +55,8 @@ const Search = () => {
 
     const [filters, setFilters] = useState<Filters | undefined>(undefined);
     const [sortByFilter, setSortByFilter] = useState<SortFilter>({ sortBy: 'release_date', isASC: false });
+
+    const [mustClear, setMustClear] = useState<boolean>(false);
     
     const menuIconBtnColor = !displayAsGrid ? 'secondary' : 'inherit';
     const gridIconBtnColor = displayAsGrid ? 'secondary' : 'inherit';
@@ -160,7 +162,11 @@ const Search = () => {
             console.error(e); 
             setGamesFound([]);
         });
-    }
+    };
+
+    const clearForm = () => {
+        setMustClear(true);
+    };
 
     useEffect(() => {
         setToken(Cookies.get('token'));
@@ -220,7 +226,7 @@ const Search = () => {
                                 <AutocompletePublisherName onChangePublishers={(names: string[]) => handlePublishersNameChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <AutocompleteDeveloperName onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
+                                <AutocompleteDeveloperName mustClear={mustClear} onChangeDevelopers={(names: string[]) => handleDevelopersNameChange(names)} />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <AutocompleteTagName onChangeTags={(names: string[]) => handleTagNamesChange(names)} />
@@ -296,6 +302,10 @@ const Search = () => {
 
             <Grid item xs={12}>
                 <Grid container justify="center">
+                    <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
+                        <Button color="secondary" onClick={clearForm}>CLEAR FORM</Button>
+                    </Grid>
+
                     <Grid item xs={12} sm={12} className={classes.gridButtonContainer}>
                         <SortBy onFilterChange={(sortByFilter: SortFilter) => handleFilter(sortByFilter)} />
                         <IconButton className={classes.iconButtons} onClick={() => {setDisplayAsGrid(false)}}>

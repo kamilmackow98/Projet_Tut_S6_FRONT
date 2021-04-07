@@ -58,7 +58,6 @@ const Login: React.FC = () => {
 				},
 				body: JSON.stringify(fields),
 			})
-				.then((res) => res)
 				.then((response) => {
 					if (response.status === 403) {
 						setWrongInfo(true);
