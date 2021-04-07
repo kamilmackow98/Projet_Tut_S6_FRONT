@@ -92,6 +92,10 @@ type Webm = {
     max: string
 };
 
+export type APIErrorMessage = {
+	message: string;
+};
+
 export type Filters = {
     name?: string,
     release_date?: DateFilter,

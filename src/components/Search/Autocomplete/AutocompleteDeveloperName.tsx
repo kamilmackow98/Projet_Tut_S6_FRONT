@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import React, { useEffect, useState } from "react";
-import { Developer } from "types";
+import { APIErrorMessage, Developer } from "types";
 import { debounce } from "lodash";
 
 interface Props {
@@ -21,11 +21,16 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
    
 	useEffect(() => {
 		fetch(`/api/developers`)
-		.then((res) => res.json())
-		.then((developers: Developer[]) => {
-			setDeveloperNames(developers);
+		.then(async (res) => ({ status: res.status, json: await res.json() }))
+		.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
+			if (status === 200) {
+				const developers: Developer[] = json as Developer[];
+				setDeveloperNames(developers);
+			} else {
+				throw new Error((json as APIErrorMessage).message);
+			}
 		})
-		.catch((e) => console.error(e));
+		.catch((e) => {});
 
 		setFirstLaunch(false);
 	}, []);
@@ -41,23 +46,34 @@ const AutocompleteDeveloperName: React.FC<Props> = ({ onChangeDevelopers }) => {
 			setDeveloperNamePagination(1);
 			setDeveloperNames([]);
 			fetch(`/api/developers?name=${inputDeveloperNameSearch}`)
-			.then((res) => res.json())
-			.then((developers: Developer[]) => {
-				setDeveloperNames(developers);
+			.then(async (res) => ({ status: res.status, json: await res.json() }))
+			.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
+				if (status === 200) {
+					const developers: Developer[] = json as Developer[];
+					setDeveloperNames(developers);
+				} else {
+					console.log('here');
+					throw new Error((json as APIErrorMessage).message);
+				}
 			})
-			.catch((e) => console.error(e));
+			.catch((e) => {});
 		}
 	}, [inputDeveloperNameSearch]);
 
 	useEffect(() => {
 		if (!firstLaunchRef.current && developerNamePagination !== 1) {
 			fetch(`/api/developers?name=${inputDeveloperNameSearchRef.current}&page=${developerNamePagination}`)
-			.then((res) => res.json())
-			.then((developers: Developer[]) => {
-				const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
-				setDeveloperNames(extendedDevelopers);
+			.then(async (res) => ({ status: res.status, json: await res.json() }))
+			.then(({status , json }: { status: number, json: Developer[] | APIErrorMessage }) => {
+				if (status === 200) {
+					const developers: Developer[] = json as Developer[];
+					const extendedDevelopers: Developer[] = developerNamesRef.current.concat(developers);
+					setDeveloperNames(extendedDevelopers);
+				} else {
+					throw new Error((json as APIErrorMessage).message);
+				}
 			})
-			.catch((e) => console.error(e));
+			.catch((e) => {});
 		}
 	}, [developerNamePagination]);
 	
