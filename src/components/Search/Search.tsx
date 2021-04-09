@@ -282,7 +282,11 @@ const Search = () => {
                                 <Grid item>
                                     <Switch
                                         checked={!isDateInYear} 
-                                        onChange={() => { setDateInYear(!isDateInYear)}}
+                                        onChange={() => { 
+                                            setDateInYear(!isDateInYear);
+                                            setReleaseDateBeg(undefined);
+                                            setReleaseDateEnd(undefined);
+                                        }}
                                         value="checked"
                                     />
                                 </Grid>
