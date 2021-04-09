@@ -1,11 +1,14 @@
+import { UserType } from "types";
 import React from "react";
-import { UserType } from "../../types";
 
 interface Props {
 	user: UserType;
-	setUser: React.Dispatch<React.SetStateAction<any>>;
+	setUser: React.Dispatch<React.SetStateAction<UserType>>;
 }
 
-const userContext = React.createContext<Partial<Props>>({});
+const UserContext = React.createContext<Props>({
+	user: { isAuthenticated: false, token: "" },
+	setUser: () => {},
+});
 
-export default userContext;
+export default UserContext;

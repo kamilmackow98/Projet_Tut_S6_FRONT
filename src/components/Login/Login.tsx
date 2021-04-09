@@ -1,31 +1,127 @@
-import React from "react";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import Snackbar from "@material-ui/core/Snackbar";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import { Redirect } from "react-router-dom";
+import Alert from "@material-ui/lab/Alert";
 import Copyright from "../Layout/Copyright";
-import userContext from "../../context/user/UserContext";
 
-export default function Login() {
+import { useHistory, Link as RouterLink } from "react-router-dom";
+import { APIErrorMessage, ErrorMessage, LoginFormInputs } from "types";
+import UserContext from "context/user/UserContext";
+import { checkRules } from "validator/Validator";
+import { useStyles } from "./Login.styles";
+import Cookie from "js-cookie";
+import React, { ChangeEvent, FormEvent, useState } from "react";
+
+const Login: React.FC = () => {
 	const classes = useStyles();
-	const { user } = React.useContext(userContext);
+	const history = useHistory();
 
-	// TODO : FIND BETTER SOLUTION TO REDIRECT ?
-	if (user!.authenticated) {
-		return <Redirect to="/" />;
-	}
+	const { user, setUser } = React.useContext(UserContext);
+	const [errors, setErrors] = useState<Partial<ErrorMessage>[]>([]);
+	const [wrongInfo, setWrongInfo] = React.useState<boolean>(false);
+	const [isDisabled, setIsDisabled] = React.useState<boolean>(false);
+	const [fields, setFields] = useState<LoginFormInputs>({
+		email: "",
+		password: "",
+	});
+
+	const getErrors = (fieldName: keyof ErrorMessage) => {
+		return errors.filter((error) => error[fieldName]);
+	};
+
+	const hasErrors = (fieldName: keyof ErrorMessage) => {
+		return getErrors(fieldName).length > 0;
+	};
+
+	const displayErrors = (fieldName: keyof ErrorMessage) => {
+		return getErrors(fieldName)[0]?.[fieldName];
+	};
+
+	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		setIsDisabled(true);
+
+		const errorsCheck: Array<Partial<ErrorMessage>> = checkRules(fields);
+		setErrors(errorsCheck);
+
+		if (!errorsCheck.length) {
+			fetch("/api/user/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json; charset=UTF-8",
+				},
+				body: JSON.stringify(fields),
+			})	
+				.then(r =>  r.json().then(data => ({status: r.status, body: data})))
+                .then((obj) => {
+					if (obj.status === 200) {
+						if (obj.body) {
+							Cookie.set("token", obj.body.token);
+							setUser({ ...user, isAuthenticated: true });
+							history.push({ pathname: "/" });
+						}
+					} else {
+						throw new Error((obj.body as APIErrorMessage).message);
+					}
+				})
+				.catch((e) => { 
+					setWrongInfo(true);
+					console.error(e);
+				});
+		}
+	};
+
+	const handleChange = (name: keyof LoginFormInputs) => (
+		event: ChangeEvent<HTMLInputElement>
+	) => {
+		setFields({ ...fields, [name]: event.currentTarget.value });
+		isDisabled && setIsDisabled(false);
+	};
+
+	const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		
+		setIsDisabled(false);
+		setWrongInfo(false);
+	};
 
 	return (
-		<Container maxWidth="xs">
+		<Container className={classes.root} maxWidth="xs">
+			<Link
+				color="primary"
+				className={classes.homeLink}
+				component={RouterLink}
+				to="/"
+			>
+				<Button
+					variant="outlined"
+					color="primary"
+					startIcon={<ArrowBackIcon />}
+				>
+					Home
+				</Button>
+			</Link>
+			<Snackbar open={wrongInfo} autoHideDuration={3000} onClose={handleClose}>
+				<Alert
+					onClose={handleClose}
+					severity="error"
+					variant="filled"
+					elevation={6}
+				>
+					Incorrect credentials !
+				</Alert>
+			</Snackbar>
+
 			<div className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon />
@@ -33,36 +129,48 @@ export default function Login() {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<form className={classes.form} noValidate>
+				<form onSubmit={handleSubmit} className={classes.form}>
 					<TextField
+						helperText={displayErrors("email")}
+						onChange={handleChange("email")}
+						error={hasErrors("email")}
+						value={fields.email}
+						label="Email address"
+						autoComplete="email"
 						variant="outlined"
 						margin="normal"
-						required
-						fullWidth
-						id="email"
-						label="Email Address"
 						name="email"
-						autoComplete="email"
+						id="email"
+						fullWidth
 						autoFocus
 					/>
 					<TextField
+						helperText={displayErrors("password")}
+						onChange={handleChange("password")}
+						error={hasErrors("password")}
+						value={fields.password}
+						autoComplete="current-password"
 						variant="outlined"
-						margin="normal"
-						required
-						fullWidth
-						name="password"
 						label="Password"
+						margin="normal"
+						name="password"
 						type="password"
 						id="password"
-						autoComplete="current-password"
+						fullWidth
 					/>
-					<FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
-					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+					<Button
+						className={classes.submit}
+						disabled={isDisabled}
+						variant="contained"
+						color="primary"
+						type="submit"
+						fullWidth
+					>
 						Sign In
 					</Button>
 					<Grid container justify={"center"}>
 						<Grid item>
-							<Link href="#" variant="body2">
+							<Link to="/register" component={RouterLink} variant="body2">
 								{"Don't have an account? Sign Up"}
 							</Link>
 						</Grid>
@@ -74,24 +182,6 @@ export default function Login() {
 			</Box>
 		</Container>
 	);
-}
+};
 
-const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(6),
-		flexDirection: "column",
-		alignItems: "center",
-		display: "flex",
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		marginTop: theme.spacing(1),
-		width: "100%", // Fix IE 11 issue.
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
+export default Login;

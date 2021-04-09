@@ -1,44 +1,28 @@
-import {
-	AppBar,
-	CssBaseline,
-	SwipeableDrawer,
-	IconButton,
-	List,
-	Toolbar,
-	Typography,
-	Container,
-	Grid,
-	Divider,
-	MenuItem,
-	Menu,
-} from "@material-ui/core";
-import React, { MouseEvent, ReactElement } from "react";
-import { mainListItems, secondaryListItems } from "./SidebarItems";
-import { AccountCircle, Menu as MenuIcon } from "@material-ui/icons";
+import MenuIcon from "@material-ui/icons/Menu";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import IconButton from "@material-ui/core/IconButton";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import { useStyles } from "./Layout.styles";
 import { Link } from "react-router-dom";
-import { layoutConfig } from "./LayoutConfig";
+import Sidebar from "./Sidebar/Sidebar";
+import Footer from "./Footer";
+import React, { MouseEvent, ReactElement } from "react";
+import AccountMenu from "./AccountMenu/AccountMenu";
 
 interface Props {
 	children: ReactElement;
 }
 
-const useStyles = layoutConfig;
-
-const GlobalLayout = ({ children }: Props) => {
-	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [open, setOpen] = React.useState(false);
+const GlobalLayout: React.FC<Props> = ({ children }) => {
 	const classes = useStyles();
 
+	const [open, setOpen] = React.useState(false);
 	const toggleDrawer = (open: boolean) => (event: MouseEvent) => {
 		setOpen(open);
-	};
-
-	const handleClickAccount = (event: any) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleCloseAnchor = () => {
-		setAnchorEl(null);
 	};
 
 	return (
@@ -46,39 +30,29 @@ const GlobalLayout = ({ children }: Props) => {
 			<CssBaseline />
 			<AppBar position="absolute">
 				<Toolbar className={classes.toolbar}>
-					<IconButton edge="start" color="inherit" aria-label="open drawer" onClick={toggleDrawer(true)} className={classes.menuButton}>
+					<IconButton
+						className={classes.menuButton}
+						onClick={toggleDrawer(true)}
+						aria-label="open drawer"
+						color="inherit"
+						edge="start"
+					>
 						<MenuIcon />
 					</IconButton>
-					<Typography component={Link} to="/" variant="h6" color="inherit" noWrap className={classes.title}>
+					<Typography
+						className={classes.title}
+						component={Link}
+						color="inherit"
+						variant="h6"
+						noWrap
+						to="/"
+					>
 						Video Games Encyclopedia
 					</Typography>
-					<IconButton onClick={handleClickAccount} color="inherit">
-						<AccountCircle />
-					</IconButton>
-					<Menu id="simple-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleCloseAnchor}>
-						<MenuItem component={Link} to="/my-account" onClick={handleCloseAnchor}>
-							My account
-						</MenuItem>
-						<MenuItem component={Link} to="/login" onClick={handleCloseAnchor}>
-							Logout
-						</MenuItem>
-					</Menu>
+					<AccountMenu />
 				</Toolbar>
 			</AppBar>
-			<SwipeableDrawer
-				variant="temporary"
-				classes={{
-					paper: classes.drawerPaper,
-				}}
-				onClose={toggleDrawer(false)}
-				onOpen={toggleDrawer(true)}
-				anchor={"left"}
-				open={open}
-			>
-				<List onClick={toggleDrawer(false)}>{mainListItems}</List>
-				<Divider />
-				<List onClick={toggleDrawer(false)}>{secondaryListItems}</List>
-			</SwipeableDrawer>
+			<Sidebar open={open} toggleDrawer={toggleDrawer} classes={classes} />
 			<main className={classes.content}>
 				<div className={classes.appBarSpacer}></div>
 				<Container maxWidth="lg" className={classes.container}>
@@ -86,6 +60,7 @@ const GlobalLayout = ({ children }: Props) => {
 						{children}
 					</Grid>
 				</Container>
+				<Footer classes={classes} />
 			</main>
 		</>
 	);
