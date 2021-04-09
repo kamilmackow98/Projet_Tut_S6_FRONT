@@ -14,7 +14,7 @@ interface Props {
 const ReviewRatingBlock: React.FC<Props> = ({ positiveRatings, negativeRatings, genres, categories }) => {
 
     const classes = useStyles();
-    const ratingPercent: number = Math.round((positiveRatings / (positiveRatings + negativeRatings)) * 100);
+    const ratingPercent: number = (positiveRatings / (positiveRatings + negativeRatings)) * 100;
 
     return (
         <Paper variant="outlined" className={classes.card}>
