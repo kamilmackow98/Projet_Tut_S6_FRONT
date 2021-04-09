@@ -20,8 +20,17 @@ const ReleaseDatePickerFull: React.FC<Props> = ({
     const [releaseDateBeg, setReleaseDateBeg] = useState<Date | null>(null);
     const [releaseDateEnd, setReleaseDateEnd] = useState<Date | null>(null);
     
-    const handleReleaseDateBegChange = (date: Date) => { onChangeDateBeg(date); setReleaseDateBeg(date); }
-    const handleReleaseDateEndChange = (date: Date) => { onChangeDateEnd(date); setReleaseDateEnd(date); }
+    const handleReleaseDateBegChange = (date: Date) => { 
+        const newDate: Date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+        onChangeDateBeg(newDate); 
+        setReleaseDateBeg(newDate); 
+    };
+
+    const handleReleaseDateEndChange = (date: Date) => { 
+        const newDate: Date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
+        onChangeDateEnd(newDate); 
+        setReleaseDateEnd(newDate); 
+    };
 
     useEffect(() => {
         if (mustClear) {
